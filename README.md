@@ -91,3 +91,10 @@ other's files, so the two never collide on the same file.
 (`Topic details.pdf`, `FIN4080_CSMAR.pdf`, `FIN4080_TA_Data.pdf`, `FIN4080_demo_project.pdf`,
 `Coding_For_Momentum_4080.pdf`) and the class sign-up sheet, `FIN 4080 Group and topic sign
 up.xlsx`, which carries the whole class's names. They stay on disk and are ignored by git.
+
+**Do not save these files from Excel or WPS.** Opening them is fine; saving rewrites the
+encoding to GBK and reformats dates and numbers, so `2018-01-01` becomes `2018/1/1` and
+`84.0` becomes `84`. Every script that reads them then fails. This happened on 2026-10-06
+to `analysis_table.csv` and `ref_analyst_tenure.csv`; both were restored, a re-run
+reproduced the committed table byte for byte, and no data was lost.
+

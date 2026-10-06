@@ -3,6 +3,9 @@
 !/data/events_with_star.csv
 !/data/market_panel*.csv
 !/data/index_panel*.csv
+# 乙交回来的名单核对文件
+!/data/newfortune_missing_tenure.csv
+
 
 # Python 缓存
 __pycache__/

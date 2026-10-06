@@ -124,7 +124,9 @@ for 2018-2024. Alternative timing conventions are kept as separate columns
    Checked 2026-10-06: searching the seven annual extracts for 中金公司 returns 237 rows,
    and every one of them has stock code 601995.SH, that is, they are reports ABOUT the
    stock CICC, filed by 招商证券, 华泰证券 and others. No row has CICC as the broker, and
-   the firm's legal name never appears in the broker column either.
+   the firm's legal name never appears in the broker column either. Its ranked entries are all in 固定收益研究 (fixed income, ranked 1st in 2017, 3rd in
+   2019 and 4th in 2020), the only direction it appears in, and those teams file no
+   stock recommendations, so they would contribute no events even if the records existed.
 3. **Historical ST status is not obtainable** from iFinD: every phrasing returns the
    current snapshot. The ST filter above is an approximation. The clean solution is
    to infer ST spells from daily price limits (ST stocks have a 5% band) using the

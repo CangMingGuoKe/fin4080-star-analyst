@@ -53,8 +53,8 @@ web label on every row and is therefore dropped during cleaning.
 | `star_lag1` | Always the previous year's list. Robustness only. |
 | `首报日` | Date of the first report by the analyst, `YYYY-MM-DD`, from `analyst_tenure.csv`. |
 | `首报年份` | Year of the first report by the analyst, taken from `analyst_tenure.csv`. Coverage starts June 2009, the earliest the source provides. |
-| `资历` | **Seniority in years**: days from the first report by the analyst to the event date, divided by 365.25. Correlation with the event year is 0.130, so it carries genuine cross-sectional information rather than counting calendar time. |
-| `报告数` | Number of rating records the analyst has in the full 2009-2024 extract. An activity proxy. |
+| `资历` | **Seniority in years**: days from the first report by the analyst to the event date, divided by 365.25. Correlation with the event year is 0.130, so it carries genuine cross-sectional information rather than counting calendar time. The analyst name is the only key in `analyst_tenure.csv`, so an analyst who shares a name with a veteran inherits that veteran's first report date and their seniority is overstated. |
+| `报告数` | Number of rating records under this analyst name across 2009-2024. **A rough size indicator only.** The largest values run into the thousands, which no one person files, so a single name collects several people and the count is not a per-person measure. |
 | `触到覆盖起点` | 1 when the first report by the analyst falls at the coverage floor (June 2009), so their tenure can only be bounded from below, not measured. 18.8% of analysts. |
 | `资历分位` | Percentile rank of `资历` among events in the same year, the rank form of the seniority measure. |
 | `券商层级` | Broker tier: 头部 / 中部 / 中小, cut on the cumulative share of rating records after broker names are canonicalised, giving 13 / 27 / 91 of the 131 distinct houses. The two cut points are 50% and 90% of all 520,567 rating records. |

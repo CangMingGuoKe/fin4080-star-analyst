@@ -157,6 +157,14 @@ for 2018-2024. Alternative timing conventions are kept as separate columns
    broker but can be neither matched to the list nor dated, so `star = 0` is forced rather
    than observed and `资历` is empty. They are 0.1% of the sample. An analyst-level
    specification may prefer to drop them, which would make the sample 20,960.
+9. **The seniority table is keyed on the analyst name alone.** `analyst_tenure.csv` merges
+   into the event table on `研究员姓名`, so two analysts who share a name share one
+   first-report date and one report count, and the later of them inherits the earlier
+   one's seniority. The report counts show that such shared names exist: the largest reach
+   6,805 records, which no single person files, and one name carrying 5,135 records has
+   only 56 in the whole 2018-2024 rating detail. Seniority is therefore overstated for
+   the namesakes of veteran analysts. Tightening it means matching on name and broker,
+   and falling back to name alone only when that fails.
 
 ## 7. Data provenance
 

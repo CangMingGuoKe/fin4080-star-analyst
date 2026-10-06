@@ -241,3 +241,6 @@ chain, not only the final result**.
   never be `star = 1`, because the ranked analysts sit at the parent firm.
 - Twenty events (0.1%) have no analyst name in the source, so they can be neither matched
   to the list nor dated. They keep their broker and are coded `star = 0`.
+- `资历` is keyed on the analyst name alone, so an analyst who shares a name with a veteran
+  inherits that veteran's first report date and the seniority is overstated. The report
+  counts show such names exist: the largest reach 6,805 records, which no one person files.

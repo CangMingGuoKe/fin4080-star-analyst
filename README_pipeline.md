@@ -136,7 +136,9 @@ for 2018-2024. Alternative timing conventions are kept as separate columns
    ranked against one another, and December 2012 is missing. Neither can be closed from
    this source. Measured as years from the first report by the analyst, its correlation
    with the event year is 0.130, so year fixed effects remain advisable. For that group the recorded value is a lower bound on true tenure, so a
-   seniority coefficient is attenuated rather than inflated.
+   seniority coefficient is attenuated rather than inflated. The cohort covers 2,674
+   events, 12.7% of the sample, and 18.5% of all star events, so the robustness run that
+   drops it is not a small-sample exercise.
 5. **Rating revisions are heavily buy-skewed**: 12,131 upgrades against 8,849
    downgrades over 2018-2024, consistent with the known optimism bias in sell-side
    ratings. Upgrades and downgrades should therefore be reported separately rather

@@ -233,7 +233,8 @@ chain, not only the final result**.
   closed with this data. Correlation with the event year is 0.130, so year fixed effects
   remain advisable but the variable no longer merely counts calendar time. For the censored
   group the value is a lower bound on true tenure, so the seniority coefficient is
-  attenuated rather than inflated, and a robustness run drops those events.
+  attenuated rather than inflated. A robustness run drops that cohort, which is 2,674
+  events (12.7% of the sample) and 18.5% of all star events.
 - The broker tier is a self-constructed proxy based on research output, not an external
   ranking.
 - Broker names needed canonicalising before matching (中信建投 / 中信建投证券, 中国银河 /

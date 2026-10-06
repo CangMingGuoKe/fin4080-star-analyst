@@ -121,6 +121,10 @@ for 2018-2024. Alternative timing conventions are kept as separate columns
    This spell without an annual list is itself usable as a discontinuity test.
 2. **CICC (中金公司) has no records at all** in the iFinD rating detail, so its
    analysts can never be matched. Data gap, not a coding error.
+   Checked 2026-10-06: searching the seven annual extracts for 中金公司 returns 237 rows,
+   and every one of them has stock code 601995.SH, that is, they are reports ABOUT the
+   stock CICC, filed by 招商证券, 华泰证券 and others. No row has CICC as the broker, and
+   the firm's legal name never appears in the broker column either.
 3. **Historical ST status is not obtainable** from iFinD: every phrasing returns the
    current snapshot. The ST filter above is an approximation. The clean solution is
    to infer ST spells from daily price limits (ST stocks have a 5% band) using the

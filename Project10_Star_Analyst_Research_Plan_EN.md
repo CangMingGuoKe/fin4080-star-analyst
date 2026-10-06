@@ -223,7 +223,8 @@ chain, not only the final result**.
 - The 2018 New Fortune list had to be reconstructed from the 2017 ranking; it is an
   inference, not a published 2018 list.
 - CICC (中金公司) has no records at all in the iFinD rating detail, so its analysts can
-  never be matched.
+  never be matched. The 237 hits for 中金公司 across the extracts are all the stock
+  601995.SH, not the broker.
 - The ST filter is an approximation because historical ST status is unobtainable.
 - `资历` is censored at the source floor. The analyst rating detail begins in June 2009,
   so the 18.8% of analysts whose first report sits at that boundary cannot be ranked

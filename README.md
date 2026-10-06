@@ -84,6 +84,7 @@ other's files, so the two never collide on the same file.
 | `events_1_all_revisions.csv`, `events_2_clean_sample.csv`, `events_3_initiations.csv` | intermediate event tables | no, local only |
 | `analysis_table.csv` | **the analysis table**, 20,980 rows by 32 columns | yes |
 | `handover_newfortune_missing_tenure.csv` | the market side's cross-check: ranked analysts with no seniority record | yes |
+| `ref_newfortune_coverage.xlsx` | every ranked analyst name, with which ones the sample can use and why the rest cannot | yes |
 | `market_panel*.csv`, `index_panel*.csv` | the market data, still to arrive | yes, once added |
 | `raw_pull_manifest.json` | the wording and row count of every iFinD query | no, local only |
 

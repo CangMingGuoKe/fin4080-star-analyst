@@ -165,6 +165,13 @@ for 2018-2024. Alternative timing conventions are kept as separate columns
    only 56 in the whole 2018-2024 rating detail. Seniority is therefore overstated for
    the namesakes of veteran analysts. Tightening it means matching on name and broker,
    and falling back to name alone only when that fails.
+10. **585 ranked analysts have no first-report date at all.** They hold an industry ranking
+   in some year but file no stock ratings in the iFinD rating detail, mostly strategy,
+   macro and financial engineering directions, plus the CICC analysts, whose firm has no
+   records there at all. The market side cross-checked the seniority table and returned
+   the list as `data/newfortune_missing_tenure.csv`; it holds 630 names once the award
+   categories are counted too. None of them appears in the event table, so the event
+   sample is unaffected either way.
 
 ## 7. Data provenance
 

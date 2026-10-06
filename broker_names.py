@@ -43,3 +43,16 @@ def from_list(name):
     n = str(name).strip()
     n = LIST_ALIAS.get(n, n)
     return None if n is None else canonical_broker(n)
+
+# 分析师姓名也偶有字符差错（抓榜单页面时极少数名字写错）。
+# 实测一处：榜单把海通证券机械行业的佘炜超写成「余炜超」，
+# 而评级明细里 641 条记录全是「佘炜超」、0 条「余炜超」，以评级明细为准。
+ANALYST_ALIASES = {
+    '余炜超': '佘炜超',
+}
+
+
+def canonical_analyst(name):
+    """分析师姓名规范化：榜单侧的差错写法并到评级明细的写法。"""
+    n = str(name).strip()
+    return ANALYST_ALIASES.get(n, n)

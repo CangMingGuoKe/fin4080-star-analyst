@@ -97,8 +97,8 @@ Three proxies for analyst authority, all stored as columns on `analysis_table.cs
 | `资历` | years from the first report by the analyst to the event date, back to the June 2009 source floor | own data |
 | `券商层级` | 头部 / 中部 / 中小: 13 / 27 / 91 houses, cut on the cumulative share of rating records | own data |
 
-`star` is defined for all 20,980 events; 2,767 of them (13.2%) are `star = 1`.
-The per-year star share is stable: 13.4%, 14.3%, 13.5%, 13.6%, 13.6%, 11.8%, 11.6%
+`star` is defined for all 20,980 events; 2,772 of them (13.2%) are `star = 1`.
+The per-year star share is stable: 13.4%, 14.5%, 13.5%, 13.6%, 13.6%, 11.8%, 11.6%
 for 2018-2024. Alternative timing conventions are kept as separate columns
 (`star_same`, `star_month`, `star_lag1`) for robustness; the default reported in
 `star` is `star_inforce`, defined in section 6.
@@ -117,7 +117,7 @@ for 2018-2024. Alternative timing conventions are kept as separate columns
    is the same "list in force" rule applied to every year (`star_inforce`), so no
    special-casing and no look-ahead are involved. The rule restores 2018 to the
    normal range: 2018 events match the 2017 list at 13.4%, in line with the
-   11.6%-14.3% observed for the other years, so the full 2018-2024 sample is usable.
+   11.6%-14.5% observed for the other years, so the full 2018-2024 sample is usable.
    This spell without an annual list is itself usable as a discontinuity test.
 2. **CICC (中金公司) has no records at all** in the iFinD rating detail, so its
    analysts can never be matched. Data gap, not a coding error.
@@ -182,6 +182,11 @@ for 2018-2024. Alternative timing conventions are kept as separate columns
   in step 6, so the funnel can be re-run and audited step by step.
 - Column names in the raw files carry a window suffix such as
   `最新报告日期[20180101-20181231]`; the cleaning step strips it.
+- The scraped list misspelled one analyst name: the 海通证券 machinery analyst 佘炜超
+  appears as 余炜超. The rating detail writes 佘炜超 in all 641 of his records and
+  余炜超 in none, so the list-side spelling is corrected through `canonical_analyst`
+  in `broker_names.py`. The market side's roster cross-check surfaced it, and the
+  correction moves five 2019 events from `star = 0` to `star = 1`.
 
 ## 8. Building the report documents
 

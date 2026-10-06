@@ -38,7 +38,8 @@ DATA = os.path.join(HERE, 'data')
 # 机构简称规范化集中在 broker_names.py：券商层级那一脚本共用同一套映射，
 # 两边各写一份迟早不一致（实测一次不一致就让 87 条明星研报被判成非明星）。
 sys.path.insert(0, HERE)
-from broker_names import LIST_ALIAS as BROKER_ALIAS, canonical_broker
+from broker_names import (LIST_ALIAS as BROKER_ALIAS, canonical_broker,
+                          canonical_analyst)
 # 各年适用的合并前后名称（榜单年 -> 评级表简称）
 MERGER_HISTORY = {
     '海通证券': {2018: '海通证券', 2019: '海通证券', 2020: '海通证券',
@@ -104,7 +105,7 @@ def build_star_set(ind):
         y = int(r['年份'])
         if br in MERGER_HISTORY:
             br = MERGER_HISTORY[br].get(y, br)
-        s.add((y, str(r['分析师']).strip(), canonical_broker(br)))
+        s.add((y, canonical_analyst(str(r['分析师']).strip()), canonical_broker(br)))
     return s
 
 
@@ -135,7 +136,7 @@ def apply_star(ev, ss, mode):
         if ly not in avail:
             out.append(pd.NA)
             continue
-        k = (ly, str(r['研究员姓名']).strip(),
+        k = (ly, canonical_analyst(str(r['研究员姓名']).strip()),
              canonical_broker(str(r['研究机构简称']).strip()))
         out.append(1 if k in ss else 0)
     return pd.Series(out, index=ev.index, dtype='Int64')

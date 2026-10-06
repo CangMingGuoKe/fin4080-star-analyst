@@ -91,8 +91,8 @@ Three proxies, all stored as columns on the analysis table:
 | `资历` (seniority) | years from the first report by the analyst to the event date | iFinD, back to June 2009 |
 | `券商层级` (broker tier) | 头部 / 中部 / 中小, cut on the cumulative share of rating records after broker names are canonicalised | own data |
 
-`star = 1` for 2,767 of 20,980 events (13.2%), and the share is stable across years:
-13.4%, 14.3%, 13.5%, 13.6%, 13.6%, 11.8%, 11.6% for 2018-2024.
+`star = 1` for 2,772 of 20,980 events (13.2%), and the share is stable across years:
+13.4%, 14.5%, 13.5%, 13.6%, 13.6%, 11.8%, 11.6% for 2018-2024.
 
 **How the star variable handles the 2018 gap.** The New Fortune vote was suspended in
 2018, and the page labelled 2018 on the public source is a compilation of anniversary

@@ -229,7 +229,8 @@ chain, not only the final result**.
 - The ST filter is an approximation because historical ST status is unobtainable.
 - `资历` is censored at the source floor. The analyst rating detail begins in June 2009, measured rather than assumed (a query for
   2009 returns 27,059 rows, for 2008 two, and the earliest first-report date we observe is
-  2009-06-15), so the 18.8% of analysts whose first report sits at that boundary cannot be ranked
+  2009-06-15; that is a coverage limit, not a query problem, since for 2008 the
+  alternative wordings, half-year splits and a single-stock query all return nothing), so the 18.8% of analysts whose first report sits at that boundary cannot be ranked
   against one another, and December 2012 is absent from the source. Neither gap can be
   closed with this data. Correlation with the event year is 0.130, so year fixed effects
   remain advisable but the variable no longer merely counts calendar time. For the censored

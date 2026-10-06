@@ -133,7 +133,10 @@ for 2018-2024. Alternative timing conventions are kept as separate columns
    market data.
 4. **`资历` is censored at the source floor.** The analyst rating detail begins in June
    2009, which is measured rather than assumed: a query for 2009 returns 27,059 rows, for
-   2008 it returns two, and the earliest first-report date we can observe is 2009-06-15. So
+   2008 it returns two, and the earliest first-report date we can observe is 2009-06-15. It is a coverage
+   limit rather than a query problem: for 2008, adding 全部A股 to the wording, splitting the
+   year into half-years, and asking for a single stock all return nothing, while 2009
+   returns 27,059 rows in the same session. So
    the 18.8% of analysts whose first report sits at that boundary cannot be
    ranked against one another, and December 2012 is missing. Neither can be closed from
    this source. Measured as years from the first report by the analyst, its correlation

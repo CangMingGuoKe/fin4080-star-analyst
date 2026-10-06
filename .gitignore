@@ -1,11 +1,14 @@
-# 数据：iFinD 原始抽取与派生表，约 324 MB，属数据供应商授权范围，不进仓库
-/data/
+# 数据：只跟踪两人交接所需的两类表，原始抽取与汇总表不进仓库
+/data/*
+!/data/events_with_star.csv
+!/data/market_panel*.csv
+!/data/index_panel*.csv
 
 # Python 缓存
 __pycache__/
 *.pyc
 
-# 课程与讲师材料。版权属课程，不是本组产出，且选课表含全班同学姓名（第三方个人信息）
+# 课程与讲师材料。版权属课程，不是本组产出，且选课表含全班同学姓名
 Topic details.pdf
 FIN4080_CSMAR.pdf
 FIN4080_TA_Data.pdf

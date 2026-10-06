@@ -1,0 +1,14 @@
+# 数据：iFinD 原始抽取与派生表，约 324 MB，属数据供应商授权范围，不进仓库
+/data/
+
+# Python 缓存
+__pycache__/
+*.pyc
+
+# 课程与讲师材料。版权属课程，不是本组产出，且选课表含全班同学姓名（第三方个人信息）
+Topic details.pdf
+FIN4080_CSMAR.pdf
+FIN4080_TA_Data.pdf
+FIN4080_demo_project.pdf
+Coding_For_Momentum_4080.pdf
+FIN 4080 Group and topic sign up.xlsx

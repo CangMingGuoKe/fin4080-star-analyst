@@ -5,7 +5,7 @@
 !/data/market_panel*.csv
 !/data/index_panel*.csv
 # 乙交回来的名单核对文件
-!/data/handover_newfortune_missing_tenure.csv
+!/data/handover_*.csv
 
 
 # Python 缓存

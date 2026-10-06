@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""把 data/ratings_2018.csv 到 ratings_2024.csv 合并成一个 Excel，每年一个 sheet。
+"""把 data/raw_ratings_2018.csv 到 raw_ratings_2024.csv 合并成一个 Excel，每年一个 sheet。
 
 严格保真原则，三件事必须做到：
   1. 不遗漏：每个 sheet 的行数必须等于对应 CSV 的数据行数，最后打印合计核对
@@ -29,7 +29,7 @@ from openpyxl import Workbook
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, 'data')
-OUT = os.path.join(DATA, 'ratings_2018_2024.xlsx')
+OUT = os.path.join(DATA, 'raw_ratings_workbook.xlsx')
 YEARS = list(range(2018, 2025))
 
 ILLEGAL = re.compile(r'[\x00-\x08\x0b\x0c\x0e-\x1f]')
@@ -37,7 +37,7 @@ XL_MAX_LEN = 32767
 
 
 def csv_path(y):
-    return os.path.join(DATA, 'ratings_%d.csv' % y)
+    return os.path.join(DATA, 'raw_ratings_%d.csv' % y)
 
 
 def read_year(y):

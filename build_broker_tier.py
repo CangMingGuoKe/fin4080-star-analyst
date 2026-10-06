@@ -2,7 +2,7 @@
 """FIN4080 Project 10 · 甲的任务（其五）：券商层级变量
 
 老师的「按权威分类」要三个口径：新财富上榜、资历、券商层级。
-前两个已经在 events_with_star.csv 里（star、资历 两列），这一脚本补第三个。
+前两个已经在 analysis_table.csv 里（star、资历 两列），这一脚本补第三个。
 
 机构身份先经 broker_names.py 规范化（同一家券商的改名与后缀变体并成一个），
 再按规模排序，否则同一家被拆成两行会低估其累计份额。
@@ -18,7 +18,7 @@
 如果想改用别的口径（例如只看覆盖股票数、或直接采用新财富机构级奖项），
 改下面的 TIER_KEY 与 CUTS 即可。
 
-输出：就地更新 data/events_with_star.csv，新增一列 券商层级。
+输出：就地更新 data/analysis_table.csv，新增一列 券商层级。
 """
 import glob
 import io
@@ -39,7 +39,7 @@ CUTS = (0.50, 0.90)          # 累计记录份额的两个切点
 
 
 def main():
-    files = sorted(glob.glob(os.path.join(DATA, 'ratings_*.csv')))
+    files = sorted(glob.glob(os.path.join(DATA, 'raw_ratings_*.csv')))
     raw = pd.concat([pd.read_csv(f, dtype=str, encoding='utf-8-sig') for f in files],
                     ignore_index=True)
 
@@ -67,12 +67,12 @@ def main():
                  '、'.join(s['机构'].head(6))))
     print()
 
-    ev = pd.read_csv(os.path.join(DATA, 'events_with_star.csv'), dtype=str, encoding='utf-8-sig')
+    ev = pd.read_csv(os.path.join(DATA, 'analysis_table.csv'), dtype=str, encoding='utf-8-sig')
     m = dict(zip(g['机构'], g['券商层级']))
     ev['券商层级'] = ev['研究机构简称'].map(canonical_broker).map(m)
     miss = int(ev['券商层级'].isna().sum())
 
-    out = os.path.join(DATA, 'events_with_star.csv')
+    out = os.path.join(DATA, 'analysis_table.csv')
     ev.to_csv(out, index=False, encoding='utf-8-sig')
     print('事件表已更新，总列数 = %d，券商层级缺失 = %d' % (len(ev.columns), miss))
     print()

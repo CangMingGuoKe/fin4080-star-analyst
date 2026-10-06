@@ -26,12 +26,12 @@ Tracked, because the other person needs it:
 | Path | Who puts it there |
 |---|---|
 | The written plan, `README_pipeline.md`, `data_dictionary.md`, the pipeline scripts | the analyst side |
-| `data/events_with_star.csv`, the analysis table | the analyst side, after each pipeline run |
+| `data/analysis_table.csv`, the analysis table | the analyst side, after each pipeline run |
 | `data/market_panel*.csv`, `data/index_panel*.csv` | the market side |
 
 Not tracked, on purpose:
 
-- `data/ratings_*.csv`, 213 MB of raw iFinD extracts, and `data/ratings_2018_2024.xlsx`,
+- `data/raw_ratings_*.csv`, 213 MB of raw iFinD extracts, and `data/raw_ratings_workbook.xlsx`,
   77 MB. Both are large and are rebuilt by the pipeline, and the market side does not
   need them.
 - Course materials and the class sign-up sheet.
@@ -77,15 +77,15 @@ other's files, so the two never collide on the same file.
 
 | File | What it is | In the repository |
 |---|---|---|
-| `ratings_2018.csv` through `ratings_2024.csv` | raw iFinD extracts, untouched | no, local only |
-| `ratings_2018_2024.xlsx` | the same extracts as one workbook with seven sheets | no, local only |
-| `newfortune_list.csv` | the scraped list, every year the source serves | no, local only |
-| `listing_dates.csv`, `analyst_tenure.csv` | the reference tables from pipeline steps 4 and 5 | no, local only |
-| `events_all.csv`, `events_clean.csv`, `events_first_coverage.csv` | intermediate event tables | no, local only |
-| `events_with_star.csv` | **the analysis table**, 20,980 rows by 32 columns | yes |
-| `newfortune_missing_tenure.csv` | the market side's cross-check: ranked analysts with no seniority record | yes |
+| `raw_ratings_2018.csv` through `raw_ratings_2024.csv` | raw iFinD extracts, untouched | no, local only |
+| `raw_ratings_workbook.xlsx` | the same extracts as one workbook with seven sheets | no, local only |
+| `ref_newfortune_list.csv` | the scraped list, every year the source serves | no, local only |
+| `ref_listing_dates.csv`, `ref_analyst_tenure.csv` | the reference tables from pipeline steps 4 and 5 | no, local only |
+| `events_1_all_revisions.csv`, `events_2_clean_sample.csv`, `events_3_initiations.csv` | intermediate event tables | no, local only |
+| `analysis_table.csv` | **the analysis table**, 20,980 rows by 32 columns | yes |
+| `handover_newfortune_missing_tenure.csv` | the market side's cross-check: ranked analysts with no seniority record | yes |
 | `market_panel*.csv`, `index_panel*.csv` | the market data, still to arrive | yes, once added |
-| `pull_manifest.json` | the wording and row count of every iFinD query | no, local only |
+| `raw_pull_manifest.json` | the wording and row count of every iFinD query | no, local only |
 
 **In the folder but deliberately not in the repository**: the instructor's handouts
 (`Topic details.pdf`, `FIN4080_CSMAR.pdf`, `FIN4080_TA_Data.pdf`, `FIN4080_demo_project.pdf`,

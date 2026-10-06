@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """FIN4080 Project 10 · 甲的任务（其四）：生成 star 变量（权威标识）
 
-输入：data/events_clean.csv（clean_event_table.py 产出）
-      data/newfortune_list.csv（乙提供或复核过的名单）
-输出：data/events_with_star.csv（在事件表上加了 star 列）
+输入：data/events_2_clean_sample.csv（clean_event_table.py 产出）
+      data/ref_newfortune_list.csv（乙提供或复核过的名单）
+输出：data/analysis_table.csv（在事件表上加了 star 列）
 
 两个关键设计，都写在下面，报告里要交代：
 
@@ -51,8 +51,8 @@ EXCLUDE_SUB = ['国际', '(HK)', '（HK）', '香港', '金融控股', '经纪']
 
 
 def load():
-    e = os.path.join(DATA, 'events_clean.csv')
-    n = os.path.join(DATA, 'newfortune_list.csv')
+    e = os.path.join(DATA, 'events_2_clean_sample.csv')
+    n = os.path.join(DATA, 'ref_newfortune_list.csv')
     for p in (e, n):
         if not os.path.exists(p):
             print('[X] 缺 %s' % p)
@@ -171,7 +171,7 @@ def main():
     _s = pd.to_numeric(ev['star'], errors='coerce')
     print('默认口径 star=1 共 %d 条 (%.1f%%)，缺失 %d'
           % (int(_s.sum()), 100 * _s.mean(), int(_s.isna().sum())))
-    out = os.path.join(DATA, 'events_with_star.csv')
+    out = os.path.join(DATA, 'analysis_table.csv')
     ev.to_csv(out, index=False, encoding='utf-8-sig')
     print()
     print('逐年 star=1 计数:')

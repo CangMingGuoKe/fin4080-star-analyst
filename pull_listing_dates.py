@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""FIN4080 Project 10 · 抓上市日期，合成 data/listing_dates.csv
+"""FIN4080 Project 10 · 抓上市日期，合成 data/ref_listing_dates.csv
 
 为什么要查两次：问财的「全部A股」口径**不含北交所**。只查一次的话，36 只北证股票
 拿不到上市日期，「上市未满 6 个月」这条筛子对它们就完全失效（实测漏掉 60 条事件）。
@@ -69,7 +69,7 @@ def main():
         frames.append(df)
 
     out = pd.concat(frames, ignore_index=True).drop_duplicates(subset=['股票代码'])
-    path = os.path.join(DATA, 'listing_dates.csv')
+    path = os.path.join(DATA, 'ref_listing_dates.csv')
     out.to_csv(path, index=False, encoding='utf-8-sig')
     print()
     print('合计 %d 只（按股票代码去重）' % len(out))

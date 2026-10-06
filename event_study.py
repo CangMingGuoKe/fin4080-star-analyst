@@ -12,7 +12,7 @@
       列：日期, 收盘价
       说明：建议用沪深 300（000300.SH）或中证全指。
 
-事件表用 build_broker_tier.py 产出的 data/events_with_star.csv，它带着 star、资历与券商层级。
+事件表用 build_broker_tier.py 产出的 data/analysis_table.csv，它带着 star、资历与券商层级。
 若表里已有 star 列（0/1），结果会按 明星 vs 非明星 分组；没有则只出全样本。
 
 输出：
@@ -43,9 +43,9 @@ EST = (-120, -11)
 
 
 def load():
-    # 必须读 events_with_star.csv：star、资历、券商层级这三列只在这一版里。
-    # 早先读的是 events_clean.csv，结果永远取不到 star，一切分组都退化成全样本。
-    need = ['market_panel.csv', 'index_panel.csv', 'events_with_star.csv']
+    # 必须读 analysis_table.csv：star、资历、券商层级这三列只在这一版里。
+    # 早先读的是 events_2_clean_sample.csv，结果永远取不到 star，一切分组都退化成全样本。
+    need = ['market_panel.csv', 'index_panel.csv', 'analysis_table.csv']
     for f in need:
         p = os.path.join(DATA, f)
         if not os.path.exists(p):
@@ -53,7 +53,7 @@ def load():
             return None
     mp = pd.read_csv(os.path.join(DATA, 'market_panel.csv'), dtype={'股票代码': str, '日期': str})
     ix = pd.read_csv(os.path.join(DATA, 'index_panel.csv'), dtype={'日期': str})
-    ev = pd.read_csv(os.path.join(DATA, 'events_with_star.csv'), dtype={'股票代码': str}, encoding='utf-8-sig')
+    ev = pd.read_csv(os.path.join(DATA, 'analysis_table.csv'), dtype={'股票代码': str}, encoding='utf-8-sig')
     for _c in ('star', '资历', '券商层级'):
         if _c not in ev.columns:
             print('[*] 事件表缺 %s 列，涉及它的分组会退化为全样本' % _c)

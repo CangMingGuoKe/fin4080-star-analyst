@@ -148,7 +148,7 @@ def main():
             ds = df[dc].astype(str).str.replace(r'\.0$', '', regex=True)
             rng = '%s ~ %s' % (ds.min(), ds.max())
 
-        path = os.path.join(OUTDIR, 'ratings_%d.csv' % y)
+        path = os.path.join(OUTDIR, 'raw_ratings_%d.csv' % y)
         df.to_csv(path, index=False, encoding='utf-8-sig')
         grand += len(df)
 
@@ -159,7 +159,7 @@ def main():
             'date_range': rng, 'file': os.path.basename(path),
             'columns': list(df.columns)}
 
-    mpath = os.path.join(OUTDIR, 'pull_manifest.json')
+    mpath = os.path.join(OUTDIR, 'raw_pull_manifest.json')
     with open(mpath, 'w', encoding='utf-8') as f:
         json.dump(manifest, f, ensure_ascii=False, indent=2)
 

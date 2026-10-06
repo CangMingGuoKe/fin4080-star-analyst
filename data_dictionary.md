@@ -1,4 +1,4 @@
-# Data Dictionary: `data/events_with_star.csv`
+# Data Dictionary: `data/analysis_table.csv`
 
 The analysis table. One row = one analyst recommendation revision.
 20,980 rows × 32 columns, covering 2018-2024, 2,683 stocks, 2,171 analysts
@@ -51,9 +51,9 @@ web label on every row and is therefore dropped during cleaning.
 | `star_same` | Same-year convention. Missing for 2018 because the 2018 list is invalid. Robustness only. |
 | `star_month` | Convention where reports in January-October use the previous year's list. Robustness only. |
 | `star_lag1` | Always the previous year's list. Robustness only. |
-| `首报日` | Date of the first report by the analyst, `YYYY-MM-DD`, from `analyst_tenure.csv`. |
-| `首报年份` | Year of the first report by the analyst, taken from `analyst_tenure.csv`. Coverage starts June 2009, the earliest the source provides. |
-| `资历` | **Seniority in years**: days from the first report by the analyst to the event date, divided by 365.25. Correlation with the event year is 0.130, so it carries genuine cross-sectional information rather than counting calendar time. The analyst name is the only key in `analyst_tenure.csv`, so an analyst who shares a name with a veteran inherits that veteran's first report date and their seniority is overstated. |
+| `首报日` | Date of the first report by the analyst, `YYYY-MM-DD`, from `ref_analyst_tenure.csv`. |
+| `首报年份` | Year of the first report by the analyst, taken from `ref_analyst_tenure.csv`. Coverage starts June 2009, the earliest the source provides. |
+| `资历` | **Seniority in years**: days from the first report by the analyst to the event date, divided by 365.25. Correlation with the event year is 0.130, so it carries genuine cross-sectional information rather than counting calendar time. The analyst name is the only key in `ref_analyst_tenure.csv`, so an analyst who shares a name with a veteran inherits that veteran's first report date and their seniority is overstated. |
 | `报告数` | Number of rating records under this analyst name across 2009-2024. **A rough size indicator only.** The largest values run into the thousands, which no one person files, so a single name collects several people and the count is not a per-person measure. |
 | `触到覆盖起点` | 1 when the first report by the analyst falls at the coverage floor (June 2009), so their tenure can only be bounded from below, not measured. 18.8% of analysts. |
 | `资历分位` | Percentile rank of `资历` among events in the same year, the rank form of the seniority measure. |
@@ -63,7 +63,7 @@ web label on every row and is therefore dropped during cleaning.
 
 | Column | Meaning |
 |---|---|
-| `上市日` | Listing date, `YYYYMMDD`, from `listing_dates.csv`. |
+| `上市日` | Listing date, `YYYYMMDD`, from `ref_listing_dates.csv`. |
 | `上市天数` | Days between listing and the event. Events with fewer than 183 days were dropped. |
 
 ## Counting convention

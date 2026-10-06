@@ -2,10 +2,10 @@
 """FIN4080 Project 10 · 甲的任务（其二）：事件表清洗
 
 输入：data/ratings_20XX.csv（pull_ifind_ratings.py 抓的原始表）
-      data/listing_dates.csv（上市日期，判断 IPO 后六个月）
-输出：data/events_all.csv    全部评级调整（调高 + 调低），未做剔除
-      data/events_clean.csv  按规则剔除后的最终事件样本
-      data/events_first_coverage.csv  首次覆盖记录（旁路抽取，不进事件漏斗）
+      data/ref_listing_dates.csv（上市日期，判断 IPO 后六个月）
+输出：data/events_1_all_revisions.csv    全部评级调整（调高 + 调低），未做剔除
+      data/events_2_clean_sample.csv  按规则剔除后的最终事件样本
+      data/events_3_initiations.csv  首次覆盖记录（旁路抽取，不进事件漏斗）
 
 清洗规则（顺序固定，每一步都打印输入/输出/剔除行数，这份日志要写进数据附录）：
   1. 代码与日期规范化
@@ -43,9 +43,9 @@ def step(name, before, after, note=''):
 
 
 def main():
-    files = sorted(glob.glob(os.path.join(DATA, 'ratings_*.csv')))
+    files = sorted(glob.glob(os.path.join(DATA, 'raw_ratings_*.csv')))
     if not files:
-        print('[X] data/ 下没有 ratings_*.csv，请先跑 pull_ifind_ratings.py')
+        print('[X] data/ 下没有 raw_ratings_*.csv，请先跑 pull_ifind_ratings.py')
         return
     raw = pd.concat([pd.read_csv(f, dtype=str, encoding='utf-8-sig') for f in files],
                     ignore_index=True)
@@ -90,10 +90,10 @@ def main():
     ev_all = ev.copy()      # 未做任何剔除的全量评级调整，供漏斗核对与稳健性
     # 不写「首次覆盖」列：事件表只装调高与调低，而首次覆盖的记录一律被 iFinD 标成
     # 「未知」，所以这一列在事件表里结构性恒为 False，留着只会误导。首次覆盖的记录
-    # 已经单独存在 events_first_coverage.csv。
+    # 已经单独存在 events_3_initiations.csv。
 
     # 剔除上市未满 6 个月
-    lp = os.path.join(DATA, 'listing_dates.csv')
+    lp = os.path.join(DATA, 'ref_listing_dates.csv')
     if os.path.exists(lp):
         ld = pd.read_csv(lp, dtype=str, encoding='utf-8-sig')
         ld['代码'] = ld['股票代码'].astype(str).str.strip()
@@ -105,7 +105,7 @@ def main():
         step('5 剔除新股', n0, len(ev), '上市未满 %d 天' % MIN_MONTHS_AFTER_IPO)
         ev = ev.drop(columns=['代码'])
     else:
-        print('5 剔除新股                   跳过（缺 listing_dates.csv）')
+        print('5 剔除新股                   跳过（缺 ref_listing_dates.csv）')
 
     # 剔除当前 ST（近似，见文件头限制说明）
     n0 = len(ev)
@@ -114,18 +114,18 @@ def main():
     step('6 剔除当前 ST（近似）', n0, len(ev), '历史 ST 取不到，见局限说明')
 
     # 生成资历变量：学术口径，以分析师首篇报告的日期为职业生涯起点，算到事件日的年数。
-    # 首报日来自 pull_analyst_tenure.py 抓的 analyst_tenure.csv，往前只能覆盖到
+    # 首报日来自 pull_analyst_tenure.py 抓的 ref_analyst_tenure.csv，往前只能覆盖到
     # 数据源下限 2009 年 6 月；触及该下限的分析师由「触到覆盖起点」列标出。
     # 分位数按事件所在年份内排名，对应「所有活跃分析师按年限排名取分位」的做法。
-    tp = os.path.join(DATA, 'analyst_tenure.csv')
+    tp = os.path.join(DATA, 'ref_analyst_tenure.csv')
     tn = pd.DataFrame(columns=['分析师', '首报日', '报告数', '触到覆盖起点'])
     if os.path.exists(tp):
         tn = pd.read_csv(tp, dtype=str, encoding='utf-8-sig')
         tn['首报日'] = pd.to_datetime(tn['首报日'], format='%Y%m%d', errors='coerce')
         tn = tn[['分析师', '首报日', '报告数', '触到覆盖起点']]
-        print('资历口径：学术版，首报日来自 analyst_tenure.csv')
+        print('资历口径：学术版，首报日来自 ref_analyst_tenure.csv')
     else:
-        print('资历口径：缺 analyst_tenure.csv，资历将为空，请先跑 pull_analyst_tenure.py')
+        print('资历口径：缺 ref_analyst_tenure.csv，资历将为空，请先跑 pull_analyst_tenure.py')
     ev = ev.merge(tn, left_on='研究员姓名', right_on='分析师', how='left').drop(columns=['分析师'])
     ev['首报年份'] = ev['首报日'].dt.year
     ev['资历'] = (ev['报告日'] - ev['首报日']).dt.days / 365.25
@@ -137,13 +137,13 @@ def main():
     ev_all = ev_all.drop(columns=['分析师'])
     ev_all['首报年份'] = ev_all['首报日'].dt.year
     ev_all['资历'] = (ev_all['报告日'] - ev_all['首报日']).dt.days / 365.25
-    ev_all.to_csv(os.path.join(DATA, 'events_all.csv'), index=False, encoding='utf-8-sig')
-    ev.to_csv(os.path.join(DATA, 'events_clean.csv'), index=False, encoding='utf-8-sig')
+    ev_all.to_csv(os.path.join(DATA, 'events_1_all_revisions.csv'), index=False, encoding='utf-8-sig')
+    ev.to_csv(os.path.join(DATA, 'events_2_clean_sample.csv'), index=False, encoding='utf-8-sig')
     print()
-    print('events_all.csv   = %d 行（未剔除）' % len(ev_all))
-    print('events_clean.csv = %d 行（剔除后）' % len(ev))
+    print('events_1_all_revisions.csv   = %d 行（未剔除）' % len(ev_all))
+    print('events_2_clean_sample.csv = %d 行（剔除后）' % len(ev))
     if len(a):
-        a.to_csv(os.path.join(DATA, 'events_first_coverage.csv'),
+        a.to_csv(os.path.join(DATA, 'events_3_initiations.csv'),
                  index=False, encoding='utf-8-sig')
 
     print()
@@ -155,7 +155,7 @@ def main():
              ev['研究机构简称'].nunique(), ev['股票代码'].nunique()))
     print('资历变量 非空 = %d，中位数 = %s'
           % (int(ev['资历'].notna().sum()), ev['资历'].median()))
-    print('已写出 events_all.csv / events_clean.csv')
+    print('已写出 events_1_all_revisions.csv / events_2_clean_sample.csv')
     print('done')
 
 

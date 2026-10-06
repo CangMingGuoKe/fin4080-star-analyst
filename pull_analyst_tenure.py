@@ -17,7 +17,7 @@
 覆盖范围：2009 至 2024。2009 是实测的数据下限，2008 及更早取不到。2010 年之前就入行的人，首报日会被记成 2010 年，属右端截断。
 输出里「触到覆盖起点」一列专门标出这类人，写数据附录时要说明。
 
-输出：data/analyst_tenure.csv
+输出：data/ref_analyst_tenure.csv
       分析师 | 首报日 | 首报年份 | 首报机构 | 报告数 | 触到覆盖起点
 """
 import io
@@ -176,14 +176,14 @@ def main():
         parts.append(d)
 
     for y in LOCAL_YEARS:
-        f = os.path.join(DATA, 'ratings_%d.csv' % y)
+        f = os.path.join(DATA, 'raw_ratings_%d.csv' % y)
         if not os.path.exists(f):
             print('%d  缺本地文件' % y)
             continue
         d = tidy(pd.read_csv(f, dtype=str, encoding='utf-8-sig', keep_default_na=False))
         if d is not None and len(d):
             parts.append(d)
-            print('%d  读本地 ratings_%d.csv 行=%d' % (y, y, len(d)))
+            print('%d  读本地 raw_ratings_%d.csv 行=%d' % (y, y, len(d)))
 
     allrec = pd.concat(parts, ignore_index=True)
     print()
@@ -197,7 +197,7 @@ def main():
     first['触到覆盖起点'] = first['首报年份'] <= FIRST_YEAR
     first = first.sort_values(['首报年份', '分析师']).reset_index(drop=True)
 
-    path = os.path.join(DATA, 'analyst_tenure.csv')
+    path = os.path.join(DATA, 'ref_analyst_tenure.csv')
     first.to_csv(path, index=False, encoding='utf-8-sig')
 
     print()

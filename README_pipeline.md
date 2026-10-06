@@ -35,13 +35,13 @@ pip install pandas requests lxml statsmodels seaborn
 | # | Script | Input | Output |
 |---|--------|-------|--------|
 | 1 | `ifind_probe.py` | n/a | none. Run once to verify the account can reach the API; not needed on a normal re-run. |
-| 2 | `pull_ifind_ratings.py` | iFinD | `data/ratings_2018.csv` … `data/ratings_2024.csv`, `data/pull_manifest.json` |
-| 3 | `pull_newfortune_list.py` | hibor.org | `data/newfortune_list.csv` |
-| 4 | `pull_listing_dates.py` | iFinD | `data/listing_dates.csv` (A-share plus Beijing exchange; the A-share universe alone omits the BSE) |
-| 5 | `pull_analyst_tenure.py` | iFinD | `data/analyst_tenure.csv` (each analyst's first report date, back to the 2009 data floor) |
-| 6 | `clean_event_table.py` | steps 2, 4, 5 | `data/events_all.csv`, `data/events_clean.csv`, `data/events_first_coverage.csv` |
-| 7 | `build_star_variable.py` | steps 3, 6 | `data/events_with_star.csv` |
-| 8 | `build_broker_tier.py` | step 7 | updates `data/events_with_star.csv` (adds `券商层级`) |
+| 2 | `pull_ifind_ratings.py` | iFinD | `data/raw_ratings_2018.csv` … `data/raw_ratings_2024.csv`, `data/raw_pull_manifest.json` |
+| 3 | `pull_newfortune_list.py` | hibor.org | `data/ref_newfortune_list.csv` |
+| 4 | `pull_listing_dates.py` | iFinD | `data/ref_listing_dates.csv` (A-share plus Beijing exchange; the A-share universe alone omits the BSE) |
+| 5 | `pull_analyst_tenure.py` | iFinD | `data/ref_analyst_tenure.csv` (each analyst's first report date, back to the 2009 data floor) |
+| 6 | `clean_event_table.py` | steps 2, 4, 5 | `data/events_1_all_revisions.csv`, `data/events_2_clean_sample.csv`, `data/events_3_initiations.csv` |
+| 7 | `build_star_variable.py` | steps 3, 6 | `data/analysis_table.csv` |
+| 8 | `build_broker_tier.py` | step 7 | updates `data/analysis_table.csv` (adds `券商层级`) |
 | 9 | `event_study.py` | step 8 + market data | `data/car_event_level.csv`, `data/car_summary.csv` |
 
 Step 9 is **blocked**: it needs `data/market_panel.csv` and `data/index_panel.csv`
@@ -52,7 +52,7 @@ the docstring of `event_study.py`.
 decide whether two broker names denote the same firm, so the mapping lives in one file
 rather than in each script. Item 6 of section 6 explains why this matters.
 
-**About `data/newfortune_list.csv`.** This file is the scrape of the public
+**About `data/ref_newfortune_list.csv`.** This file is the scrape of the public
 source, one analyst per row, and it keeps every year the source serves, including
 rows that are not usable. Two kinds of row carry `是否有效 = False`: the whole of
 2018 (the page labelled 2018 is a compilation of anniversary special awards, not
@@ -85,11 +85,11 @@ Final sample: **20,980 events** covering 2,683 stocks, 2,171 analysts and
 Initiation records, that is recommendations with no previous rating, are a separate
 category and are **not** part of the funnel above. iFinD labels them `未知` rather
 than as an upgrade or downgrade, so they never reach the event sample. The 42,276 of
-them (after de-duplication) are saved separately in `data/events_first_coverage.csv`.
+them (after de-duplication) are saved separately in `data/events_3_initiations.csv`.
 
 ## 5. Authority variables
 
-Three proxies for analyst authority, all stored as columns on `events_with_star.csv`:
+Three proxies for analyst authority, all stored as columns on `analysis_table.csv`:
 
 | Variable | Definition | Source |
 |----------|-----------|--------|
@@ -157,7 +157,7 @@ for 2018-2024. Alternative timing conventions are kept as separate columns
    broker but can be neither matched to the list nor dated, so `star = 0` is forced rather
    than observed and `资历` is empty. They are 0.1% of the sample. An analyst-level
    specification may prefer to drop them, which would make the sample 20,960.
-9. **The seniority table is keyed on the analyst name alone.** `analyst_tenure.csv` merges
+9. **The seniority table is keyed on the analyst name alone.** `ref_analyst_tenure.csv` merges
    into the event table on `研究员姓名`, so two analysts who share a name share one
    first-report date and one report count, and the later of them inherits the earlier
    one's seniority. The report counts show that such shared names exist: the largest reach
@@ -169,7 +169,7 @@ for 2018-2024. Alternative timing conventions are kept as separate columns
    in some year but file no stock ratings in the iFinD rating detail, mostly strategy,
    macro and financial engineering directions, plus the CICC analysts, whose firm has no
    records there at all. The market side cross-checked the seniority table and returned
-   the list as `data/newfortune_missing_tenure.csv`; it holds 630 names once the award
+   the list as `data/handover_newfortune_missing_tenure.csv`; it holds 630 names once the award
    categories are counted too. None of them appears in the event table, so the event
    sample is unaffected either way.
 

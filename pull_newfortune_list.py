@@ -3,7 +3,7 @@
 
 从公开页面抓 2017-2024 年「新财富最佳分析师」名单，统一成
     年份 | 行业代码 | 研究领域 | 名次 | 所属机构 | 分析师 | 是否有效
-存成 data/newfortune_list.csv。一个分析师一行（团队会被拆开）。
+存成 data/ref_newfortune_list.csv。一个分析师一行（团队会被拆开）。
 
 「是否有效」标记该行能否用于 star 变量，为 False 的只有两种情形：
   · 2018 年整年：站内那份是 15 周年特别奖合辑，不是年度行业榜
@@ -151,7 +151,7 @@ def main():
 
     if frames:
         out = pd.concat(frames, ignore_index=True)
-        p = os.path.join(OUTDIR, 'newfortune_list.csv')
+        p = os.path.join(OUTDIR, 'ref_newfortune_list.csv')
         out.to_csv(p, index=False, encoding='utf-8-sig')
         print('=' * 70)
         print('合计 %d 行 -> %s' % (len(out), p))

@@ -1,10 +1,10 @@
 # 数据：只跟踪两人交接所需的两类表，原始抽取与汇总表不进仓库
 /data/*
-!/data/events_with_star.csv
+!/data/analysis_table.csv
 !/data/market_panel*.csv
 !/data/index_panel*.csv
 # 乙交回来的名单核对文件
-!/data/newfortune_missing_tenure.csv
+!/data/handover_newfortune_missing_tenure.csv
 
 
 # Python 缓存

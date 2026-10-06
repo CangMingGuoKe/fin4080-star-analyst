@@ -231,7 +231,9 @@ chain, not only the final result**.
   so the 18.8% of analysts whose first report sits at that boundary cannot be ranked
   against one another, and December 2012 is absent from the source. Neither gap can be
   closed with this data. Correlation with the event year is 0.130, so year fixed effects
-  remain advisable but the variable no longer merely counts calendar time.
+  remain advisable but the variable no longer merely counts calendar time. For the censored
+  group the value is a lower bound on true tenure, so the seniority coefficient is
+  attenuated rather than inflated, and a robustness run drops those events.
 - The broker tier is a self-constructed proxy based on research output, not an external
   ranking.
 - Broker names needed canonicalising before matching (中信建投 / 中信建投证券, 中国银河 /

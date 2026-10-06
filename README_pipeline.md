@@ -135,7 +135,8 @@ for 2018-2024. Alternative timing conventions are kept as separate columns
    2009, so the 18.8% of analysts whose first report sits at that boundary cannot be
    ranked against one another, and December 2012 is missing. Neither can be closed from
    this source. Measured as years from the first report by the analyst, its correlation
-   with the event year is 0.130, so year fixed effects remain advisable.
+   with the event year is 0.130, so year fixed effects remain advisable. For that group the recorded value is a lower bound on true tenure, so a
+   seniority coefficient is attenuated rather than inflated.
 5. **Rating revisions are heavily buy-skewed**: 12,131 upgrades against 8,849
    downgrades over 2018-2024, consistent with the known optimism bias in sell-side
    ratings. Upgrades and downgrades should therefore be reported separately rather

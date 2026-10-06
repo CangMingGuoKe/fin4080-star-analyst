@@ -98,3 +98,7 @@ encoding to GBK and reformats dates and numbers, so `2018-01-01` becomes `2018/1
 to `analysis_table.csv` and `ref_analyst_tenure.csv`; both were restored, a re-run
 reproduced the committed table byte for byte, and no data was lost.
 
+If it happens anyway, `python repair_encoding.py` audits every file in `data/` and
+restores the affected ones from git or from `Project.zip`, backing up the originals
+first. `python repair_encoding.py --check` only reports.
+

@@ -46,7 +46,7 @@ web label on every row and is therefore dropped during cleaning.
 
 | Column | Meaning |
 |---|---|
-| `star` | **Default authority indicator.** 1 if the analyst is in the New Fortune list in force at the event date, else 0. Uses `star_inforce`. |
+| `star` | **Default authority indicator.** 1 if the analyst is in the New Fortune list of the event year, with 2018 inheriting the 2017 list, else 0. Uses `star_inforce`. |
 | `star_inforce` | Star under the "list in force" rule: use the list of the event year, except 2018, which inherits the 2017 list because the 2018 vote was suspended. |
 | `star_same` | Same-year convention. Missing for 2018 because the 2018 list is invalid. Robustness only. |
 | `star_month` | Convention where reports in January-October use the previous year's list. Robustness only. |

@@ -87,7 +87,7 @@ Three proxies, all stored as columns on the analysis table:
 
 | Variable | Definition | Source |
 |---|---|---|
-| `star` | 1 if the analyst is in the New Fortune Best Analyst list in force at the report date | external list |
+| `star` | 1 if the analyst is in the New Fortune Best Analyst list of the event year, with 2018 inheriting the 2017 list | external list |
 | `资历` (seniority) | years from the first report by the analyst to the event date | iFinD, back to June 2009 |
 | `券商层级` (broker tier) | 头部 / 中部 / 中小, cut on the cumulative share of rating records after broker names are canonicalised | own data |
 

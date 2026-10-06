@@ -1,6 +1,7 @@
 # 数据：只跟踪两人交接所需的两类表，原始抽取与汇总表不进仓库
 /data/*
 !/data/analysis_table.csv
+!/data/ref_newfortune_coverage.xlsx
 !/data/market_panel*.csv
 !/data/index_panel*.csv
 # 乙交回来的名单核对文件

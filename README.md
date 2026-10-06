@@ -75,14 +75,19 @@ other's files, so the two never collide on the same file.
 
 **Data, all under `data/`**
 
-| File | What it is |
-|---|---|
-| `ratings_2018.csv` through `ratings_2024.csv` | raw iFinD extracts, untouched |
-| `ratings_2018_2024.xlsx` | the same extracts as one workbook with seven sheets |
-| `newfortune_list.csv` | the scraped list, every year the source serves |
-| `listing_dates.csv`, `analyst_tenure.csv` | the reference tables from pipeline steps 4 and 5 |
-| `events_all.csv`, `events_clean.csv`, `events_first_coverage.csv` | intermediate event tables |
-| `events_with_star.csv` | **the analysis table**, 20,980 rows by 32 columns |
-| `newfortune_missing_tenure.csv` | the market side's cross-check: ranked analysts with no seniority record |
-| `market_panel*.csv`, `index_panel*.csv` | the market data, still to arrive |
-| `pull_manifest.json` | the wording and row count of every iFinD query |
+| File | What it is | In the repository |
+|---|---|---|
+| `ratings_2018.csv` through `ratings_2024.csv` | raw iFinD extracts, untouched | no, local only |
+| `ratings_2018_2024.xlsx` | the same extracts as one workbook with seven sheets | no, local only |
+| `newfortune_list.csv` | the scraped list, every year the source serves | no, local only |
+| `listing_dates.csv`, `analyst_tenure.csv` | the reference tables from pipeline steps 4 and 5 | no, local only |
+| `events_all.csv`, `events_clean.csv`, `events_first_coverage.csv` | intermediate event tables | no, local only |
+| `events_with_star.csv` | **the analysis table**, 20,980 rows by 32 columns | yes |
+| `newfortune_missing_tenure.csv` | the market side's cross-check: ranked analysts with no seniority record | yes |
+| `market_panel*.csv`, `index_panel*.csv` | the market data, still to arrive | yes, once added |
+| `pull_manifest.json` | the wording and row count of every iFinD query | no, local only |
+
+**In the folder but deliberately not in the repository**: the instructor's handouts
+(`Topic details.pdf`, `FIN4080_CSMAR.pdf`, `FIN4080_TA_Data.pdf`, `FIN4080_demo_project.pdf`,
+`Coding_For_Momentum_4080.pdf`) and the class sign-up sheet, `FIN 4080 Group and topic sign
+up.xlsx`, which carries the whole class's names. They stay on disk and are ignored by git.

@@ -15,8 +15,15 @@ This is a document build tool, not part of the data pipeline. It needs no pywin3
 #>
 param([string[]]$File)
 
-$default = '文档\Project10_Star_Analyst_Research_Plan_EN.docx'
-if (-not $File -or $File.Count -eq 0) { $File = @(Join-Path $PSScriptRoot $default) }
+# Locate the document by an ASCII pattern so the script itself stays pure ASCII:
+# PowerShell 5.1 reads a BOM-less UTF-8 script as ANSI, which would mangle any
+# non-ASCII path written here.
+if (-not $File -or $File.Count -eq 0) {
+    $found = Get-ChildItem -Path $PSScriptRoot -Recurse -Filter '*Research_Plan_EN.docx' `
+        -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($found) { $File = @($found.FullName) }
+    else { Write-Output 'no docx found next to this script'; exit 0 }
+}
 
 $word = New-Object -ComObject Word.Application
 $word.Visible = $false

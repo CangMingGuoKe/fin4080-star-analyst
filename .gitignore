@@ -1,16 +1,20 @@
-# 数据：只跟踪两人交接所需的两类表，原始抽取与汇总表不进仓库
+# 数据：只跟踪两人交接所需的几类表，原始抽取与汇总表不进仓库
 /data/*
 !/data/analysis_table.csv
 !/data/ref_newfortune_coverage.xlsx
 !/data/market_panel*.csv
 !/data/index_panel*.csv
-# 乙交回来的名单核对文件
 !/data/handover_*.csv
-
 
 # Python 缓存
 __pycache__/
 *.pyc
 
-# 课程与讲师材料（整个目录）
-/课程材料/。版权属课程，不是本组产出，且选课表含全班同学姓名
+# 课程与讲师材料：目录整个不进仓库，另按文件名兜底（文件可能临时放在别处）
+/课程材料/
+Topic details.pdf
+FIN4080_CSMAR.pdf
+FIN4080_TA_Data.pdf
+FIN4080_demo_project.pdf
+Coding_For_Momentum_4080.pdf
+FIN 4080 Group and topic sign up.xlsx

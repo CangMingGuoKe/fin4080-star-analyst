@@ -53,11 +53,12 @@ scripts and the `data/` directory, is in the repository root.
 
 | File | What it is |
 |---|---|
-| `Project10_Star_Analyst_Research_Plan_EN.md` and its `.docx` | the written plan, this is the graded deliverable |
-| `Project10_明星分析师_研究方案.md` and its `.docx` | the same plan in Chinese, a working record; the English one governs |
-| `README_pipeline.md` | the data pipeline, the cleaning funnel and the data limitations |
-| `data_dictionary.md` | every column of the analysis table |
-| `给乙_行情数据交付说明.md` | what the market side delivers, and the API traps already found |
+| `文档/Project10_Star_Analyst_Research_Plan_EN.md` and its `.docx` | the written plan, this is the graded deliverable |
+| `文档/Project10_明星分析师_研究方案.md` and its `.docx` | the same plan in Chinese, a working record; the English one governs |
+| `文档/README_pipeline.md` | the data pipeline, the cleaning funnel and the data limitations |
+| `文档/data_dictionary.md` | every column of the analysis table |
+| `文档/给乙_行情数据交付说明.md` | what the market side delivers, and the API traps already found |
+| `文档/回应_乙核查_event_study_20261007.md` | our written reply to the market side's review of the event study |
 
 **Code**
 
@@ -92,9 +93,9 @@ scripts and the `data/` directory, is in the repository root.
 | `raw_pull_manifest.json` | the wording and row count of every iFinD query | no, local only |
 
 **In the folder but deliberately not in the repository**: the instructor's handouts
-(`Topic details.pdf`, `FIN4080_CSMAR.pdf`, `FIN4080_TA_Data.pdf`, `FIN4080_demo_project.pdf`,
-`Coding_For_Momentum_4080.pdf`) and the class sign-up sheet, `FIN 4080 Group and topic sign
-up.xlsx`, which carries the whole class's names. They stay on disk and are ignored by git.
+them all sit in `课程材料/` (`Topic details.pdf`, `FIN4080_CSMAR.pdf`, `FIN4080_TA_Data.pdf`,
+`FIN4080_demo_project.pdf`, `Coding_For_Momentum_4080.pdf`) together with the class sign-up
+sheet, `FIN 4080 Group and topic sign up.xlsx`, which carries the whole class's names. They stay on disk and are ignored by git.
 
 **Do not save these files from Excel or WPS.** Opening them is fine; saving rewrites the
 encoding to GBK and reformats dates and numbers, so `2018-01-01` becomes `2018/1/1` and

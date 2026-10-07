@@ -216,7 +216,7 @@ for 2018-2024. Alternative timing conventions are kept as separate columns
 The written deliverables are built from Markdown, so the text lives in one place and the
 Word file is never hand-edited:
 
-1. `python md2docx.py <src.md> <dst.docx> en` writes the Word file, using Word Heading
+1. `python md2docx.py 文档/Project10_Star_Analyst_Research_Plan_EN.md 文档/Project10_Star_Analyst_Research_Plan_EN.docx en` writes the Word file, using Word Heading
    styles and inserting a table-of-contents field.
 2. `powershell -ExecutionPolicy Bypass -File refresh_toc.ps1` opens it once through Word
    COM to fill in the contents entries and the page numbers.

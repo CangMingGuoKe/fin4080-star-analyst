@@ -12,10 +12,5 @@
 __pycache__/
 *.pyc
 
-# 课程与讲师材料。版权属课程，不是本组产出，且选课表含全班同学姓名
-Topic details.pdf
-FIN4080_CSMAR.pdf
-FIN4080_TA_Data.pdf
-FIN4080_demo_project.pdf
-Coding_For_Momentum_4080.pdf
-FIN 4080 Group and topic sign up.xlsx
+# 课程与讲师材料（整个目录）
+/课程材料/。版权属课程，不是本组产出，且选课表含全班同学姓名

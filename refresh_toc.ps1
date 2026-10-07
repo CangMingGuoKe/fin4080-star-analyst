@@ -15,7 +15,7 @@ This is a document build tool, not part of the data pipeline. It needs no pywin3
 #>
 param([string[]]$File)
 
-$default = 'Project10_Star_Analyst_Research_Plan_EN.docx'
+$default = '文档\Project10_Star_Analyst_Research_Plan_EN.docx'
 if (-not $File -or $File.Count -eq 0) { $File = @(Join-Path $PSScriptRoot $default) }
 
 $word = New-Object -ComObject Word.Application

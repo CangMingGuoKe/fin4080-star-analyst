@@ -46,6 +46,9 @@ after each pipeline run and the market side adds panels under `data/`. Neither e
 other's files, so the two never collide on the same file.
 ## What each file is
 
+Documents sit in `文档/`, course materials in `课程材料/`. Everything else, including all
+scripts and the `data/` directory, is in the repository root.
+
 **Documents**
 
 | File | What it is |

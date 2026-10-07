@@ -48,6 +48,15 @@ Step 9 is **blocked**: it needs `data/market_panel.csv` and `data/index_panel.cs
 from the teammate responsible for market data. The required format is specified in
 the docstring of `event_study.py`.
 
+Run **`event_study_v2.py`**, not the original: it locates every window on the trading
+calendar instead of by row position, takes the event day as the first trading day at or
+after the report date, requires the event day plus 80% valid observations before a CAR is
+reported, carries star, seniority and broker tier into the event-level output, and adds a
+star-versus-non-star test with a same-stock-same-day collapsed variant. `--align exact`
+restricts the sample to events whose report date is already a trading day, and
+`--selftest` runs it on synthetic data. The original script is kept unchanged as the
+record of what the market side reviewed.
+
 **`broker_names.py` is a shared module, not a pipeline step.** Steps 7 and 8 both have to
 decide whether two broker names denote the same firm, so the mapping lives in one file
 rather than in each script. Item 6 of section 6 explains why this matters.

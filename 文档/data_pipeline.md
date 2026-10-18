@@ -104,7 +104,7 @@ Three proxies for analyst authority, all stored as columns on `analysis_table.cs
 |----------|-----------|--------|
 | `star` | 1 if the analyst appears in the New Fortune Best Analyst list for that year | external list |
 | `资历` | years from the first report by the analyst to the event date, back to the June 2009 source floor | own data |
-| `券商层级` | 头部 / 中部 / 中小: 13 / 26 / 86 houses, cut on the cumulative share of rating records | own data |
+| `券商层级` | 头部 / 中部 / 中小: 13 / 26 / 85 houses, cut on the cumulative share of rating records | own data |
 
 `star` is defined for all 20,980 events; 2,774 of them (13.2%) are `star = 1`.
 The per-year star share is stable: 13.4%, 14.5%, 13.5%, 13.6%, 13.6%, 11.9%, 11.7%
@@ -171,7 +171,7 @@ for 2018-2024. Alternative timing conventions are kept as separate columns
    中部 to 头部 and 广发证券 out of 头部, changing the tier counts from 13 / 29 / 96 to
    13 / 27 / 91 and moving 1,370 of the 20,980 events (6.5%) to a different tier.
    Later year-aware merges (安信/国投, 国联/国联民生, 华菁/华兴, 新时代/诚通) bring the
-   current counts to 13 / 26 / 86 of 125 houses. The event table keeps each broker name
+   current counts to 13 / 26 / 85 of 124 houses. The event table keeps each broker name
    exactly as iFinD reported it, and canonicalisation happens only at match time.
 7. **Events at a subsidiary can never be `star = 1` by construction.** The rating table
    carries subsidiary names such as 华泰金融(HK) (1,916 records), 海通国际 (1,654) and

@@ -37,6 +37,9 @@
 # 参考用的样本幻灯片，仅本地查看，不随项目分发
 /文档/PPT Sample/
 
+# 幻灯片逐页渲染图，仅本地 QA，不随项目分发
+/文档/figures/ppt/render*/
+
 # 完整单文件行情面板约 659 MB，超过 GitHub 单文件上限；本机使用，按年拆分后再入库
 /data/market_panel.csv
 

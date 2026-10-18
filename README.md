@@ -112,6 +112,7 @@ scripts and the `data/` directory, is in the repository root.
 | `文档/项目进度与技术备忘_20261018.md` and its `.docx` | a running recap of progress, decisions and technical notes, in Chinese (internal working record) |
 | `文档/Project10_Written_Report_Draft_EN.md` and its `.docx` | the written report draft: four questions, three figures and the data-provenance appendix |
 | `文档/Project10_陈述幻灯片设计稿_20261018.md` and its `.docx` | the slide-by-slide plan: sample-based structure, English slide copy, timing, speaker split and Q&A preparation |
+| `文档/Project10_Star_Analyst_Deck_20261027.pptx` and its `.pdf` | the editable 15-slide deck and its PDF export, built from the design document |
 | `文档/figures/` | the three original figures used in the report and slides |
 | `文档/cluster_robustness_note.md` | method, clustered results and caveats for the inference check |
 | `文档/replication_note.md` | independent replication: method, differences and the first-run audit trail |
@@ -147,6 +148,7 @@ scripts and the `data/` directory, is in the repository root.
 | `repair_encoding.py` | audits the `data/` CSVs for GBK damage and restores them from git or `../Project.zip` |
 | `md2docx.py`, `refresh_toc.ps1` | build the Word version and fill in its contents page |
 | `make_report_figures.py` | builds the three report figures from the event-study and accuracy summaries |
+| `make_ppt.py`, `make_ppt_figures.py` | build the editable 15-slide deck and its three slide-specific figures |
 
 **Data, all under `data/`**
 

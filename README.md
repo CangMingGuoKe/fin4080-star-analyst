@@ -123,6 +123,7 @@ scripts and the `data/` directory, is in the repository root.
 | `pull_forecast.py` | pulls analyst-level EPS forecasts and realised annual EPS from iFinD |
 | `forecast_error.py` | matches each event's own EPS forecast to realised EPS and tests star versus non-star |
 | `heterogeneity_test.py` | interaction models for direction and broker tier, with stock-clustered errors |
+| `heterogeneity_rolling.py` | rebuilds the tier from prior years only and re-estimates the same interactions |
 | `ifind_probe.py` | one-off, checks that the iFinD account can reach the API |
 | `make_excel_workbook.py` | builds the seven-sheet workbook of the raw extracts |
 | `make_coverage_table.py` | builds the New Fortune coverage table, `data/ref_newfortune_coverage.xlsx` |
@@ -151,6 +152,7 @@ scripts and the `data/` directory, is in the repository root.
 | `forecast_error_event.csv`, `forecast_error_summary.csv` | earnings forecast error, event level and summary | yes |
 | `forecast_pull_manifest.json` | query wording and row counts for the forecast pull | yes |
 | `heterogeneity_summary.csv` | direction and tier interaction estimates | yes |
+| `broker_tier_rolling.csv`, `heterogeneity_rolling_summary.csv` | backward-looking tier assignment and the re-estimated interactions | yes |
 
 **In the folder but deliberately not in the repository**: the instructor's handouts
 them all sit in `课程材料/` (`Topic details.pdf`, `FIN4080_CSMAR.pdf`, `FIN4080_TA_Data.pdf`,

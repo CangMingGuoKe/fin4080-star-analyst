@@ -18,6 +18,8 @@
 !/data/forecast_error_summary.csv
 !/data/forecast_pull_manifest.json
 !/data/heterogeneity_summary.csv
+!/data/broker_tier_rolling.csv
+!/data/heterogeneity_rolling_summary.csv
 
 # Word/WPS 锁文件
 ~$*

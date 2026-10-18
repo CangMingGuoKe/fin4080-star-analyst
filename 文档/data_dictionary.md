@@ -59,6 +59,16 @@ web label on every row and is therefore dropped during cleaning.
 | `资历分位` | Percentile rank of `资历` among events in the same year, the rank form of the seniority measure. |
 | `券商层级` | Broker tier: 头部 / 中部 / 中小, a proxy built from research output because no official research-department tier list exists. Houses are ranked by their number of rating records over 2018-2024 after broker names are canonicalised, and cut on the **cumulative share** of records: 头部 is the set whose cumulative share, including itself, does not exceed 50% (13 houses, 47.7% of records); 中部 continues to 90% (27 houses, 42.1%); 中小 is the remaining 91 houses (10.2%). Cumulative share rather than equal thirds because the distribution is extremely skewed: the top 44 houses, one third of the 131, already hold 92.8% of the 520,567 records, so equal thirds would leave the middle and small tiers with almost no records. The event sample contains 108 broker short names. This is a descriptive proxy, fixed over the sample period and highly collinear with `star`. |
 
+**Broker tier, revenue and time variation.** No official research-department tier
+list exists. iFinD 问财 also does not provide research-line revenue (分仓佣金): the
+closest field is 手续费及佣金收入, which is firm-level, covers listed securities firms
+only, and mixes brokerage and underwriting with research. The tier is therefore built
+from rating-record counts, a complete and feasible proxy. Because a fixed 2018-2024
+tier uses future information for early events, `broker_tier_rolling.csv` rebuilds the
+tier for each event year from records in t-3 to t-1 only. It moves 23.6% of events to
+a different tier; the direction asymmetry survives, but the tier coefficients become
+unstable, so tier results are reported as suggestive rather than main results.
+
 ## Sample-construction flags
 
 | Column | Meaning |

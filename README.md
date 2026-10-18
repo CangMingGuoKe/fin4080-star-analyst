@@ -17,6 +17,26 @@ Raw data extracts are not in this repository: they are large and are covered by 
 data vendor's terms. The pipeline rebuilds them from iFinD. Course materials and the
 class sign-up sheet are likewise not redistributed here.
 
+## Where the project stands
+
+The event sample and the authority variables are built, the market panel has
+arrived, and the first-pass results for all four assigned questions are in.
+
+1. **Announcement day.** Star upgrades draw a larger market-adjusted reaction and
+   more abnormal volume than non-star upgrades (CAR[-1,+1] +0.38 pp, t=2.19;
+   abnormal volume +0.053, t=2.85; both hold when events are collapsed to
+   stock-day). Star downgrades show no such difference.
+2. **After the announcement.** Star downgraded stocks underperform non-star ones by
+   1.6 pp over the next 60 trading days (p=0.002), but the difference disappears by
+   120 days and reverses sign by 250 days. Star upgrades show no differential drift.
+3. **Ex post accuracy.** Star recommendations are modestly more profitable to follow
+   at short horizons (downgrades at 3 months, upgrades at 6 months), but the
+   advantage is gone by 12 months.
+
+Read together, the pattern is short-run information plus long-run following, not a
+stable ability premium. These are univariate first-pass results: standard errors are
+not yet clustered and limit-hit, suspension and ST robustness are still to be run.
+
 ## Repository layout and file ownership
 
 **Keep this repository private.** It carries tables derived from iFinD data, which may

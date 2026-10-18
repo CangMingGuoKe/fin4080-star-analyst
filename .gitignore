@@ -14,6 +14,10 @@
 !/data/car_event_level.csv
 !/data/accuracy_summary.csv
 !/data/suspension_robustness.csv
+!/data/cluster_robustness.csv
+!/data/replication_check.csv
+!/data/limit_st_robustness.csv
+!/data/st_proxy_robustness.csv
 !/data/ref_actual_eps.csv
 !/data/forecast_error_event.csv
 !/data/forecast_error_summary.csv
@@ -24,6 +28,9 @@
 
 # Word/WPS 锁文件
 ~$*
+
+# 运行日志
+*_run.log
 
 # 完整单文件行情面板约 659 MB，超过 GitHub 单文件上限；本机使用，按年拆分后再入库
 /data/market_panel.csv

@@ -28,7 +28,9 @@ all four assigned questions are in.
 1. **Announcement day.** Star upgrades draw a larger market-adjusted reaction and
    more abnormal volume than non-star upgrades (CAR[-1,+1] +0.38 pp, t=2.19;
    abnormal volume +0.053, t=2.85; both hold when events are collapsed to
-   stock-day). Star downgrades show no such difference.
+   stock-day). Star downgrades show no such difference. The premium is concentrated
+   in events with a price-limit hit; excluding them, the short-window difference
+   falls to 0.22 pp (p=0.13).
 2. **After the announcement.** Star downgraded stocks underperform non-star ones by
    1.6 pp over the next 60 trading days (p=0.002), but the difference disappears by
    120 days and reverses sign by 250 days. Star upgrades show no differential drift.
@@ -54,12 +56,12 @@ to the influence explanation, although it does not rule out an information compo
 **The one-sentence story.** Stars move the market, but the evidence does not show that
 they are better forecasters; the pattern fits influence better than information.
 
-**What remains before 27 October.** Clustered standard errors; limit-hit and ST
-robustness; the three main figures; and a decision on whether to extend the FY1
-forecast-error sample beyond 2023. A suspension robustness check is done: dropping
-events with a suspension day in the window leaves the upgrade premium significant and
-the downgrade premium insignificant. These are univariate first-pass results, so the
-significance levels should not be quoted as final until the clustering is done.
+**What remains before 27 October.** A decision on whether to extend the FY1
+forecast-error sample beyond 2023, and the slides and rehearsals. Clustered inference,
+the suspension check, price-limit and ST robustness, independent replication and the
+three main figures are done. Dropping events with a suspension day in the window leaves
+the upgrade premium significant; clustering by stock changes no 5% significance
+conclusion; the premium is concentrated in price-limit events.
 
 ## Repository layout and file ownership
 
@@ -107,6 +109,11 @@ scripts and the `data/` directory, is in the repository root.
 | `文档/event_study_核查记录_20261007.md` | the event-study script review (internal review record) |
 | `文档/event_study_核查回应_20261011.md` | the written reply to the event-study review (internal record) |
 | `文档/项目进度与技术备忘_20261018.md` and its `.docx` | a running recap of progress, decisions and technical notes, in Chinese (internal working record) |
+| `文档/Project10_Written_Report_Draft_EN.md` and its `.docx` | the written report draft: four questions, three figures and the data-provenance appendix |
+| `文档/figures/` | the three original figures used in the report and slides |
+| `文档/cluster_robustness_note.md` | method, clustered results and caveats for the inference check |
+| `文档/replication_note.md` | independent replication: method, differences and the first-run audit trail |
+| `文档/limit_st_and_data_quality_note.md` | price-limit, ST-proxy and market-data diagnostics |
 
 **Code**
 
@@ -127,11 +134,15 @@ scripts and the `data/` directory, is in the repository root.
 | `heterogeneity_test.py` | interaction models for direction and broker tier, with stock-clustered errors |
 | `heterogeneity_rolling.py` | rebuilds the tier from prior years only and re-estimates the same interactions |
 | `suspension_robustness.py` | drops events with a suspension day in the window and compares the star premium |
+| `cluster_robustness.py` | re-estimates the three main tests with stock-clustered standard errors |
+| `replication_check.py` | independent reimplementation used to verify CAR, holding returns and forecast errors |
+| `limit_st_robustness.py`, `data_quality_checks.py` | price-limit and ST-proxy robustness, and market-data diagnostics |
 | `ifind_probe.py` | one-off, checks that the iFinD account can reach the API |
 | `make_excel_workbook.py` | builds the seven-sheet workbook of the raw extracts |
 | `make_coverage_table.py` | builds the New Fortune coverage table, `data/ref_newfortune_coverage.xlsx` |
 | `repair_encoding.py` | audits the `data/` CSVs for GBK damage and restores them from git or `../Project.zip` |
 | `md2docx.py`, `refresh_toc.ps1` | build the Word version and fill in its contents page |
+| `make_report_figures.py` | builds the three report figures from the event-study and accuracy summaries |
 
 **Data, all under `data/`**
 
@@ -157,6 +168,9 @@ scripts and the `data/` directory, is in the repository root.
 | `heterogeneity_summary.csv` | direction and tier interaction estimates | yes |
 | `broker_tier_rolling.csv`, `heterogeneity_rolling_summary.csv` | backward-looking tier assignment and the re-estimated interactions | yes |
 | `suspension_robustness.csv` | star premium before and after dropping events with suspension days | yes |
+| `cluster_robustness.csv` | cluster-robust standard errors for the event study, holding returns and forecast errors | yes |
+| `replication_check.csv` | independent replication of CAR, holding returns and forecast errors | yes |
+| `limit_st_robustness.csv`, `st_proxy_robustness.csv` | price-limit and ST-proxy robustness | yes |
 
 **In the folder but deliberately not in the repository**: the instructor's handouts
 them all sit in `课程材料/` (`Topic details.pdf`, `FIN4080_CSMAR.pdf`, `FIN4080_TA_Data.pdf`,

@@ -10,9 +10,14 @@
 !/data/ref_analyst_tenure.csv
 !/data/ref_listing_dates.csv
 !/data/raw_pull_manifest.json
+!/data/car_summary.csv
+!/data/car_event_level.csv
 
 # Word/WPS 锁文件
 ~$*
+
+# 完整单文件行情面板约 659 MB，超过 GitHub 单文件上限；本机使用，按年拆分后再入库
+/data/market_panel.csv
 
 # Python 缓存
 __pycache__/

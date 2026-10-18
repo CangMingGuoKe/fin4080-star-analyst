@@ -40,7 +40,8 @@ Not tracked, on purpose:
 **Market data size.** The full panel comes to about 4.6 million rows, which is close to
 200 MB as a single CSV, and GitHub rejects files over 100 MB. Split it by year,
 `market_panel_2018.csv` through `market_panel_2024.csv`, at roughly 30 MB each. The file
-name has to match `market_panel*.csv`, otherwise `.gitignore` keeps it out.
+name has to match `market_panel*.csv`, otherwise `.gitignore` keeps it out. The unsplit
+panel, `data/market_panel.csv`, stays local: it is about 659 MB, above the 100 MB limit.
 
 **Working rhythm.** Pull before starting. The analyst side commits the analysis table
 after each pipeline run and the market side adds panels under `data/`. Neither edits the
@@ -94,8 +95,10 @@ scripts and the `data/` directory, is in the repository root.
 | `ref_newfortune_roster_2018_2024.csv` | the New Fortune roster 2018-2024, each ranked analyst with seniority and broker tier | yes |
 | `ref_newfortune_missing_tenure.csv` | New Fortune ranked analysts with no seniority record, 630 names | yes |
 | `ref_newfortune_coverage.xlsx` | every ranked analyst name, with which ones the sample can use and why the rest cannot | yes |
-| `market_panel*.csv`, `index_panel*.csv` | the market data, still to arrive | yes, once added |
+| `market_panel_YYYY.csv`, `index_panel.csv` | the market data, split by year for sharing | yes |
+| `market_panel.csv` | the unsplit panel, about 659 MB | no, local only |
 | `raw_pull_manifest.json` | the wording and row count of every iFinD query | yes, tracked for reproducibility |
+| `car_summary.csv`, `car_event_level.csv` | event-study output: window summary and one row per event | yes |
 
 **In the folder but deliberately not in the repository**: the instructor's handouts
 them all sit in `课程材料/` (`Topic details.pdf`, `FIN4080_CSMAR.pdf`, `FIN4080_TA_Data.pdf`,

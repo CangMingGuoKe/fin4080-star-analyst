@@ -40,12 +40,16 @@ CUTS = (0.50, 0.90)          # 累计记录份额的两个切点
 
 def main():
     files = sorted(glob.glob(os.path.join(DATA, 'raw_ratings_*.csv')))
-    raw = pd.concat([pd.read_csv(f, dtype=str, encoding='utf-8-sig') for f in files],
-                    ignore_index=True)
+    raw = pd.concat([
+        pd.read_csv(f, dtype=str, encoding='utf-8-sig').assign(
+            年份=int(os.path.basename(f).split('_')[-1].split('.')[0]))
+        for f in files], ignore_index=True)
 
     # 同一家券商在评级表里有多种写法（改名与后缀变体）。不归并会把它的记录数拆开，
     # 累计份额因此被低估：中信建投的真实记录数是 10266 + 4512，拆开后曾被划进中部。
-    raw = raw.assign(机构=raw['研究机构简称'].map(canonical_broker))
+    raw = raw.assign(机构=[
+        canonical_broker(n, y)
+        for n, y in zip(raw['研究机构简称'], raw['年份'])])
     g = raw.groupby('机构').agg(
         记录数=('股票代码', 'size'),
         覆盖股票数=('股票代码', 'nunique'),
@@ -69,7 +73,9 @@ def main():
 
     ev = pd.read_csv(os.path.join(DATA, 'analysis_table.csv'), dtype=str, encoding='utf-8-sig')
     m = dict(zip(g['机构'], g['券商层级']))
-    ev['券商层级'] = ev['研究机构简称'].map(canonical_broker).map(m)
+    ev['券商层级'] = [
+        m.get(canonical_broker(n, y))
+        for n, y in zip(ev['研究机构简称'], ev['年份'])]
     miss = int(ev['券商层级'].isna().sum())
 
     out = os.path.join(DATA, 'analysis_table.csv')

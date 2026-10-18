@@ -39,7 +39,9 @@ def main():
     F['k_code'] = F['股票代码'].astype(str).str.strip()
     F['k_date'] = F['报告日期'].astype(str).str.replace(r'\.0$', '', regex=True).str.strip()
     F['k_an'] = F['分析师'].astype(str).str.strip().map(canonical_analyst)
-    F['k_br'] = F['机构'].astype(str).str.strip().map(canonical_broker)
+    F['year'] = F['报告日期'].astype(str).str[:4]
+    F['k_br'] = [canonical_broker(n, y)
+                 for n, y in zip(F['机构'].astype(str).str.strip(), F['year'])]
 
     # one row per report; duplicated keys are folded by the mean forecast
     Fg = F.groupby(['k_code', 'k_date', 'k_an', 'k_br'], as_index=False).agg(
@@ -49,7 +51,8 @@ def main():
     ev['k_code'] = ev['股票代码'].astype(str).str.strip()
     ev['k_date'] = ev['最新报告日期'].astype(str).str.replace(r'\.0$', '', regex=True).str.strip()
     ev['k_an'] = ev['研究员姓名'].astype(str).str.strip().map(canonical_analyst)
-    ev['k_br'] = ev['研究机构简称'].astype(str).str.strip().map(canonical_broker)
+    ev['k_br'] = [canonical_broker(n, y)
+                  for n, y in zip(ev['研究机构简称'].astype(str).str.strip(), ev['年份'])]
     m = ev.merge(Fg, on=['k_code', 'k_date', 'k_an', 'k_br'], how='inner')
     print('matched events %d of %d' % (len(m), len(ev)))
 

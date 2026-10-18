@@ -21,6 +21,25 @@ TABLE_VARIANTS = {
     '太平洋证券': '太平洋',
     '联讯证券': '粤开证券',        # 2020 年改名，旧名仍留在历史记录里
     '财富证券': '财信证券',        # 同上
+    '国泰君安证券': '国泰君安',    # 2018 年评级表里还有 7 条这种写法
+    '国泰海通证券': '国泰海通',    # 新名的完整写法
+    '安信证券': '国投证券',        # 2024 年改名，分析师重合 26/32
+    '国联证券': '国联民生',        # 2025 年合并；样本内先归到新名
+    '国联民生证券': '国联民生',
+    '华菁证券': '华兴证券',        # 2020 年改名，分析师重合 3/4
+    '新时代证券': '诚通证券',      # 2022 年更名，样本内记录很少
+}
+
+# 新名 -> (旧名, 新名首次生效的年份)。只用于显示：事件表保留原始名称，
+# 这个表让报告可以按年份写回当时在用的名字，而不是事后统一成新名。
+RENAME_HISTORY = {
+    '国泰海通': ('国泰君安', 2025),
+    '国投证券': ('安信证券', 2024),
+    '国联民生': ('国联证券', 2025),
+    '华兴证券': ('华菁证券', 2021),
+    '诚通证券': ('新时代证券', 2022),
+    '粤开证券': ('联讯证券', 2020),
+    '财信证券': ('财富证券', 2020),
 }
 
 LIST_ALIAS = {
@@ -35,17 +54,45 @@ LIST_ALIAS = {
 }
 
 
-def canonical_broker(name):
-    """评级表侧：把同一家券商的不同写法并到规范名。"""
-    n = str(name).strip()
+def _split_name(n):
+    """有的记录把两个机构名用分号拼在一起，例如「国泰君安;国泰君安证券」。"""
+    for sep in (';', '；'):
+        if sep in n:
+            n = n.split(sep)[0].strip()
+    return n
+
+
+def canonical_broker(name, year=None):
+    """稳定身份：同一家券商的所有历史写法并到一个名字，用于跨年汇总与匹配。
+
+    year 参数保留是为了兼容既有调用；身份本身不随年份变化。需要"当年在用的
+    名称"时用 broker_name_in_year。
+    """
+    n = _split_name(str(name).strip())
     return TABLE_VARIANTS.get(n, n)
 
 
-def from_list(name):
+def broker_name_in_year(name, year):
+    """返回该机构在指定年份正在使用的名称，用于报告与展示。
+
+    例：国泰君安在 2024 年及以前显示国泰君安，2025 年起显示国泰海通；
+    安信证券在 2023 年及以前显示安信证券，2024 年起显示国投证券。
+    """
+    n = canonical_broker(name)
+    if year is None:
+        return n
+    y = int(year)
+    for new, (old, first) in RENAME_HISTORY.items():
+        if n == new and y < first:
+            return old
+    return n
+
+
+def from_list(name, year=None):
     """名单侧：新财富写法 -> 规范名。返回 None 表示该机构在评级表里不存在。"""
-    n = str(name).strip()
+    n = _split_name(str(name).strip())
     n = LIST_ALIAS.get(n, n)
-    return None if n is None else canonical_broker(n)
+    return None if n is None else canonical_broker(n, year)
 
 # 分析师姓名也偶有字符差错（抓榜单页面时极少数名字写错）。
 # 实测一处：榜单把海通证券机械行业的佘炜超写成「余炜超」，

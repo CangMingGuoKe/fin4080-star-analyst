@@ -106,7 +106,8 @@ def build_star_set(ind):
         y = int(r['年份'])
         if br in MERGER_HISTORY:
             br = MERGER_HISTORY[br].get(y, br)
-        s.add((y, canonical_analyst(str(r['分析师']).strip()), canonical_broker(br)))
+        s.add((y, canonical_analyst(str(r['分析师']).strip()),
+               canonical_broker(br, y)))
     return s
 
 
@@ -138,7 +139,7 @@ def apply_star(ev, ss, mode):
             out.append(pd.NA)
             continue
         k = (ly, canonical_analyst(str(r['研究员姓名']).strip()),
-             canonical_broker(str(r['研究机构简称']).strip()))
+             canonical_broker(str(r['研究机构简称']).strip(), r['年份']))
         out.append(1 if k in ss else 0)
     return pd.Series(out, index=ev.index, dtype='Int64')
 

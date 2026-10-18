@@ -32,7 +32,7 @@ def main():
     nf, tn, ev = read('ref_newfortune_list.csv'), read('ref_analyst_tenure.csv'), \
         read('analysis_table.csv')
 
-    nf['_br'] = nf['所属机构'].map(from_list)
+    nf['_br'] = [from_list(n, y) for n, y in zip(nf['所属机构'], nf['年份'])]
     use = nf[nf['是否有效'].astype(str).str.strip().str.lower().isin(['true', '1', 'yes'])]
     use = use[use['年份'].astype(str) != '2018'].copy()
     use = use[use['_br'].notna()]

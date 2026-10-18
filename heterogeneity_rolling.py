@@ -28,7 +28,8 @@ def yearly_counts():
     for f in sorted(glob.glob(os.path.join(DATA, 'raw_ratings_*.csv'))):
         y = int(re.search(r'(\d{4})', os.path.basename(f)).group(1))
         d = pd.read_csv(f, dtype=str, encoding='utf-8-sig', usecols=['研究机构简称'])
-        c = d['研究机构简称'].dropna().map(canonical_broker).value_counts()
+        c = d['研究机构简称'].dropna().map(
+            lambda n: canonical_broker(n, y)).value_counts()
         x = c.rename_axis('机构').reset_index(name='n')
         x['year'] = y
         frames.append(x)
@@ -67,7 +68,8 @@ def main():
     c['down'] = (c['评级调整方向'].astype(str).str.strip() == '调低').astype(int)
     c['tenure'] = num(c['资历'])
     c['year'] = c['报告日'].astype(str).str[:4].astype(int)
-    c['机构'] = c['研究机构简称'].astype(str).str.strip().map(canonical_broker)
+    c['机构'] = [canonical_broker(n, y)
+                 for n, y in zip(c['研究机构简称'].astype(str).str.strip(), c['year'])]
     c = c.merge(R[['年份', '机构', '层级_滚动']], left_on=['year', '机构'],
                 right_on=['年份', '机构'], how='left')
     miss = int(c['层级_滚动'].isna().sum())

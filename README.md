@@ -47,9 +47,9 @@ to the influence explanation, although it does not rule out an information compo
 5. **Asymmetry and broker tier.** Formal interaction models with stock-clustered
    standard errors show that the star premium differs between upgrades and
    downgrades at CAR[-1,+5] (p=0.023) and abnormal volume (p=0.041). The upgrade
-   premium is concentrated in top-tier brokers, but the top-versus-mid difference is
-   not statistically significant; the small-tier group has almost no star events
-   (4 upgrades, 0 downgrades), so it cannot be estimated.
+   premium is concentrated in top-tier brokers; the top-versus-mid difference is
+   marginal (p=0.070) rather than significant at 5%. The small-tier group has almost
+   no star events (2 upgrades, 0 downgrades), so it cannot be estimated.
 
 **The one-sentence story.** Stars move the market, but the evidence does not show that
 they are better forecasters; the pattern fits influence better than information.

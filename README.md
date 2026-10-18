@@ -57,8 +57,8 @@ to the influence explanation, although it does not rule out an information compo
 **The one-sentence story.** Stars move the market, but the evidence does not show that
 they are better forecasters; the pattern fits influence better than information.
 
-**What remains before 27 October.** A decision on whether to extend the FY1
-forecast-error sample beyond 2023, and the slides and rehearsals. Clustered inference,
+**What remains before 27 October.** The slides and rehearsals. The FY1
+forecast-error sample now includes 2024 events after the 2025 realised-EPS pull. Clustered inference,
 the suspension check, price-limit and ST robustness, independent replication and the
 three main figures are done. Dropping events with a suspension day in the window leaves
 the upgrade premium significant; clustering by stock changes no 5% significance
@@ -111,6 +111,7 @@ scripts and the `data/` directory, is in the repository root.
 | `文档/event_study_核查回应_20261011.md` | the written reply to the event-study review (internal record) |
 | `文档/项目进度与技术备忘_20261018.md` and its `.docx` | a running recap of progress, decisions and technical notes, in Chinese (internal working record) |
 | `文档/Project10_Written_Report_Draft_EN.md` and its `.docx` | the written report draft: four questions, three figures and the data-provenance appendix |
+| `文档/Project10_陈述幻灯片设计稿_20261018.md` and its `.docx` | the slide-by-slide plan: sample-based structure, English slide copy, timing, speaker split and Q&A preparation |
 | `文档/figures/` | the three original figures used in the report and slides |
 | `文档/cluster_robustness_note.md` | method, clustered results and caveats for the inference check |
 | `文档/replication_note.md` | independent replication: method, differences and the first-run audit trail |

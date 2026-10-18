@@ -179,7 +179,7 @@ Downgrades remain insignificant in every window. Point estimates change by much 
 
 **Independent replication.** A separate implementation, which does not reuse the project's functions, reproduces the event-study CAR, the holding-period group means and the forecast-error outputs. `文档/replication_note.md` records the maximum differences and keeps the first-run audit trail. The only definitional difference concerns events with a missing event-day return in windows that exclude day 0: a strict event-day rule returns NaN, while the reference engine reports a value. The difference does not change the sign of any group comparison.
 
-**Remaining checks.** The FY1 forecast-error sample ends with 2023 events; extending it requires 2025 realised EPS.
+**Sample coverage.** The FY1 forecast-error sample now includes 2024 events after the 2025 realised-EPS pull; 34 event stocks still lack realised EPS.
 
 ## 7. Discussion
 
@@ -193,7 +193,7 @@ The asymmetry between upgrades and downgrades may reflect the optimism of sell-s
 
 ## 8. Limitations
 
-Three limitations qualify the interpretation. First, star status is not randomly assigned, and the broker tier is a descriptive proxy constructed from rating records and highly collinear with star; the estimates describe associations, not causal effects. Second, standard errors are clustered by stock for the main tests, but the tests are not adjusted for multiple specifications and a two-way stock-by-date variant is not reported; the announcement premium is concentrated in price-limit events, and historical ST status is proxied rather than observed. Third, the data have known gaps: iFinD provides neither historical ST status nor research-line revenue; the 2018 New Fortune page is not an annual ranking, so 2018 inherits the 2017 list; and the FY1 forecast-error sample ends with 2023 events because 2025 realised EPS is outside the current pull.
+Three limitations qualify the interpretation. First, star status is not randomly assigned, and the broker tier is a descriptive proxy constructed from rating records and highly collinear with star; the estimates describe associations, not causal effects. Second, standard errors are clustered by stock for the main tests, but the tests are not adjusted for multiple specifications and a two-way stock-by-date variant is not reported; the announcement premium is concentrated in price-limit events, and historical ST status is proxied rather than observed. Third, the data have known gaps: iFinD provides neither historical ST status nor research-line revenue; the 2018 New Fortune page is not an annual ranking, so 2018 inherits the 2017 list; and 34 event stocks lack realised EPS. The FY1 forecast-error sample now includes 2024 events after the 2025 realised-EPS pull.
 
 ## 9. Conclusion
 
@@ -231,4 +231,4 @@ The cleaned market data were delivered on 18 October 2026. `stock_returns_dretwd
 
 The analysis code is in the project repository. `event_study_v2.py` builds the calendar-aligned CAR and abnormal volume; `accuracy_test.py` builds holding-period returns; `forecast_error.py` matches each analyst's forecast to realised EPS; `heterogeneity_test.py` and `heterogeneity_rolling.py` estimate the direction and tier models; `suspension_robustness.py` runs the suspension check. The repository is private because it contains data derived from iFinD. Raw extracts and the full market panel are kept locally and are not redistributed.
 
-Known gaps are documented in Section 8. In brief, iFinD does not provide historical ST status or a research-line revenue panel, the 2018 New Fortune page is not an annual ranking, 34 event stocks lack realised EPS, and the FY1 forecast-error sample ends with 2023 events.
+Known gaps are documented in Section 8. In brief, iFinD does not provide historical ST status or a research-line revenue panel, the 2018 New Fortune page is not an annual ranking, and 34 event stocks lack realised EPS. The FY1 forecast-error sample now includes 2024 events after the 2025 realised-EPS pull.

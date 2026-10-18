@@ -36,7 +36,8 @@ all four assigned questions are in.
    120 days and reverses sign by 250 days. Star upgrades show no differential drift.
 3. **Ex post accuracy, holding returns.** Star recommendations are modestly more
    profitable to follow at short horizons (downgrades at 3 months, upgrades at
-   6 months), but the advantage is gone by 12 months.
+   6 months), but the advantage is gone by 12 months. The six-month upgrade result
+   is marginal after clustering (p=0.050).
 4. **Ex post accuracy, earnings forecasts.** Star analysts' absolute EPS forecast
    errors are larger, not smaller: FY0 upgrades 2.18 versus 1.89 percentage points
    of price (p=0.001), FY0 downgrades 3.07 versus 2.61 (p=0.002), with larger gaps

@@ -6,6 +6,8 @@
 > 券商层级与 star 变量均已生成。第 2.3 节关于 2018 年榜单需核实的提示已完成核实。
 > 最新 14 页陈述提纲见英文方案第 11.1 节，书面报告提纲见第 11.2 节与进度备忘第 12 节；
 > 本文第 10 节的幻灯片骨架为 2026-10-05 版本，仅作历史记录。
+> 2026-10-18 起行情改用清洗后的 `Dretwd` 与 `H00300`（小数口径，停牌行删除），
+> 详见 `行情数据_Dretwd_H00300_说明.md`；本文关于 CSMAR 行情的段落均为早期设想。
 
 # Project 10：Do Investors Follow Authority? Market Reactions to Star Analyst Recommendations
 

@@ -7,27 +7,32 @@ the holding-period returns and the forecast match from the raw inputs.
 
 Reads (never writes):
     data/analysis_table.csv
-    data/market_panel.csv
-    data/index_panel.csv
-    data/car_event_level.csv          (reference)
-    data/accuracy_summary.csv         (reference)
+    data/stock_returns_dretwd.csv      (total returns, decimal)
+    data/market_returns_h00300.csv     (market total returns, decimal)
+    data/market_panel.csv              (old panel, prices only, forecast error)
+    data/car_event_level.csv           (reference)
+    data/accuracy_summary.csv          (reference)
     data/raw_forecast_2018..2024.csv
     data/ref_actual_eps.csv
-    data/forecast_error_event.csv     (reference)
+    data/forecast_error_event.csv      (reference)
 
 Writes:
     data/replication_check.csv
 
 Definitions used here:
-  * trading calendar = sorted unique dates in index_panel.csv
+  * trading calendar = sorted unique dates in market_returns_h00300.csv
   * event day = first trading day >= report date
-  * abnormal return = stock pct change - index pct change, both in percent
+  * decimal returns are multiplied by 100, giving percent
+  * abnormal return = stock total return - market total return, both in percent
   * CAR = arithmetic sum of daily abnormal returns in the window
   * window valid if event day is valid and >=80% of positions are valid
-  * holding return = arithmetic sum of daily pct changes from event day close
-    to h trading days later; market adjustment subtracts the summed index return
+  * holding return = arithmetic sum of daily total returns from event day close
+    to h trading days later; market adjustment subtracts the summed market return
   * direction adjustment = +1 for upgrade, -1 for downgrade
-  * forecast error = |forecast EPS - realised EPS| / event-day close * 100
+  * forecast error = |forecast EPS - realised EPS| / event-day close * 100;
+    the closing price still comes from the old market_panel.csv
+  * car_event_level.csv stores CAR to four decimals, so both raw and
+    4-decimal-aligned comparisons are reported
 
 Console output is ASCII only.
 """
@@ -99,7 +104,7 @@ def main():
         })
 
     # ---------------------------------------------------------------- inputs
-    log('[1/5] reading event table and index calendar')
+    log('[1/5] reading event table and H00300 calendar')
     ev = read_csv(os.path.join(DATA, 'analysis_table.csv'),
                   dtype={'股票代码': str, '最新报告日期': 'int64'})
     ev['股票代码'] = ev['股票代码'].astype(str).str.strip()
@@ -109,46 +114,59 @@ def main():
     ev['year_num'] = to_num(ev['年份'])
     n_ev = len(ev)
 
-    ix = read_csv(os.path.join(DATA, 'index_panel.csv'),
-                  dtype={'日期': 'int64'})
-    ix['日期'] = ix['日期'].astype('int64')
-    ix['close'] = to_num(ix['收盘价'])
-    ix = ix.sort_values('日期').drop_duplicates('日期')
-    cal = ix['日期'].to_numpy(dtype='int64')
+    mk = read_csv(os.path.join(DATA, 'market_returns_h00300.csv'),
+                  dtype={'日期': 'int64'},
+                  usecols=['日期', '市场总回报率'])
+    mk['日期'] = mk['日期'].astype('int64')
+    mk['mkt'] = to_num(mk['市场总回报率']) * 100.0
+    mk = mk.sort_values('日期').drop_duplicates('日期')
+    cal = mk['日期'].to_numpy(dtype='int64')
     n_days = len(cal)
     cal_arr = cal.astype('U8')
 
-    # index return in percent; first day has no return
-    ix_ret = ix['close'].pct_change() * 100.0
-    ix_ret_arr = ix_ret.to_numpy(dtype='float64')
-    # market series used for holding returns: first day set to zero, as in the
-    # reference implementation (there are no events that need the first day)
+    # H00300 total return is decimal; convert to percent
+    ix_ret_arr = mk['mkt'].to_numpy(dtype='float64')
     ix_ret_hold = np.nan_to_num(ix_ret_arr, nan=0.0)
     ix_cum_hold = np.concatenate([[0.0], np.cumsum(ix_ret_hold)])
 
     log('    events=%d calendar=%d (%d..%d)' %
         (n_ev, n_days, cal[0], cal[-1]))
+    add('data_source', 'EVENT_STUDY_HOLDING', 'stock_returns',
+        note='stock_returns_dretwd.csv, decimal total return x100')
+    add('data_source', 'EVENT_STUDY_HOLDING', 'market_returns',
+        note='market_returns_h00300.csv, decimal total return x100')
+    add('data_source', 'FORECAST_ERROR', 'price',
+        note='market_panel.csv event-day close, old panel kept for prices')
 
     # ------------------------------------------------------------ market data
-    log('[2/5] reading market panel (usecols: code, date, pct change, close)')
-    mp = read_csv(os.path.join(DATA, 'market_panel.csv'),
+    log('[2/5] reading Dretwd stock returns and old-panel prices')
+    sr = read_csv(os.path.join(DATA, 'stock_returns_dretwd.csv'),
                   dtype={'股票代码': str, '日期': 'int64'},
-                  usecols=['股票代码', '日期', '涨跌幅', '收盘价'])
-    mp['股票代码'] = mp['股票代码'].astype(str).str.strip()
-    mp['日期'] = mp['日期'].astype('int64')
-    mp['ret'] = to_num(mp['涨跌幅'])
-    mp['close'] = to_num(mp['收盘价'])
-    log('    market rows=%d stocks=%d dates=%d' %
-        (len(mp), mp['股票代码'].nunique(), mp['日期'].nunique()))
+                  usecols=['股票代码', '日期', '个股总回报率'])
+    sr['股票代码'] = sr['股票代码'].astype(str).str.strip()
+    sr['日期'] = sr['日期'].astype('int64')
+    sr['ret'] = to_num(sr['个股总回报率']) * 100.0
+    log('    stock return rows=%d stocks=%d dates=%d' %
+        (len(sr), sr['股票代码'].nunique(), sr['日期'].nunique()))
 
-    ret_df = mp.pivot(index='股票代码', columns='日期', values='ret')
+    ret_df = sr.pivot(index='股票代码', columns='日期', values='ret')
     ret_df = ret_df.reindex(columns=cal)
-    close_df = mp.pivot(index='股票代码', columns='日期', values='close')
-    close_df = close_df.reindex(columns=cal)
     stocks = ret_df.index.tolist()
     R = ret_df.to_numpy(dtype='float64')
+    del ret_df, sr
+
+    # prices are not in the new return files; keep the old panel only for the
+    # event-day close used by the forecast-error denominator
+    px = read_csv(os.path.join(DATA, 'market_panel.csv'),
+                  dtype={'股票代码': str, '日期': 'int64'},
+                  usecols=['股票代码', '日期', '收盘价'])
+    px['股票代码'] = px['股票代码'].astype(str).str.strip()
+    px['日期'] = px['日期'].astype('int64')
+    px['close'] = to_num(px['收盘价'])
+    close_df = px.pivot(index='股票代码', columns='日期', values='close')
+    close_df = close_df.reindex(index=stocks, columns=cal)
     P = close_df.to_numpy(dtype='float64')
-    del ret_df, close_df, mp
+    del close_df, px
     log('    return matrix %d x %d' % R.shape)
 
     sidx = pd.Series(np.arange(len(stocks)), index=stocks)
@@ -222,14 +240,24 @@ def main():
         car_rep[name] = car
 
         ref = to_num(ce[name]).to_numpy(dtype='float64')
-        cmp = compare_arrays(ref, car)
-        add('event_study', name, 'event_level', n_compared=cmp['n_compared'],
-            max_abs_diff=cmp['max_abs_diff'],
-            mean_abs_diff=cmp['mean_abs_diff'],
-            n_over_tol=cmp['n_over_tol'],
-            n_nan_mismatch=cmp['n_nan_mismatch'],
-            n_diff=cmp['n_over_tol'],
-            note='reference=%s, task rule: event day valid for every window' % name)
+        cmp_raw = compare_arrays(ref, car)
+        add('event_study', name, 'event_level_raw',
+            n_compared=cmp_raw['n_compared'],
+            max_abs_diff=cmp_raw['max_abs_diff'],
+            mean_abs_diff=cmp_raw['mean_abs_diff'],
+            n_over_tol=cmp_raw['n_over_tol'],
+            n_nan_mismatch=cmp_raw['n_nan_mismatch'],
+            n_diff=cmp_raw['n_over_tol'],
+            note='reference stores 4 decimals; raw includes its rounding')
+        cmp4 = compare_arrays(ref, np.round(car, 4))
+        add('event_study', name, 'event_level_rounded_4dp',
+            n_compared=cmp4['n_compared'],
+            max_abs_diff=cmp4['max_abs_diff'],
+            mean_abs_diff=cmp4['mean_abs_diff'],
+            n_over_tol=cmp4['n_over_tol'],
+            n_nan_mismatch=cmp4['n_nan_mismatch'],
+            n_diff=cmp4['n_over_tol'],
+            note='primary implementation check at reference precision')
 
         # variant that mirrors the reference code exactly: day-0 validity is
         # only checked when day 0 lies inside the window (it does not for +2,+120)
@@ -238,15 +266,24 @@ def main():
         else:
             car_refrule = np.where(cnt / float(length) >= MIN_SHARE,
                                    total, np.nan)
-        cmp2 = compare_arrays(ref, car_refrule)
-        add('event_study', name, 'event_level_ref_window_rule',
-            n_compared=cmp2['n_compared'],
-            max_abs_diff=cmp2['max_abs_diff'],
-            mean_abs_diff=cmp2['mean_abs_diff'],
-            n_over_tol=cmp2['n_over_tol'],
-            n_nan_mismatch=cmp2['n_nan_mismatch'],
-            n_diff=cmp2['n_over_tol'],
+        cmp2_raw = compare_arrays(ref, car_refrule)
+        add('event_study', name, 'event_level_ref_window_rule_raw',
+            n_compared=cmp2_raw['n_compared'],
+            max_abs_diff=cmp2_raw['max_abs_diff'],
+            mean_abs_diff=cmp2_raw['mean_abs_diff'],
+            n_over_tol=cmp2_raw['n_over_tol'],
+            n_nan_mismatch=cmp2_raw['n_nan_mismatch'],
+            n_diff=cmp2_raw['n_over_tol'],
             note='event-day validity only enforced when day 0 is in the window')
+        cmp2_4 = compare_arrays(ref, np.round(car_refrule, 4))
+        add('event_study', name, 'event_level_ref_window_rule_rounded_4dp',
+            n_compared=cmp2_4['n_compared'],
+            max_abs_diff=cmp2_4['max_abs_diff'],
+            mean_abs_diff=cmp2_4['mean_abs_diff'],
+            n_over_tol=cmp2_4['n_over_tol'],
+            n_nan_mismatch=cmp2_4['n_nan_mismatch'],
+            n_diff=cmp2_4['n_over_tol'],
+            note='reference window rule at reference precision')
         add('event_study', name, 'strict_nan_reference_not_nan',
             n_diff=int((np.isnan(car) & ~np.isnan(ref)).sum()),
             note='values set to NaN by the task rule that the reference reports')
@@ -609,6 +646,10 @@ def main():
     log('    canonical matched=%d, forecast summary flags=%d' %
         (len(mn), n_sum_flags))
 
+    add('audit_history', 'OLD_DATA_SOURCE', 'superseded',
+        note='previous run used market_panel/index_panel; event-study max diffs '
+             'were 7.11e-15/7.11e-15/1.78e-14/1.28e-13 and holding flags 0. '
+             'Superseded by the Dretwd/H00300 run.')
     add('audit_history', 'FIRST_RUN', 'CAR_implementation_bug',
         note='first run omitted the index-return subtraction and set event-day '
              'validity only at k=0; CAR max diffs were 18.879/29.280/30.190 pp '

@@ -1,82 +1,93 @@
 ﻿section,key,metric,reference,replication,diff,n_diff,max_abs_diff,mean_abs_diff,n_over_tol,n_nan_mismatch,n_compared,note
+data_source,EVENT_STUDY_HOLDING,stock_returns,,,,,,,,,,"stock_returns_dretwd.csv, decimal total return x100"
+data_source,EVENT_STUDY_HOLDING,market_returns,,,,,,,,,,"market_returns_h00300.csv, decimal total return x100"
+data_source,FORECAST_ERROR,price,,,,,,,,,,"market_panel.csv event-day close, old panel kept for prices"
 event_study,EVENT_DAY,events_with_missing_event_day_return,,,90.0,90.0,,,,,20980.0,reference code enforces event-day validity only when day 0 is in the window
 event_study,EVENT_DAY,alignment,,,0.0,0.0,,,,,20980.0,events with replicated event day != car_event_level
 event_study,STOCK_COVERAGE,events_without_market_row,,,0.0,0.0,,,,,20980.0,events whose stock is absent from market_panel
-event_study,CAR_m1_p1,event_level,,,,0.0,7.105427357601002e-15,1.0141583724202884e-16,0.0,0.0,20836.0,"reference=CAR_m1_p1, task rule: event day valid for every window"
-event_study,CAR_m1_p1,event_level_ref_window_rule,,,,0.0,7.105427357601002e-15,1.0141583724202884e-16,0.0,0.0,20836.0,event-day validity only enforced when day 0 is in the window
+event_study,CAR_m1_p1,event_level_raw,,,,0.0,7.105427357601002e-15,1.0989721115261706e-16,0.0,0.0,20836.0,reference stores 4 decimals; raw includes its rounding
+event_study,CAR_m1_p1,event_level_rounded_4dp,,,,0.0,7.105427357601002e-15,2.9433451326611545e-16,0.0,0.0,20836.0,primary implementation check at reference precision
+event_study,CAR_m1_p1,event_level_ref_window_rule_raw,,,,0.0,7.105427357601002e-15,1.0989721115261706e-16,0.0,0.0,20836.0,event-day validity only enforced when day 0 is in the window
+event_study,CAR_m1_p1,event_level_ref_window_rule_rounded_4dp,,,,0.0,7.105427357601002e-15,2.9433451326611545e-16,0.0,0.0,20836.0,reference window rule at reference precision
 event_study,CAR_m1_p1,strict_nan_reference_not_nan,,,,0.0,,,,,,values set to NaN by the task rule that the reference reports
-event_study,CAR_m1_p5,event_level,,,,0.0,7.105427357601002e-15,1.5078322687034544e-16,0.0,0.0,20877.0,"reference=CAR_m1_p5, task rule: event day valid for every window"
-event_study,CAR_m1_p5,event_level_ref_window_rule,,,,0.0,7.105427357601002e-15,1.5078322687034544e-16,0.0,0.0,20877.0,event-day validity only enforced when day 0 is in the window
+event_study,CAR_m1_p5,event_level_raw,,,,0.0,7.105427357601002e-15,1.6403850335894459e-16,0.0,0.0,20877.0,reference stores 4 decimals; raw includes its rounding
+event_study,CAR_m1_p5,event_level_rounded_4dp,,,,0.0,1.4210854715202004e-14,5.881767599470464e-16,0.0,0.0,20877.0,primary implementation check at reference precision
+event_study,CAR_m1_p5,event_level_ref_window_rule_raw,,,,0.0,7.105427357601002e-15,1.6403850335894459e-16,0.0,0.0,20877.0,event-day validity only enforced when day 0 is in the window
+event_study,CAR_m1_p5,event_level_ref_window_rule_rounded_4dp,,,,0.0,1.4210854715202004e-14,5.881767599470464e-16,0.0,0.0,20877.0,reference window rule at reference precision
 event_study,CAR_m1_p5,strict_nan_reference_not_nan,,,,0.0,,,,,,values set to NaN by the task rule that the reference reports
-event_study,CAR_m5_p5,event_level,,,,0.0,1.7763568394002505e-14,6.9499591406628875e-16,0.0,0.0,20818.0,"reference=CAR_m5_p5, task rule: event day valid for every window"
-event_study,CAR_m5_p5,event_level_ref_window_rule,,,,0.0,1.7763568394002505e-14,6.9499591406628875e-16,0.0,0.0,20818.0,event-day validity only enforced when day 0 is in the window
+event_study,CAR_m5_p5,event_level_raw,,,,0.0,1.4210854715202004e-14,6.884992317411391e-16,0.0,0.0,20818.0,reference stores 4 decimals; raw includes its rounding
+event_study,CAR_m5_p5,event_level_rounded_4dp,,,,0.0,1.4210854715202004e-14,8.021683262218237e-16,0.0,0.0,20818.0,primary implementation check at reference precision
+event_study,CAR_m5_p5,event_level_ref_window_rule_raw,,,,0.0,1.4210854715202004e-14,6.884992317411391e-16,0.0,0.0,20818.0,event-day validity only enforced when day 0 is in the window
+event_study,CAR_m5_p5,event_level_ref_window_rule_rounded_4dp,,,,0.0,1.4210854715202004e-14,8.021683262218237e-16,0.0,0.0,20818.0,reference window rule at reference precision
 event_study,CAR_m5_p5,strict_nan_reference_not_nan,,,,0.0,,,,,,values set to NaN by the task rule that the reference reports
-event_study,CAR_p2_p120,event_level,,,,0.0,1.2789769243681803e-13,6.945568426361058e-15,0.0,64.0,20851.0,"reference=CAR_p2_p120, task rule: event day valid for every window"
-event_study,CAR_p2_p120,event_level_ref_window_rule,,,,0.0,1.2789769243681803e-13,6.949070365980505e-15,0.0,0.0,20915.0,event-day validity only enforced when day 0 is in the window
+event_study,CAR_p2_p120,event_level_raw,,,,0.0,1.4210854715202004e-13,6.934184137157607e-15,0.0,64.0,20851.0,reference stores 4 decimals; raw includes its rounding
+event_study,CAR_p2_p120,event_level_rounded_4dp,,,,0.0,5.684341886080802e-14,3.903897265985838e-15,0.0,64.0,20851.0,primary implementation check at reference precision
+event_study,CAR_p2_p120,event_level_ref_window_rule_raw,,,,0.0,1.4210854715202004e-13,6.947511670490046e-15,0.0,0.0,20915.0,event-day validity only enforced when day 0 is in the window
+event_study,CAR_p2_p120,event_level_ref_window_rule_rounded_4dp,,,,0.0,5.684341886080802e-14,3.90387367843182e-15,0.0,0.0,20915.0,reference window rule at reference precision
 event_study,CAR_p2_p120,strict_nan_reference_not_nan,,,,64.0,,,,,,values set to NaN by the task rule that the reference reports
-event_study,CAR_p2_p120_up_star1,group_mean,5.157661550416751,5.18840957910233,0.030748028685578355,-8.0,,,,,,n_ref_rule=1498 n_strict=1490
-event_study,CAR_p2_p120_up_star0,group_mean,4.0815304602977,4.066824942591469,-0.014705517706230964,-21.0,,,,,,n_ref_rule=10598 n_strict=10577
-event_study,CAR_p2_p120_down_star1,group_mean,1.5665840014168577,1.5194271021204857,-0.04715689929637201,-10.0,,,,,,n_ref_rule=1267 n_strict=1257
-event_study,CAR_p2_p120_down_star0,group_mean,2.3057749348824474,2.315499868349851,0.009724933467403662,-25.0,,,,,,n_ref_rule=7552 n_strict=7527
+event_study,CAR_p2_p120_up_star1,group_mean,3.889607810413886,3.91842389261745,0.02881608220356391,-8.0,,,,,,n_ref_rule=1498 n_strict=1490
+event_study,CAR_p2_p120_up_star0,group_mean,2.9053410643517648,2.8909022028930704,-0.01443886145869433,-21.0,,,,,,n_ref_rule=10598 n_strict=10577
+event_study,CAR_p2_p120_down_star1,group_mean,0.4231297553275453,0.3715240254574387,-0.05160572987010664,-10.0,,,,,,n_ref_rule=1267 n_strict=1257
+event_study,CAR_p2_p120_down_star0,group_mean,1.1832438691737293,1.1924749169655913,0.009231047791862013,-25.0,,,,,,n_ref_rule=7552 n_strict=7527
 holding,H63_raw_up,n_star,1496.0,1496.0,0.0,0.0,,,,,,
-holding,H63_raw_up,mean_star,3.7618,3.761798128342247,-1.871657753227396e-06,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H63_raw_up,mean_star,3.7666,3.7665627673796798,-3.7232620320182264e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H63_raw_up,n_nonstar,10585.0,10585.0,0.0,0.0,,,,,,
-holding,H63_raw_up,mean_nonstar,3.634,3.634037222484647,3.7222484646992626e-05,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H63_raw_up,mean_nonstar,3.6385,3.6384599149740193,-4.0085025980740596e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H63_raw_up,group_flag,,,0.0,0.0,,,,,,1 if N mismatch or any mean differs by >0.01 pp
 holding,H63_raw_down,n_star,1266.0,1266.0,0.0,0.0,,,,,,
-holding,H63_raw_down,mean_star,-0.2013,-0.20127409162717247,2.5908372827537773e-05,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H63_raw_down,mean_star,-0.2087,-0.20869944707740903,5.529225909628455e-07,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H63_raw_down,n_nonstar,7553.0,7553.0,0.0,0.0,,,,,,
-holding,H63_raw_down,mean_nonstar,-2.2986,-2.298649410830133,-4.94108301332119e-05,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H63_raw_down,mean_nonstar,-2.3034,-2.3033863630345555,1.363696544443016e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H63_raw_down,group_flag,,,0.0,0.0,,,,,,1 if N mismatch or any mean differs by >0.01 pp
 holding,H63_mktadj_up,n_star,1496.0,1496.0,0.0,0.0,,,,,,
-holding,H63_mktadj_up,mean_star,3.5509,3.5509304237027988,3.0423702798820784e-05,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H63_mktadj_up,mean_star,2.8248,2.8248280080213926,2.800802139235614e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H63_mktadj_up,n_nonstar,10585.0,10585.0,0.0,0.0,,,,,,
-holding,H63_mktadj_up,mean_nonstar,3.0817,3.0816745811516686,-2.541884833151542e-05,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H63_mktadj_up,mean_nonstar,2.4118,2.4118164478034965,1.6447803496522084e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H63_mktadj_up,group_flag,,,0.0,0.0,,,,,,1 if N mismatch or any mean differs by >0.01 pp
 holding,H63_mktadj_down,n_star,1266.0,1266.0,0.0,0.0,,,,,,
-holding,H63_mktadj_down,mean_star,0.7169,0.7168929665865245,-7.033413475521222e-06,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H63_mktadj_down,mean_star,1.4085,1.4085314375987352,3.143759873514007e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H63_mktadj_down,n_nonstar,7553.0,7553.0,0.0,0.0,,,,,,
-holding,H63_mktadj_down,mean_nonstar,-1.0571,-1.0571465952133934,-4.6595213393452184e-05,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H63_mktadj_down,mean_nonstar,-0.375,-0.37500096650337633,-9.66503376331751e-07,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H63_mktadj_down,group_flag,,,0.0,0.0,,,,,,1 if N mismatch or any mean differs by >0.01 pp
 holding,H126_raw_up,n_star,1498.0,1498.0,0.0,0.0,,,,,,
-holding,H126_raw_up,mean_star,7.1301,7.130132176234981,3.217623498130706e-05,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H126_raw_up,mean_star,7.1398,7.139777303070761,-2.2696929239174324e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H126_raw_up,n_nonstar,10599.0,10599.0,0.0,0.0,,,,,,
-holding,H126_raw_up,mean_nonstar,6.1574,6.157440984998586,4.0984998586068855e-05,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H126_raw_up,mean_nonstar,6.1638,6.163804226813849,4.226813849150801e-06,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H126_raw_up,group_flag,,,0.0,0.0,,,,,,1 if N mismatch or any mean differs by >0.01 pp
 holding,H126_raw_down,n_star,1267.0,1267.0,0.0,0.0,,,,,,
-holding,H126_raw_down,mean_star,-4.6755,-4.675483030781374,1.696921862670564e-05,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H126_raw_down,mean_star,-4.6874,-4.687431491712707,-3.149171270688811e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H126_raw_down,n_nonstar,7552.0,7552.0,0.0,0.0,,,,,,
-holding,H126_raw_down,mean_nonstar,-5.6451,-5.645104608050848,-4.608050847565437e-06,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H126_raw_down,mean_nonstar,-5.6519,-5.651927886652542,-2.788665254183087e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H126_raw_down,group_flag,,,0.0,0.0,,,,,,1 if N mismatch or any mean differs by >0.01 pp
 holding,H126_mktadj_up,n_star,1498.0,1498.0,0.0,0.0,,,,,,
-holding,H126_mktadj_up,mean_star,6.5258,6.525804669846229,4.669846228821939e-06,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H126_mktadj_up,mean_star,5.2029,5.202914018691591,1.4018691591566323e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H126_mktadj_up,n_nonstar,10599.0,10599.0,0.0,0.0,,,,,,
-holding,H126_mktadj_up,mean_nonstar,4.9151,4.915100964792072,9.64792072011278e-07,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H126_mktadj_up,mean_nonstar,3.6885,3.6885444004151364,4.440041513653625e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H126_mktadj_up,group_flag,,,0.0,0.0,,,,,,1 if N mismatch or any mean differs by >0.01 pp
 holding,H126_mktadj_down,n_star,1267.0,1267.0,0.0,0.0,,,,,,
-holding,H126_mktadj_down,mean_star,-1.6216,-1.62157425107192,2.5748928079938338e-05,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H126_mktadj_down,mean_star,-0.4332,-0.43323101815311943,-3.101815311945533e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H126_mktadj_down,n_nonstar,7552.0,7552.0,0.0,0.0,,,,,,
-holding,H126_mktadj_down,mean_nonstar,-2.6427,-2.6426564113388546,4.35886611453995e-05,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H126_mktadj_down,mean_nonstar,-1.4774,-1.4774478548728827,-4.7854872882613364e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H126_mktadj_down,group_flag,,,0.0,0.0,,,,,,1 if N mismatch or any mean differs by >0.01 pp
 holding,H252_raw_up,n_star,1498.0,1498.0,0.0,0.0,,,,,,
-holding,H252_raw_up,mean_star,12.4103,12.410276368491324,-2.3631508675237e-05,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H252_raw_up,mean_star,12.7152,12.715243724966625,4.372496662519154e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H252_raw_up,n_nonstar,10613.0,10613.0,0.0,0.0,,,,,,
-holding,H252_raw_up,mean_nonstar,12.8391,12.83906501460473,-3.498539527058142e-05,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H252_raw_up,mean_nonstar,12.8522,12.852215254876095,1.5254876094772385e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H252_raw_up,group_flag,,,0.0,0.0,,,,,,1 if N mismatch or any mean differs by >0.01 pp
 holding,H252_raw_down,n_star,1268.0,1268.0,0.0,0.0,,,,,,
-holding,H252_raw_down,mean_star,-14.8324,-14.832382492113565,1.7507886434842135e-05,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H252_raw_down,mean_star,-14.8536,-14.853612933753945,-1.2933753945176818e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H252_raw_down,n_nonstar,7563.0,7563.0,0.0,0.0,,,,,,
-holding,H252_raw_down,mean_nonstar,-13.535,-13.535010313367712,-1.031336771184499e-05,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H252_raw_down,mean_nonstar,-13.5494,-13.549419330953324,-1.9330953323404287e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H252_raw_down,group_flag,,,0.0,0.0,,,,,,1 if N mismatch or any mean differs by >0.01 pp
 holding,H252_mktadj_up,n_star,1498.0,1498.0,0.0,0.0,,,,,,
-holding,H252_mktadj_up,mean_star,9.2375,9.237499320508633,-6.794913680607806e-07,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H252_mktadj_up,mean_star,7.1515,7.151454339118833,-4.5660881167641776e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H252_mktadj_up,n_nonstar,10613.0,10613.0,0.0,0.0,,,,,,
-holding,H252_mktadj_up,mean_nonstar,8.3458,8.345773932736423,-2.6067263577900235e-05,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H252_mktadj_up,mean_nonstar,5.9551,5.955077065862626,-2.293413737408656e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H252_mktadj_up,group_flag,,,0.0,0.0,,,,,,1 if N mismatch or any mean differs by >0.01 pp
 holding,H252_mktadj_down,n_star,1268.0,1268.0,0.0,0.0,,,,,,
-holding,H252_mktadj_down,mean_star,-7.2407,-7.240690720651046,9.279348954116529e-06,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H252_mktadj_down,mean_star,-4.8676,-4.867552365930608,4.763406939201076e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H252_mktadj_down,n_nonstar,7563.0,7563.0,0.0,0.0,,,,,,
-holding,H252_mktadj_down,mean_nonstar,-5.8821,-5.882074538601773,2.5461398227122345e-05,0.0,,,,,,flag if |diff|>0.01 pp
+holding,H252_mktadj_down,mean_nonstar,-3.4732,-3.4731872140684947,1.2785931505110426e-05,0.0,,,,,,flag if |diff|>0.01 pp
 holding,H252_mktadj_down,group_flag,,,0.0,0.0,,,,,,1 if N mismatch or any mean differs by >0.01 pp
 forecast_error,MATCH,reference_rows,20248.0,20092.0,-156.0,-156.0,,,,,,reference=forecast_error_event.csv; replication=literal-key match
 forecast_error,MATCH,reference_only_keys,,,156.0,156.0,,,,,,keys in reference but not in literal match (alias variants)
@@ -130,4 +141,5 @@ forecast_error,CANON_FY1_abs_down,mean_nonstar,4.6388,4.638836239460304,3.623946
 forecast_error,CANON_FY1_abs_down,median_star,3.0759,3.0758602087136637,-3.9791286336132714e-05,,,,,,,
 forecast_error,CANON_FY1_abs_down,median_nonstar,2.7204,2.720414504244849,1.4504244848723147e-05,,,,,,,
 forecast_error,CANON_FY1_abs_down,group_flag,,,0.0,0.0,,,,,,1 if N mismatch or any mean differs by >0.01 pp
+audit_history,OLD_DATA_SOURCE,superseded,,,,,,,,,,previous run used market_panel/index_panel; event-study max diffs were 7.11e-15/7.11e-15/1.78e-14/1.28e-13 and holding flags 0. Superseded by the Dretwd/H00300 run.
 audit_history,FIRST_RUN,CAR_implementation_bug,,,,,,,,,,first run omitted the index-return subtraction and set event-day validity only at k=0; CAR max diffs were 18.879/29.280/30.190 pp and CAR_p2_p120 had n_compared=0. Corrected before this output.

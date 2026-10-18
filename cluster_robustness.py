@@ -10,7 +10,9 @@ one-way cluster-robust standard errors:
   2. Post-recommendation holding returns at 63/126/252 trading days,
      recomputed with the exact rules of accuracy_test.py (event-day close as
      the starting point, direction adjustment, market adjustment, 80% valid
-     trading days); clustered by stock.
+     trading days); clustered by stock. Returns come from the cleaned
+     Dretwd/H00300 files, where suspension rows are removed rather than
+     filled with zero.
   3. Absolute EPS forecast errors FY0/FY1 from forecast_error_event.csv,
      by rating direction; clustered by stock.
 
@@ -173,32 +175,38 @@ def run_event_study(ev, cs):
 def load_holding_returns(ev):
     """Return dict horizon -> (d_raw, d_adj) aligned with ev rows."""
     codes = set(ev['股票代码'].astype(str).str.strip())
-    ix = pd.read_csv(os.path.join(DATA, 'index_panel.csv'), dtype=str,
-                     encoding='utf-8-sig')
-    cal = sorted(ix['日期'].astype(str).str.strip().unique())
-    cal_int = np.array([int(d) for d in cal], dtype=np.int64)
-    ix['收盘价'] = pd.to_numeric(ix['收盘价'], errors='coerce')
-    ix['日期'] = ix['日期'].astype(str).str.strip()
-    ix = ix.sort_values('日期').drop_duplicates('日期')
-    mkt_s = pd.Series((ix['收盘价'].pct_change() * 100).values, index=ix['日期'])
-    mkt = mkt_s.reindex(pd.Index(cal)).fillna(0).values
-    mkt_cum0 = np.concatenate([[0.0], np.cumsum(mkt)])
 
+    # cleaned market total-return index, decimal returns
+    mkt_df = pd.read_csv(os.path.join(DATA, 'market_returns_h00300.csv'),
+                         dtype={'日期': 'int64', '市场总回报率': 'float64'},
+                         encoding='utf-8-sig',
+                         usecols=['日期', '市场总回报率'])
+    mkt_df = mkt_df.sort_values('日期').drop_duplicates('日期')
+    cal_int = mkt_df['日期'].values.astype(np.int64)
+    mkt = mkt_df['市场总回报率'].values.astype(float) * 100.0
+    mkt_cum0 = np.concatenate([[0.0], np.cumsum(mkt)])
+    del mkt_df
+
+    # cleaned stock total returns, decimal; suspension rows are absent, so the
+    # 80% valid-trading-day rule treats them as missing rather than zero
     parts = []
     n_raw = 0
-    for ch in pd.read_csv(os.path.join(DATA, 'market_panel.csv'),
-                          dtype={'股票代码': str, '日期': 'int64', '涨跌幅': 'float64'},
+    for ch in pd.read_csv(os.path.join(DATA, 'stock_returns_dretwd.csv'),
+                          dtype={'股票代码': str, '日期': 'int64',
+                                 '个股总回报率': 'float64'},
                           encoding='utf-8-sig',
-                          usecols=['股票代码', '日期', '涨跌幅'],
+                          usecols=['股票代码', '日期', '个股总回报率'],
                           chunksize=1_000_000):
         n_raw += len(ch)
         ch = ch[ch['股票代码'].isin(codes)]
         if len(ch):
+            ch = ch.rename(columns={'个股总回报率': '涨跌幅'})
+            ch['涨跌幅'] = ch['涨跌幅'] * 100.0
             ch['股票代码'] = ch['股票代码'].astype('category')
             parts.append(ch)
     mp = pd.concat(parts, ignore_index=True)
     del parts
-    print('  market_panel rows read %d, kept %d for %d event stocks'
+    print('  stock_returns rows read %d, kept %d for %d event stocks'
           % (n_raw, len(mp), len(codes)))
 
     piv = mp.pivot_table(index='股票代码', columns='日期', values='涨跌幅',
@@ -227,8 +235,8 @@ def load_holding_returns(ev):
     for h in HORIZONS:
         start = ed + 1
         end = ed + h + 1
-        ok = (rows_i >= 0) & (end <= len(cal))
-        n_oob += int(((rows_i >= 0) & (end > len(cal))).sum())
+        ok = (rows_i >= 0) & (end <= len(cal_int))
+        n_oob += int(((rows_i >= 0) & (end > len(cal_int))).sum())
         cum = np.full(len(ev), np.nan)
         nval = np.zeros(len(ev))
         ii = np.where(ok)[0]

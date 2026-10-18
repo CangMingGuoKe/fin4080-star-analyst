@@ -38,6 +38,8 @@ import pandas as pd
 from scipy import stats
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+from market_data_adapter import load_returns
 
 # 事件窗口：(名称, 起, 止)，以事件日为 0，单位是交易日
 CAR_WINDOWS = [('CAR_m1_p1', -1, 1), ('CAR_m1_p5', -1, 5),
@@ -70,22 +72,17 @@ def panel_files(data_dir, stem):
 
 
 def load(data_dir):
-    mp_files = panel_files(data_dir, 'market_panel')
-    ix_files = panel_files(data_dir, 'index_panel')
     evp = os.path.join(data_dir, 'analysis_table.csv')
-    if not mp_files or not ix_files or not os.path.exists(evp):
-        print('[X] 缺 market_panel*.csv、index_panel*.csv 或 analysis_table.csv')
+    if not os.path.exists(evp):
+        print('[X] 缺 analysis_table.csv')
         return None
-    print('读入行情 %d 个文件、指数 %d 个文件' % (len(mp_files), len(ix_files)))
-    mp = pd.concat([read_any(f) for f in mp_files], ignore_index=True)
-    ix = pd.concat([read_any(f) for f in ix_files], ignore_index=True)
+    mp, ix, source = load_returns(data_dir)
     ev = read_any(evp)
-    for d in (mp, ev):
-        d['股票代码'] = d['股票代码'].astype(str).str.strip()
-    for d in (mp, ix, ev):
-        for c in ('日期', '最新报告日期'):
-            if c in d.columns:
-                d[c] = d[c].astype(str).str.strip()
+    ev['股票代码'] = ev['股票代码'].astype(str).str.strip()
+    for c in ('日期', '最新报告日期'):
+        if c in ev.columns:
+            ev[c] = ev[c].astype(str).str.replace(r'\.0$', '', regex=True).str.strip().str.zfill(8)
+    print('行情来源：%s；股票行 %d，交易日 %d' % (source, len(mp), len(ix)))
     return mp, ix, ev
 
 
@@ -98,8 +95,12 @@ def build_calendar(ix):
 def prep_market(mp, ix):
     """算市场调整异常收益与对数成交量，按 股票 -> {日期: 值} 存，不用行位置。"""
     ix = ix.sort_values('日期').drop_duplicates('日期')
-    mkt = pd.to_numeric(ix['收盘价'], errors='coerce').pct_change() * 100.0
-    mkt = pd.Series(mkt.values, index=ix['日期'].astype(str).str.strip())
+    if '市场收益率' in ix.columns:
+        mkt = pd.Series(pd.to_numeric(ix['市场收益率'], errors='coerce').values,
+                        index=ix['日期'].astype(str).str.strip())
+    else:
+        mkt = pd.to_numeric(ix['收盘价'], errors='coerce').pct_change() * 100.0
+        mkt = pd.Series(mkt.values, index=ix['日期'].astype(str).str.strip())
     mp = mp.copy()
     mp['日期'] = mp['日期'].astype(str).str.strip()
     mp = mp.sort_values(['股票代码', '日期']).drop_duplicates(['股票代码', '日期'], keep='first')

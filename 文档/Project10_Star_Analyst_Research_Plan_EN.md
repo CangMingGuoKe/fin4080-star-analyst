@@ -63,6 +63,13 @@ report object that carries the PDF URL and the publish timestamp, while `研报�
 holds the title text. `data_dictionary.md` records this. iFinD already standardises the
 rating scale, so no broker-by-broker manual mapping is needed.
 
+**Market returns.** The event study uses the cleaned total-return series: stock `Dretwd` in
+`data/stock_returns_dretwd.csv` and the CSI 300 total-return index `H00300` in
+`data/market_returns_h00300.csv`. Both are decimal returns and are converted to percentage
+points by `market_data_adapter.py`. Suspension rows are omitted rather than filled with
+zero, holiday filler rows are removed, and old and new stock codes are unified. Volume
+and event-day closing prices still come from the earlier `market_panel.csv`.
+
 ## 4. Event sample
 
 Unit of observation: one **rating revision**, i.e. a rating change by the same analyst
@@ -159,10 +166,11 @@ main board versus ChiNext and STAR; excluding events that coincide with an earni
 announcement. Alternative timing conventions for the star variable are already stored
 as `star_same`, `star_month` and `star_lag1`.
 
-Already implemented: a suspension robustness check that drops events with a suspension
-day in the window, a backward-looking rolling tier, and stock-clustered errors in the
-interaction models. Still to do: limit-hit and ST filters, main-board/ChiNext splits,
-and earnings-announcement overlap.
+Already implemented: clustered errors, a suspension robustness check, price-limit and
+ST-proxy robustness, an independent replication, and a backward-looking rolling tier.
+Price-limit robustness shows that the upgrade premium is concentrated in limit-hit
+events; excluding them, the short-window premium loses significance while the [-5,+5]
+premium remains. Still to do: main-board/ChiNext splits and earnings-announcement overlap.
 
 Standard errors should be clustered. The 2,715 distinct report URLs behind a 3,000-event
 sample show that one report can carry ratings for several stocks or for several analysts,
@@ -185,11 +193,11 @@ index series. The required file format is specified in `行情数据交付说明
 
 ## 10. Timeline
 
-Status as of 18 October: the sample, authority variables, announcement results, drift,
-accuracy, forecast error, direction and tier interactions, suspension robustness and the
-rolling-tier robustness are done. The remaining work is clustered standard errors for the
-event-study and accuracy tables, limit-hit and ST robustness, the three main figures,
-slides and rehearsal.
+Status as of 18 October: all results have been rebuilt on the cleaned `Dretwd`/`H00300`
+returns. The sample, authority variables, announcement results, drift, accuracy, forecast
+error, direction and tier interactions, clustered inference, suspension, price-limit and
+ST robustness, independent replication and the rolling-tier robustness are done. The
+remaining work is the slides and two rehearsals.
 
 19-20 October: clustered errors, limit-hit and ST robustness.
 21-22 October: three main figures and the data appendix.

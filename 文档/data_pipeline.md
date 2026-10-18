@@ -44,9 +44,12 @@ pip install pandas numpy scipy requests lxml openpyxl python-docx
 | 8 | `build_broker_tier.py` | step 7 | updates `data/analysis_table.csv` (adds `券商层级`) |
 | 9 | `event_study_v2.py` (v1 kept as the reviewed record) | step 8 + market data | `data/car_event_level.csv`, `data/car_summary.csv` |
 
-Step 9 is **blocked**: it needs `data/market_panel.csv` and `data/index_panel.csv`
-from the teammate responsible for market data. The required format is specified in
-the docstring of `event_study.py`.
+Step 9 reads the cleaned return files `data/stock_returns_dretwd.csv` and
+`data/market_returns_h00300.csv` through `market_data_adapter.py`. The adapter converts
+the decimal returns to percentage points and merges volume from `data/market_panel.csv`;
+event-day closing prices for the forecast-error test also come from that panel. If the
+cleaned files are absent, the adapter falls back to `market_panel.csv` and
+`index_panel.csv`.
 
 Run **`event_study_v2.py`**, not the original: it locates every window on the trading
 calendar instead of by row position, takes the event day as the first trading day at or

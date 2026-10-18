@@ -26,11 +26,11 @@ variables are built, the market panel has arrived, and the first-pass results fo
 all four assigned questions are in.
 
 1. **Announcement day.** Star upgrades draw a larger market-adjusted reaction and
-   more abnormal volume than non-star upgrades (CAR[-1,+1] +0.38 pp, t=2.19;
+   more abnormal volume than non-star upgrades (CAR[-1,+1] +0.37 pp, t=2.17;
    abnormal volume +0.053, t=2.85; both hold when events are collapsed to
    stock-day). Star downgrades show no such difference. The premium is concentrated
    in events with a price-limit hit; excluding them, the short-window difference
-   falls to 0.22 pp (p=0.13).
+   falls to 0.21 pp (p=0.13).
 2. **After the announcement.** Star downgraded stocks underperform non-star ones by
    1.6 pp over the next 60 trading days (p=0.002), but the difference disappears by
    120 days and reverses sign by 250 days. Star upgrades show no differential drift.
@@ -50,7 +50,7 @@ to the influence explanation, although it does not rule out an information compo
    standard errors show that the star premium differs between upgrades and
    downgrades at CAR[-1,+5] (p=0.023) and abnormal volume (p=0.041). The upgrade
    premium is concentrated in top-tier brokers; the top-versus-mid difference is
-   marginal (p=0.070) rather than significant at 5%. The small-tier group has almost
+   marginal (p=0.072) rather than significant at 5%. The small-tier group has almost
    no star events (2 upgrades, 0 downgrades), so it cannot be estimated.
 
 **The one-sentence story.** Stars move the market, but the evidence does not show that
@@ -114,6 +114,7 @@ scripts and the `data/` directory, is in the repository root.
 | `文档/cluster_robustness_note.md` | method, clustered results and caveats for the inference check |
 | `文档/replication_note.md` | independent replication: method, differences and the first-run audit trail |
 | `文档/limit_st_and_data_quality_note.md` | price-limit, ST-proxy and market-data diagnostics |
+| `文档/行情数据_Dretwd_H00300_说明.md` | the cleaned return files, units, suspension handling and the two data decisions |
 
 **Code**
 
@@ -136,6 +137,7 @@ scripts and the `data/` directory, is in the repository root.
 | `suspension_robustness.py` | drops events with a suspension day in the window and compares the star premium |
 | `cluster_robustness.py` | re-estimates the three main tests with stock-clustered standard errors |
 | `replication_check.py` | independent reimplementation used to verify CAR, holding returns and forecast errors |
+| `market_data_adapter.py` | loads Dretwd/H00300 (decimal) or the old panel and converts returns to percent |
 | `limit_st_robustness.py`, `data_quality_checks.py` | price-limit and ST-proxy robustness, and market-data diagnostics |
 | `ifind_probe.py` | one-off, checks that the iFinD account can reach the API |
 | `make_excel_workbook.py` | builds the seven-sheet workbook of the raw extracts |
@@ -149,6 +151,8 @@ scripts and the `data/` directory, is in the repository root.
 | File | What it is | In the repository |
 |---|---|---|
 | `raw_ratings_2018.csv` through `raw_ratings_2024.csv` | raw iFinD extracts, untouched | no, local only |
+| `stock_returns_dretwd.csv` | cleaned daily total returns, 2,683 stocks, 5,605,500 rows | no, local only (242 MB) |
+| `market_returns_h00300.csv` | CSI 300 total-return index H00300, 2,367 days | yes |
 | `ref_newfortune_list.csv` | the scraped list, every year the source serves | yes, tracked for reproducibility |
 | `ref_listing_dates.csv`, `ref_analyst_tenure.csv` | the reference tables from pipeline steps 4 and 5 | yes, tracked for reproducibility |
 | `events_1_all_revisions.csv`, `events_2_clean_sample.csv`, `events_3_initiations.csv` | intermediate event tables | no, local only |

@@ -6,7 +6,7 @@ Group project, two members. Preliminary version, 18 October 2026.
 
 ## Abstract
 
-This paper examines whether investors follow star analysts because stars are more accurate or because their status commands attention. Using 20,980 recommendation revisions for Chinese A-shares from 2018 to 2024, it compares announcement returns and abnormal volume, post-announcement drift, and ex post accuracy between star and non-star analysts. Star upgrades generate a larger market-adjusted announcement return (0.38 percentage points over [-1,+1], t = 2.19) and higher abnormal volume; star downgrades do not. The upgrade premium is concentrated in events with a price-limit hit. Star downgrades are followed by short-run underperformance (1.63 percentage points over +2 to +60, p = 0.002) and later reversal, whereas star upgrades show no differential drift. Holding-period returns favour stars only at short horizons, and star analysts' absolute earnings forecast errors are larger. The evidence is more consistent with influence than with a stable information advantage.
+This paper examines whether investors follow star analysts because stars are more accurate or because their status commands attention. Using 20,980 recommendation revisions for Chinese A-shares from 2018 to 2024, it compares announcement returns and abnormal volume, post-announcement drift, and ex post accuracy between star and non-star analysts. Star upgrades generate a larger market-adjusted announcement return (0.37 percentage points over [-1,+1], t = 2.17) and higher abnormal volume; star downgrades do not. The upgrade premium is concentrated in events with a price-limit hit. Star downgrades are followed by short-run underperformance (1.64 percentage points over +2 to +60, p = 0.002) and later reversal, whereas star upgrades show no differential drift. Holding-period returns favour stars only at short horizons, and star analysts' absolute earnings forecast errors are larger. The evidence is more consistent with influence than with a stable information advantage.
 
 ## 1. Introduction
 
@@ -76,19 +76,19 @@ Within each identity, all rating records from 2018 to 2024 are counted. Houses a
 
 ### 3.4 Market data
 
-Daily stock data cover 2,683 stocks from 3 January 2017 to 30 September 2026, with 5,649,330 rows and no duplicate stock-date pairs. The fields are stock code, date, closing price, return and volume. The CSI 300 index covers 2,367 trading days over the same period. The panel also reports `StateCode` and `Filling`, which identify 43,830 stock-date rows with missing returns and volume; these are treated as suspension or non-trading observations in the robustness analysis.
+Daily total returns come from `stock_returns_dretwd.csv`: 2,683 stocks, 5,605,500 rows, and the period from 3 January 2017 to 30 September 2026. The return `Dretwd` is in decimals. The market return is the CSI 300 total-return index `H00300` in `market_returns_h00300.csv`, which covers 2,367 trading days over the same period. `market_data_adapter.py` converts both to percentage points. Suspension days are absent rather than filled with zero, holiday filler rows have been removed, and old and new stock codes are unified. Volume for abnormal volume and event-day closing prices for the forecast-error test come from the earlier `market_panel.csv`; returns do not use that panel.
 
 ## 4. Empirical design
 
 **Event day and windows.** The event day is the first trading day at or after the report date, because 3,857 reports (18.4%) are not filed on a trading day. The market calendar defines day zero. If the stock is suspended on that day, the event-day return is missing and the validity rule below applies; the event is not shifted to a later stock-specific trading day.
 
-**Announcement returns and volume.** Abnormal returns are market-adjusted: the stock's daily return minus the index return. No alpha or beta is estimated, so the design is a market-adjusted event study rather than a market-model regression. Cumulative abnormal returns (CAR) are sums of daily abnormal returns over [-1,+1], [-1,+5], [-5,+5], [0,+60], [0,+120] and [0,+250]. Abnormal volume is log volume on the event day minus the mean log volume over [-120,-11], with at least 60 valid positions.
+**Announcement returns and volume.** Abnormal returns are market-adjusted total returns: the stock's `Dretwd` minus the `H00300` market total return, with both converted from decimals to percentage points. No alpha or beta is estimated, so the design is a market-adjusted event study rather than a market-model regression. Cumulative abnormal returns (CAR) are sums of daily abnormal returns over [-1,+1], [-1,+5], [-5,+5], [0,+60], [0,+120] and [0,+250]. Abnormal volume is log volume on the event day minus the mean log volume over [-120,-11], with at least 60 valid positions.
 
 A CAR is reported only if the event-day return is valid and at least 80% of the trading days in the window have valid returns. Suspended days remain in the calendar as missing observations, never as zero returns, and the reason for a missing CAR is recorded. This avoids both treating a suspension as a zero return and deleting the day, which would shift the window.
 
 **Post-announcement drift.** Drift windows start at +2 rather than zero, so the announcement reaction is excluded. CAR is measured over +2 to +60, +2 to +120 and +2 to +250.
 
-**Ex post accuracy.** Two metrics are used. The first is the direction-adjusted holding-period return: the market-adjusted cumulative return from the event-day close to the close after 63, 126 or 252 trading days, with upgrades held long and downgrades held short. A positive value indicates that following the recommendation would have been profitable. A window requires at least 80% valid trading days. The second is the analyst's earnings forecast error. Each event is matched to the analyst's own earnings-per-share forecast in the same report on stock, report date, analyst and broker. The error is the absolute difference between the forecast and realised annual basic EPS, divided by the event-day closing price and multiplied by 100. Errors are computed for the report's fiscal year (FY0) and the next fiscal year (FY1), winsorised at the 1st and 99th percentiles, and the signed error is also reported to distinguish optimism from dispersion. The matched sample contains 20,248 events (96.5%); FY0 actual EPS is available for 20,067 events and FY1 for 17,024, because 2024 events require 2025 realised EPS.
+**Ex post accuracy.** Two metrics are used. The first is the direction-adjusted holding-period return: the market-adjusted cumulative total return from the event-day close to the close after 63, 126 or 252 trading days, with upgrades held long and downgrades held short. A positive value indicates that following the recommendation would have been profitable. A window requires at least 80% valid trading days. The second is the analyst's earnings forecast error. Each event is matched to the analyst's own earnings-per-share forecast in the same report on stock, report date, analyst and broker. The error is the absolute difference between the forecast and realised annual basic EPS, divided by the event-day closing price and multiplied by 100. Errors are computed for the report's fiscal year (FY0) and the next fiscal year (FY1), winsorised at the 1st and 99th percentiles, and the signed error is also reported to distinguish optimism from dispersion. The matched sample contains 20,248 events (96.5%); FY0 actual EPS is available for 20,067 events and FY1 for 17,024, because 2024 events require 2025 realised EPS.
 
 **Heterogeneity models.** The fourth question is estimated with OLS models using winsorised CAR or abnormal volume as the dependent variable. The pooled model includes `star`, a downgrade indicator, their interaction, seniority, log listing age and year fixed effects. Tier models estimate the same specification separately for upgrades and downgrades, with a middle-tier indicator and a `star` × middle-tier interaction; the top tier is the reference group. Standard errors are clustered by stock. The small tier contains only two star upgrades and no star downgrades, so it is reported descriptively and excluded from the interaction models.
 
@@ -102,12 +102,12 @@ Star upgrades generate larger announcement effects; star downgrades do not.
 
 | Window | Upgrades: difference | t | Downgrades: difference | t |
 |---|---:|---:|---:|---:|
-| CAR[-1,+1] | +0.38 pp | 2.19 | +0.06 pp | 0.34 |
-| CAR[-1,+5] | +0.55 pp | 2.33 | -0.20 pp | -0.85 |
-| CAR[-5,+5] | +0.99 pp | 3.57 | -0.21 pp | -0.74 |
+| CAR[-1,+1] | +0.37 pp | 2.17 | +0.06 pp | 0.35 |
+| CAR[-1,+5] | +0.54 pp | 2.30 | -0.19 pp | -0.85 |
+| CAR[-5,+5] | +0.99 pp | 3.55 | -0.21 pp | -0.74 |
 | Abnormal volume | +0.053 | 2.85 | -0.011 | -0.53 |
 
-The upgrade premium is modest but precisely estimated: 0.38 percentage points over the three-day window and 0.99 over the eleven-day window. Abnormal volume is 0.053 log points higher for star upgrades. The same-stock-same-day collapsed variant yields 0.43 (t = 2.52), 0.62 (t = 2.60) and 1.07 (t = 3.83), with abnormal volume at 0.059 (t = 3.19), so the result is not driven by multiple events on the same stock-day. No downgrade window is statistically significant. The upgrade premium is concentrated in events whose window contains a price-limit hit. Excluding those events, the [-1,+1] difference falls from 0.38 to 0.22 (p = 0.129) and the [-1,+5] difference from 0.55 to 0.21 (p = 0.295); the [-5,+5] difference remains 0.65 (p = 0.007).
+The upgrade premium is modest but precisely estimated: 0.37 percentage points over the three-day window and 0.99 over the eleven-day window. Abnormal volume is 0.053 log points higher for star upgrades. The same-stock-same-day collapsed variant yields 0.43 (t = 2.51), 0.61 (t = 2.58) and 1.06 (t = 3.81), with abnormal volume at 0.059 (t = 3.19), so the result is not driven by multiple events on the same stock-day. No downgrade window is statistically significant. The upgrade premium is concentrated in events whose window contains a price-limit hit. Excluding those events, the [-1,+1] difference falls from 0.37 to 0.21 (p = 0.134) and the [-1,+5] difference from 0.54 to 0.20 (p = 0.310); the [-5,+5] difference remains 0.65 (p = 0.008).
 
 [[FIGURE1]]
 
@@ -119,11 +119,11 @@ The drift pattern differs by direction.
 
 | Window | Upgrades: difference | p | Downgrades: difference | p |
 |---|---:|---:|---:|---:|
-| +2 to +60 | -0.02 pp | 0.98 | -1.63 pp | 0.002 |
-| +2 to +120 | +1.08 pp | 0.13 | -0.74 pp | 0.34 |
-| +2 to +250 | +0.45 pp | 0.67 | +1.49 pp | 0.19 |
+| +2 to +60 | -0.07 pp | 0.90 | -1.64 pp | 0.002 |
+| +2 to +120 | +0.98 pp | 0.16 | -0.76 pp | 0.32 |
+| +2 to +250 | +0.76 pp | 0.48 | +1.53 pp | 0.18 |
 
-Star downgrades are followed by 1.63 percentage points of additional underperformance over the first 60 trading days. The difference then narrows and changes sign by +250 days (+1.49, p = 0.19). The pattern is an initial reaction followed by partial reversal, which is consistent with over-following, but the long-horizon estimate is not statistically significant. Star upgrades show no differential drift.
+Star downgrades are followed by 1.64 percentage points of additional underperformance over the first 60 trading days. The difference then narrows and changes sign by +250 days (+1.53, p = 0.18). The pattern is an initial reaction followed by partial reversal, which is consistent with over-following, but the long-horizon estimate is not statistically significant. Star upgrades show no differential drift.
 
 [[FIGURE2]]
 
@@ -135,11 +135,11 @@ The accuracy evidence is mixed and does not support a stable advantage.
 
 | Horizon | Upgrades: star minus non-star | p | Downgrades: star minus non-star | p |
 |---|---:|---:|---:|---:|
-| Holding return, 3 months | +0.47 pp | 0.41 | +1.77 pp | 0.001 |
-| Holding return, 6 months | +1.61 pp | 0.035 | +1.02 pp | 0.20 |
-| Holding return, 12 months | +0.89 pp | 0.40 | -1.36 pp | 0.24 |
+| Holding return, 3 months | +0.41 pp | 0.47 | +1.78 pp | 0.001 |
+| Holding return, 6 months | +1.51 pp | 0.048 | +1.04 pp | 0.19 |
+| Holding return, 12 months | +1.20 pp | 0.28 | -1.39 pp | 0.23 |
 
-For upgrades, the advantage appears at six months (+1.61 percentage points, p = 0.035) but not at three or twelve months. For downgrades, it is concentrated at three months (+1.77, p = 0.001) and disappears by six months; at twelve months the sign reverses. Hit rates move in the same direction: 56.1% versus 53.3% for six-month upgrades and 54.5% versus 51.4% for three-month downgrades.
+For upgrades, the advantage appears at six months (+1.51 percentage points, p = 0.048) but not at three or twelve months. For downgrades, it is concentrated at three months (+1.78, p = 0.001) and disappears by six months; at twelve months the sign reverses. Hit rates move in the same direction: 54.1% versus 50.9% for six-month upgrades and 56.3% versus 53.1% for three-month downgrades.
 
 Forecast errors point in the opposite direction. Star analysts' absolute errors are larger in all four cells: FY0 upgrades 2.18 versus 1.89 (difference 0.28, p = 0.002), FY0 downgrades 3.07 versus 2.61 (0.46, p = 0.002), FY1 upgrades 4.60 versus 4.20 (0.40, p = 0.014) and FY1 downgrades 5.60 versus 4.64 (0.96, p < 0.001). Signed errors, which measure optimism, do not differ significantly (0.15 and 0.18, p = 0.12 and 0.24). Stars are therefore not more optimistic; their forecasts are more dispersed. One explanation is that stars cover harder or more volatile stocks, an uncontrolled selection difference that should not be read as direct evidence of lower ability.
 
@@ -149,11 +149,11 @@ Forecast errors point in the opposite direction. Star analysts' absolute errors 
 
 ### 5.4 Direction and broker tier
 
-The direction asymmetry is robust. In the pooled interaction model, the star premium on upgrades is +0.40 percentage points at [-1,+1] (p = 0.020), and the interaction with the downgrade indicator is -0.29 (p = 0.191). At [-1,+5] the upgrade premium is +0.59 (p = 0.013) and the interaction is -0.71 (p = 0.023). For abnormal volume, the upgrade premium is +0.049 (p = 0.009) and the interaction is -0.057 (p = 0.041). The asymmetry is therefore statistically clear at the five-day window and for volume, and marginal at the three-day window and at +2 to +120.
+The direction asymmetry is robust. In the pooled interaction model, the star premium on upgrades is +0.39 percentage points at [-1,+1] (p = 0.021), and the interaction with the downgrade indicator is -0.29 (p = 0.197). At [-1,+5] the upgrade premium is +0.58 (p = 0.014) and the interaction is -0.70 (p = 0.025). For abnormal volume, the upgrade premium is +0.049 (p = 0.009) and the interaction is -0.057 (p = 0.041). The asymmetry is therefore statistically clear at the five-day window and for volume, and marginal at the three-day window and at +2 to +120.
 
-Tier results are suggestive but not stable. For upgrades, the top-tier star premium is +0.55 at [-1,+1] (p = 0.016), the top-versus-middle difference is -0.63 (p = 0.070), and the middle-tier total effect is -0.08 (p = 0.764). For abnormal volume, the top-tier premium is +0.063 (p = 0.013). For downgrades, the middle-tier total effect is +0.62 (p = 0.007), while the top-tier effect is -0.14 (p = 0.538). The signs differ from the upgrade side, which makes the tier result difficult to interpret as a single authority premium.
+Tier results are suggestive but not stable. For upgrades, the top-tier star premium is +0.55 at [-1,+1] (p = 0.017), the top-versus-middle difference is -0.63 (p = 0.072), and the middle-tier total effect is -0.08 (p = 0.761). For abnormal volume, the top-tier premium is +0.064 (p = 0.013). For downgrades, the middle-tier total effect is +0.62 (p = 0.007), while the top-tier effect is -0.14 (p = 0.536). The signs differ from the upgrade side, which makes the tier result difficult to interpret as a single authority premium.
 
-Two caveats apply. First, `star` and tier are highly collinear: the small tier contains only two star upgrades and no star downgrades. Second, a backward-looking rolling tier, built from records in the three years before each event, reclassifies 23.1% of events; the asymmetry survives, but the tier coefficients become unstable: the top-tier upgrade premium is +0.49 (p = 0.044), its volume premium +0.042 (p = 0.100), and the middle-tier downgrade effect +0.32 (p = 0.131). Tier results are therefore descriptive, not a separate causal channel.
+Two caveats apply. First, `star` and tier are highly collinear: the small tier contains only two star upgrades and no star downgrades. Second, a backward-looking rolling tier, built from records in the three years before each event, reclassifies 23.1% of events; the asymmetry survives, but the tier coefficients become unstable: the top-tier upgrade premium is +0.49 (p = 0.046), its volume premium +0.042 (p = 0.099), and the middle-tier downgrade effect +0.33 (p = 0.129). Tier results are therefore descriptive, not a separate causal channel.
 
 ## 6. Robustness
 
@@ -161,23 +161,23 @@ Two caveats apply. First, `star` and tier are highly collinear: the small tier c
 
 | Window | Upgrades: share dropped | Upgrades: difference, full to dropped | Upgrades: p, full to dropped |
 |---|---:|---:|---:|
-| [-1,+1] | 0.6% | +0.38 to +0.38 | 0.029 to 0.029 |
-| [-1,+5] | 0.7% | +0.55 to +0.60 | 0.020 to 0.012 |
-| [-5,+5] | 0.9% | +0.99 to +1.00 | 0.0004 to 0.0004 |
-| [0,+120] | 3.3% | +1.47 to +1.55 | 0.045 to 0.037 |
-| [0,+250] | 5.6% | +0.88 to +0.82 | 0.41 to 0.45 |
+| [-1,+1] | 0.6% | +0.37 to +0.37 | 0.030 to 0.030 |
+| [-1,+5] | 0.7% | +0.54 to +0.59 | 0.021 to 0.013 |
+| [-5,+5] | 0.9% | +0.99 to +0.99 | 0.0004 to 0.0004 |
+| [0,+120] | 3.3% | +1.37 to +1.46 | 0.061 to 0.049 |
+| [0,+250] | 5.6% | +0.90 to +0.83 | 0.40 to 0.44 |
 
 Downgrades remain insignificant in every window. Point estimates change by much less than their standard errors, and the upgrade premium survives. Suspension is not driving the result.
 
 **Alternative star definitions.** The analysis table stores same-year (`star_same`), month-based (`star_month`) and one-year lag (`star_lag1`) conventions. The default `star_inforce` is the in-force list, with 2018 inheriting 2017. The 2018 page is excluded as documented in Section 3.3.
 
-**Clustered inference.** All three analyses are re-estimated with standard errors clustered by stock. The star premium remains significant where it was significant: CAR[-1,+1] 0.38 (p = 0.034), CAR[-1,+5] 0.55 (p = 0.026), CAR[-5,+5] 0.99 (p = 0.001) and abnormal volume 0.053 (p = 0.006); six-month upgrades 1.61 (p = 0.037) and three-month downgrades 1.77 (p = 0.002); forecast errors FY0 0.28 (p = 0.003) and 0.46 (p = 0.001), FY1 0.40 (p = 0.017) and 0.96 (p < 0.001). No 5% significance conclusion changes. A stock-day clustered variant yields similar results. One caveat: the FY1 upgrade error is significant only after winsorisation (raw p = 0.079). The clustered tests are not adjusted for multiple specifications. A Bonferroni correction across 30 main specifications (threshold 0.0017) leaves five results significant: upgrade CAR[-5,+5], downgrade three-month holding returns in both raw and market-adjusted form, FY0 downgrade errors and FY1 downgrade errors. Clustering is one-way by stock; a two-way stock-by-date variant is not reported.
+**Clustered inference.** All three analyses are re-estimated with standard errors clustered by stock. The star premium remains significant where it was significant: CAR[-1,+1] 0.37 (p = 0.035), CAR[-1,+5] 0.54 (p = 0.028), CAR[-5,+5] 0.99 (p = 0.0006) and abnormal volume 0.053 (p = 0.006); six-month upgrades 1.51 (p = 0.050) and three-month downgrades 1.78 (p = 0.002); forecast errors FY0 0.28 (p = 0.003) and 0.46 (p = 0.001), FY1 0.40 (p = 0.017) and 0.96 (p < 0.001). No 5% significance conclusion changes. A stock-day clustered variant yields similar results. One caveat: the FY1 upgrade error is significant only after winsorisation (raw p = 0.079). The clustered tests are not adjusted for multiple specifications. A Bonferroni correction across 30 main specifications (threshold 0.0017) leaves five results significant: upgrade CAR[-5,+5], downgrade three-month holding returns in both raw and market-adjusted form, FY0 downgrade errors and FY1 downgrade errors. Clustering is one-way by stock; a two-way stock-by-date variant is not reported.
 
-**Price limits.** Price-limit hits are identified from daily returns and board-specific thresholds (10% main board, 20% ChiNext and STAR, 30% BSE), excluding the first five trading days and capping at the threshold plus 1.0 percentage point. Dropping events with a limit hit in the window leaves upgrade CAR[-1,+1] at 0.22 (p = 0.129), [-1,+5] at 0.21 (p = 0.295) and [-5,+5] at 0.65 (p = 0.007); downgrades remain insignificant. The premium is concentrated in limit-hit events, and the short-window result should not be described as robust to price limits.
+**Price limits.** Price-limit hits are identified from daily returns and board-specific thresholds (10% main board, 20% ChiNext and STAR, 30% BSE), excluding the first five trading days and capping at the threshold plus 1.0 percentage point. Dropping events with a limit hit in the window leaves upgrade CAR[-1,+1] at 0.21 (p = 0.134), [-1,+5] at 0.20 (p = 0.310) and [-5,+5] at 0.65 (p = 0.008); downgrades remain insignificant. The premium is concentrated in limit-hit events, and the short-window result should not be described as robust to price limits.
 
-**ST proxy.** Historical ST status is unavailable. A strict proxy (main-board returns between 4.8% and 5.2%, sustained over 31 days, at least 25 valid returns) flags 4,915 stock-days; dropping these events leaves the short-window results unchanged, while the 120-day upgrade p-value moves from 0.045 to 0.059. A literal 5% rule is too noisy and is not used.
+**ST proxy.** Historical ST status is unavailable. A strict proxy (main-board returns between 4.8% and 5.2%, sustained over 31 days, at least 25 valid returns) flags 4,915 stock-days; dropping these events leaves the short-window results unchanged, while the 120-day upgrade p-value moves from 0.061 to 0.080. A literal 5% rule is too noisy and is not used.
 
-**Independent replication.** A separate implementation, which does not reuse the project's functions, reproduces the event-study CAR with a maximum absolute difference of 1.28e-13 (zero events above 1e-6), the holding-period group means within 4.94e-05 percentage points (zero groups above 0.01), and the forecast-error matches and group means without a flag. The 156 forecast keys missing under literal matching are broker-name or missing-analyst variants; after the project's canonical mapping the matched sample is identical at 20,248 events. The only definitional difference is 64 events with a missing event-day return in the +2 to +120 window: the reference engine reports a CAR because the window excludes day 0, while a strict event-day rule returns NaN. The group difference changes by at most 0.057 percentage points and does not change sign.
+**Independent replication.** A separate implementation, which does not reuse the project's functions, reproduces the event-study CAR, the holding-period group means and the forecast-error outputs. `文档/replication_note.md` records the maximum differences and keeps the first-run audit trail. The only definitional difference concerns events with a missing event-day return in windows that exclude day 0: a strict event-day rule returns NaN, while the reference engine reports a value. The difference does not change the sign of any group comparison.
 
 **Remaining checks.** The FY1 forecast-error sample ends with 2023 events; extending it requires 2025 realised EPS.
 
@@ -227,7 +227,7 @@ All data were extracted from iFinD (同花顺). The analyst rating detail was pu
 
 Analyst earnings forecasts and realised annual EPS were pulled on 18 October 2026. The forecast extraction uses `2023年 机构盈利预测明细`, returning 96,399 rows for 2023 and 528,477 rows over 2018-2024, with report date, institution, analyst and EPS forecasts for the previous, current, next and following fiscal years. The realised EPS extraction uses `2023年 基本每股收益 全部A股`, returning 5,226 stocks per year and 36,582 rows over 2018-2024.
 
-The market panel was delivered on 18 October 2026. It contains 5,649,330 rows for 2,683 stocks from 3 January 2017 to 30 September 2026, with stock code, date, closing price, return and volume. The CSI 300 index panel contains 2,367 trading days. The panel also reports `StateCode` and `Filling`, which identify 43,830 rows with missing returns and volume.
+The cleaned market data were delivered on 18 October 2026. `stock_returns_dretwd.csv` contains 5,605,500 rows for 2,683 stocks from 3 January 2017 to 30 September 2026, with stock code, date and the decimal total return `Dretwd`. `market_returns_h00300.csv` contains 2,367 trading days of the CSI 300 total-return index `H00300` and its decimal market return. Suspension rows are omitted rather than filled with zero, holiday filler rows are removed, and old and new stock codes are unified. Volume and event-day closing prices come from the earlier `market_panel.csv`, which also carries `StateCode` and `Filling` for the suspension robustness check.
 
 The analysis code is in the project repository. `event_study_v2.py` builds the calendar-aligned CAR and abnormal volume; `accuracy_test.py` builds holding-period returns; `forecast_error.py` matches each analyst's forecast to realised EPS; `heterogeneity_test.py` and `heterogeneity_rolling.py` estimate the direction and tier models; `suspension_robustness.py` runs the suspension check. The repository is private because it contains data derived from iFinD. Raw extracts and the full market panel are kept locally and are not redistributed.
 

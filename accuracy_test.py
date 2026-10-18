@@ -15,6 +15,9 @@ from scipy import stats
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, 'data')
+import sys
+sys.path.insert(0, HERE)
+from market_data_adapter import load_returns
 HORIZONS = (63, 126, 252)
 MIN_SHARE = 0.80
 
@@ -22,17 +25,13 @@ MIN_SHARE = 0.80
 def main():
     ev = pd.read_csv(os.path.join(DATA, 'analysis_table.csv'),
                      dtype={'股票代码': str}, encoding='utf-8-sig', low_memory=False)
-    mp = pd.read_csv(os.path.join(DATA, 'market_panel.csv'),
-                     dtype={'股票代码': str, '日期': str}, encoding='utf-8-sig',
-                     usecols=['股票代码', '日期', '涨跌幅'], low_memory=False)
-    ix = pd.read_csv(os.path.join(DATA, 'index_panel.csv'), dtype=str, encoding='utf-8-sig')
+    mp, ix, source = load_returns(DATA)
+    print('行情来源', source)
 
     cal = sorted(ix['日期'].astype(str).str.strip().unique())
     cal_np = np.array(cal)
-    ix['收盘价'] = pd.to_numeric(ix['收盘价'], errors='coerce')
-    ix['日期'] = ix['日期'].astype(str).str.strip()
     ix = ix.sort_values('日期').drop_duplicates('日期')
-    mkt_s = pd.Series((ix['收盘价'].pct_change() * 100).values, index=ix['日期'])
+    mkt_s = pd.Series(pd.to_numeric(ix['市场收益率'], errors='coerce').values, index=ix['日期'])
     mkt = mkt_s.reindex(pd.Index(cal)).fillna(0).values
     mkt_cum0 = np.concatenate([[0.0], np.cumsum(mkt)])
 

@@ -32,13 +32,19 @@ all four assigned questions are in.
 2. **After the announcement.** Star downgraded stocks underperform non-star ones by
    1.6 pp over the next 60 trading days (p=0.002), but the difference disappears by
    120 days and reverses sign by 250 days. Star upgrades show no differential drift.
-3. **Ex post accuracy.** Star recommendations are modestly more profitable to follow
-   at short horizons (downgrades at 3 months, upgrades at 6 months), but the
-   advantage is gone by 12 months.
+3. **Ex post accuracy, holding returns.** Star recommendations are modestly more
+   profitable to follow at short horizons (downgrades at 3 months, upgrades at
+   6 months), but the advantage is gone by 12 months.
+4. **Ex post accuracy, earnings forecasts.** Star analysts' absolute EPS forecast
+   errors are larger, not smaller: FY0 upgrades 2.18 versus 1.89 percentage points
+   of price (p=0.001), FY0 downgrades 3.07 versus 2.61 (p=0.002), with larger gaps
+   at FY1. Signed errors, which measure optimism, do not differ.
 
-Read together, the pattern is short-run information plus long-run following, not a
-stable ability premium. These are univariate first-pass results: standard errors are
-not yet clustered and limit-hit, suspension and ST robustness are still to be run.
+Read together, stars move prices and are modestly more profitable to follow at short
+horizons, but their earnings forecasts are not more accurate. The evidence is closer
+to the influence explanation, although it does not rule out an information component.
+These are univariate first-pass results: standard errors are not yet clustered and
+limit-hit, suspension and ST robustness are still to be run.
 
 ## Repository layout and file ownership
 
@@ -101,6 +107,8 @@ scripts and the `data/` directory, is in the repository root.
 | `broker_names.py` | the shared broker identity map used by the two scripts above |
 | `event_study.py`, `event_study_v2.py` | CAR and abnormal volume; run v2, the original stays as the reviewed record |
 | `accuracy_test.py` | 3/6/12-month direction-adjusted returns and hit rates after each event |
+| `pull_forecast.py` | pulls analyst-level EPS forecasts and realised annual EPS from iFinD |
+| `forecast_error.py` | matches each event's own EPS forecast to realised EPS and tests star versus non-star |
 | `ifind_probe.py` | one-off, checks that the iFinD account can reach the API |
 | `make_excel_workbook.py` | builds the seven-sheet workbook of the raw extracts |
 | `make_coverage_table.py` | builds the New Fortune coverage table, `data/ref_newfortune_coverage.xlsx` |
@@ -124,6 +132,10 @@ scripts and the `data/` directory, is in the repository root.
 | `raw_pull_manifest.json` | the wording and row count of every iFinD query | yes, tracked for reproducibility |
 | `car_summary.csv`, `car_event_level.csv` | event-study output: window summary and one row per event | yes |
 | `accuracy_summary.csv` | post-recommendation accuracy by horizon and direction | yes |
+| `raw_forecast_2018.csv` through `raw_forecast_2024.csv` | analyst-level EPS forecasts, 528,477 rows | no, local only |
+| `ref_actual_eps.csv` | realised annual basic EPS, 2018-2024 | yes |
+| `forecast_error_event.csv`, `forecast_error_summary.csv` | earnings forecast error, event level and summary | yes |
+| `forecast_pull_manifest.json` | query wording and row counts for the forecast pull | yes |
 
 **In the folder but deliberately not in the repository**: the instructor's handouts
 them all sit in `课程材料/` (`Topic details.pdf`, `FIN4080_CSMAR.pdf`, `FIN4080_TA_Data.pdf`,

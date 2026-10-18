@@ -43,8 +43,14 @@ all four assigned questions are in.
 Read together, stars move prices and are modestly more profitable to follow at short
 horizons, but their earnings forecasts are not more accurate. The evidence is closer
 to the influence explanation, although it does not rule out an information component.
-These are univariate first-pass results: standard errors are not yet clustered and
-limit-hit, suspension and ST robustness are still to be run.
+
+**The one-sentence story.** Stars move the market, but the evidence does not show that
+they are better forecasters; the pattern fits influence better than information.
+
+**What remains before 27 October.** Clustered standard errors; limit-hit, suspension
+and ST robustness; the three main figures; and a decision on whether to extend the FY1
+forecast-error sample beyond 2023. These are univariate first-pass results, so the
+significance levels should not be quoted as final until the clustering is done.
 
 ## Repository layout and file ownership
 

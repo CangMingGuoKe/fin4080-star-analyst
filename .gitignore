@@ -19,6 +19,7 @@
 !/data/limit_st_robustness.csv
 !/data/st_proxy_robustness.csv
 !/data/market_returns_h00300.csv
+!/data/ref_actual_eps_2025.csv
 !/data/ref_actual_eps.csv
 !/data/forecast_error_event.csv
 !/data/forecast_error_summary.csv

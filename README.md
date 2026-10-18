@@ -167,7 +167,8 @@ scripts and the `data/` directory, is in the repository root.
 | `car_summary.csv`, `car_event_level.csv` | event-study output: window summary and one row per event | yes |
 | `accuracy_summary.csv` | post-recommendation accuracy by horizon and direction | yes |
 | `raw_forecast_2018.csv` through `raw_forecast_2024.csv` | analyst-level EPS forecasts, 528,477 rows | no, local only |
-| `ref_actual_eps.csv` | realised annual basic EPS, 2018-2024 | yes |
+| `ref_actual_eps.csv` | realised annual basic EPS, 2018-2025 | yes |
+| `ref_actual_eps_2025.csv` | 2025 EPS supplement, 5,226 stocks | yes |
 | `forecast_error_event.csv`, `forecast_error_summary.csv` | earnings forecast error, event level and summary | yes |
 | `forecast_pull_manifest.json` | query wording and row counts for the forecast pull | yes |
 | `heterogeneity_summary.csv` | direction and tier interaction estimates | yes |

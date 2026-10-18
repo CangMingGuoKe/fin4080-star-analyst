@@ -19,8 +19,11 @@ class sign-up sheet are likewise not redistributed here.
 
 ## Where the project stands
 
-The event sample and the authority variables are built, the market panel has
-arrived, and the first-pass results for all four assigned questions are in.
+The project asks whether investors follow star analyst recommendations because
+stars are more accurate (the information explanation) or because investors defer
+to their status (the influence explanation). The event sample and the authority
+variables are built, the market panel has arrived, and the first-pass results for
+all four assigned questions are in.
 
 1. **Announcement day.** Star upgrades draw a larger market-adjusted reaction and
    more abnormal volume than non-star upgrades (CAR[-1,+1] +0.38 pp, t=2.19;

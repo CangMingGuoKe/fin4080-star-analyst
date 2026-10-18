@@ -12,6 +12,7 @@
 !/data/raw_pull_manifest.json
 !/data/car_summary.csv
 !/data/car_event_level.csv
+!/data/accuracy_summary.csv
 
 # Word/WPS 锁文件
 ~$*

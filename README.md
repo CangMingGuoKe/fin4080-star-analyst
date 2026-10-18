@@ -76,7 +76,8 @@ scripts and the `data/` directory, is in the repository root.
 | `build_star_variable.py` | the star indicator and its timing variants |
 | `build_broker_tier.py` | the broker tier |
 | `broker_names.py` | the shared broker identity map used by the two scripts above |
-| `event_study.py`, `event_study_v2.py` | CAR and abnormal volume, once the market data arrives; run v2, the original stays as the reviewed record |
+| `event_study.py`, `event_study_v2.py` | CAR and abnormal volume; run v2, the original stays as the reviewed record |
+| `accuracy_test.py` | 3/6/12-month direction-adjusted returns and hit rates after each event |
 | `ifind_probe.py` | one-off, checks that the iFinD account can reach the API |
 | `make_excel_workbook.py` | builds the seven-sheet workbook of the raw extracts |
 | `make_coverage_table.py` | builds the New Fortune coverage table, `data/ref_newfortune_coverage.xlsx` |
@@ -99,6 +100,7 @@ scripts and the `data/` directory, is in the repository root.
 | `market_panel.csv` | the unsplit panel, about 659 MB | no, local only |
 | `raw_pull_manifest.json` | the wording and row count of every iFinD query | yes, tracked for reproducibility |
 | `car_summary.csv`, `car_event_level.csv` | event-study output: window summary and one row per event | yes |
+| `accuracy_summary.csv` | post-recommendation accuracy by horizon and direction | yes |
 
 **In the folder but deliberately not in the repository**: the instructor's handouts
 them all sit in `课程材料/` (`Topic details.pdf`, `FIN4080_CSMAR.pdf`, `FIN4080_TA_Data.pdf`,

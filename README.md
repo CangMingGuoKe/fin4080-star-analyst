@@ -54,9 +54,11 @@ to the influence explanation, although it does not rule out an information compo
 **The one-sentence story.** Stars move the market, but the evidence does not show that
 they are better forecasters; the pattern fits influence better than information.
 
-**What remains before 27 October.** Clustered standard errors; limit-hit, suspension
-and ST robustness; the three main figures; and a decision on whether to extend the FY1
-forecast-error sample beyond 2023. These are univariate first-pass results, so the
+**What remains before 27 October.** Clustered standard errors; limit-hit and ST
+robustness; the three main figures; and a decision on whether to extend the FY1
+forecast-error sample beyond 2023. A suspension robustness check is done: dropping
+events with a suspension day in the window leaves the upgrade premium significant and
+the downgrade premium insignificant. These are univariate first-pass results, so the
 significance levels should not be quoted as final until the clustering is done.
 
 ## Repository layout and file ownership
@@ -124,6 +126,7 @@ scripts and the `data/` directory, is in the repository root.
 | `forecast_error.py` | matches each event's own EPS forecast to realised EPS and tests star versus non-star |
 | `heterogeneity_test.py` | interaction models for direction and broker tier, with stock-clustered errors |
 | `heterogeneity_rolling.py` | rebuilds the tier from prior years only and re-estimates the same interactions |
+| `suspension_robustness.py` | drops events with a suspension day in the window and compares the star premium |
 | `ifind_probe.py` | one-off, checks that the iFinD account can reach the API |
 | `make_excel_workbook.py` | builds the seven-sheet workbook of the raw extracts |
 | `make_coverage_table.py` | builds the New Fortune coverage table, `data/ref_newfortune_coverage.xlsx` |
@@ -153,6 +156,7 @@ scripts and the `data/` directory, is in the repository root.
 | `forecast_pull_manifest.json` | query wording and row counts for the forecast pull | yes |
 | `heterogeneity_summary.csv` | direction and tier interaction estimates | yes |
 | `broker_tier_rolling.csv`, `heterogeneity_rolling_summary.csv` | backward-looking tier assignment and the re-estimated interactions | yes |
+| `suspension_robustness.csv` | star premium before and after dropping events with suspension days | yes |
 
 **In the folder but deliberately not in the repository**: the instructor's handouts
 them all sit in `课程材料/` (`Topic details.pdf`, `FIN4080_CSMAR.pdf`, `FIN4080_TA_Data.pdf`,

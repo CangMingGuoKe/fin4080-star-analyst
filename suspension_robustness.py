@@ -74,20 +74,23 @@ def main():
             keep.append(not hit)
         keep = np.array(keep)
         full = num(ev[metric]).values
-        s1 = full[(ev['star'] == 1).values]
-        s0 = full[(ev['star'] == 0).values]
-        d_full, p_full = diff_p(s1, s0)
-        k1 = full[(ev['star'] == 1).values & keep]
-        k0 = full[(ev['star'] == 0).values & keep]
-        d_keep, p_keep = diff_p(k1, k0)
-        rows.append({'window': metric, 'n_full': int(keep.size),
-                     'n_kept': int(keep.sum()), 'n_dropped': int(dropped),
-                     'pct_dropped': round(100 * dropped / keep.size, 1),
-                     'diff_full': round(d_full, 4) if np.isfinite(d_full) else np.nan,
-                     'p_full': round(p_full, 4) if np.isfinite(p_full) else np.nan,
-                     'diff_kept': round(d_keep, 4) if np.isfinite(d_keep) else np.nan,
-                     'p_kept': round(p_keep, 4) if np.isfinite(p_keep) else np.nan})
-        print(rows[-1])
+        star = (ev['star'] == 1).values
+        dirs = ev['评级调整方向'].astype(str).str.strip().values
+        for direction in ['调高', '调低', 'both']:
+            dm = np.ones(len(ev), dtype=bool) if direction == 'both' else (dirs == direction)
+            n_full_d = int(dm.sum())
+            n_kept_d = int((dm & keep).sum())
+            n_drop_d = n_full_d - n_kept_d
+            d_full, p_full = diff_p(full[star & dm], full[(~star) & dm])
+            d_keep, p_keep = diff_p(full[star & dm & keep], full[(~star) & dm & keep])
+            rows.append({'direction': direction, 'window': metric,
+                         'n_full': n_full_d, 'n_kept': n_kept_d, 'n_dropped': n_drop_d,
+                         'pct_dropped': round(100 * n_drop_d / n_full_d, 1) if n_full_d else np.nan,
+                         'diff_full': round(d_full, 4) if np.isfinite(d_full) else np.nan,
+                         'p_full': round(p_full, 4) if np.isfinite(p_full) else np.nan,
+                         'diff_kept': round(d_keep, 4) if np.isfinite(d_keep) else np.nan,
+                         'p_kept': round(p_keep, 4) if np.isfinite(p_keep) else np.nan})
+            print(rows[-1])
 
     out = pd.DataFrame(rows)
     out.to_csv(os.path.join(DATA, 'suspension_robustness.csv'), index=False, encoding='utf-8-sig')

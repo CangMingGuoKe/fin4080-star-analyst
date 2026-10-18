@@ -13,6 +13,7 @@
 !/data/car_summary.csv
 !/data/car_event_level.csv
 !/data/accuracy_summary.csv
+!/data/suspension_robustness.csv
 !/data/ref_actual_eps.csv
 !/data/forecast_error_event.csv
 !/data/forecast_error_summary.csv

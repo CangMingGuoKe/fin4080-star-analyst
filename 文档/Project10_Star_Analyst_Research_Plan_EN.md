@@ -4,7 +4,7 @@
 FIN4080 Behavioral Finance · The Chinese University of Hong Kong, Shenzhen
 Sign-up sheet: **Topic 15** (the Project Bank calls it Project 10)
 Group size: **2** · Presentation: **27 October 2026**, 15 min + 5 min Q&A · Max 15 slides
-Status as of: 6 October 2026
+Status as of: 18 October 2026
 
 > Note on numbering: this topic is "Project 10" in `Topic details.pdf` but "Topic 15" in
 > `FIN 4080 Group and topic sign up.xlsx`. The sign-up sheet governs grading.
@@ -14,7 +14,7 @@ Status as of: 6 October 2026
 ## 1. Research question
 
 Milgram's obedience experiments show that people comply with authority even against
-their own judgement. This project measures the market footprint of authority rather
+their own judgement. This project measures how the market responds to authority rather
 than surveying investors: how do prices, volume and subsequent returns respond to
 recommendation changes made by **star** (high-authority) versus ordinary analysts?
 
@@ -25,8 +25,8 @@ The assignment poses four questions that must each be answered:
 3. Are star analysts actually more accurate ex post, or merely more influential?
 4. Does the authority premium differ between upgrades and downgrades, and across brokerage tiers?
 
-Question 3 is the hinge: it puts the **information hypothesis** and the **influence
-hypothesis** side by side, so descriptive statistics alone cannot settle it.
+Question 3 is the key question: the **information hypothesis** and the **influence
+hypothesis** make opposite predictions for it, so descriptive statistics alone cannot settle it.
 
 | | Information / ability | Authority / influence |
 |---|---|---|
@@ -96,10 +96,12 @@ Three proxies, all stored as columns on the analysis table:
 
 **How the star variable handles the 2018 gap.** The New Fortune vote was suspended in
 2018, and the page labelled 2018 on the public source is a compilation of anniversary
-special awards, not an annual industry ranking. Evidence: 36% of its names appear in
-no other year (versus 8-23% elsewhere), its name overlap with 2019 is Jaccard 0.10
-(versus 0.40-0.52 for adjacent pairs), and it matches the rating data at only 3.6%
-versus 10-17% for every other list-year. It is therefore excluded, and 2018 events
+special awards, not an annual industry ranking. Evidence: 34.7% of its names appear
+in no other year, against 8.1-17.7% for 2019-2023 (the boundary years 2017 and 2024
+run higher for mechanical reasons); its name overlap with 2019 is Jaccard 0.10,
+against 0.42-0.52 for other adjacent pairs; and under the same name-and-broker match
+used for the star variable it reaches only 4.0% of that year's events, against
+12.1-14.0% for every other list-year. It is therefore excluded, and 2018 events
 inherit the **2017** list, which is the most recent list actually in force during 2018.
 This is the same "list in force" rule applied to every year, so there is no
 special-casing and no look-ahead. The rule restores 2018 to the normal range (13.4%),
@@ -164,8 +166,9 @@ reporting the unclustered version beside it, is the honest way to present these 
 | 4 Six to twelve month post-revision returns | B leads, A independently replicates |
 | 5 Visualization and discussion | split by slide |
 
-B also delivers the market data (daily returns, volume, turnover, market cap) and the
-index series. The required file format is specified in `event_study.py`.
+B also delivers the market data (prices, daily returns and volume) and the
+index series. The required file format is specified in `行情数据交付说明.md`;
+`event_study_v2.py` accepts either a single panel or panels split by year.
 
 ## 10. Timeline
 

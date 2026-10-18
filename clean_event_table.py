@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""FIN4080 Project 10 · 甲的任务（其二）：事件表清洗
+"""FIN4080 Project 10 · 事件表清洗
 
-输入：data/ratings_20XX.csv（pull_ifind_ratings.py 抓的原始表）
+输入：data/raw_ratings_20XX.csv（pull_ifind_ratings.py 抓的原始表）
       data/ref_listing_dates.csv（上市日期，判断 IPO 后六个月）
 输出：data/events_1_all_revisions.csv    全部评级调整（调高 + 调低），未做剔除
       data/events_2_clean_sample.csv  按规则剔除后的最终事件样本
@@ -19,7 +19,7 @@
   · 历史 ST 状态取不到。iFinD 问财对「20XX年ST股票名单」一律返回当前快照，
     基础数据的 ST 指标名也试不通。所以这里只能用当前简称含 ST 的股票做近似剔除，
     会同时误伤（曾 ST 现已摘帽）和漏掉（当时 ST 现已改名）。
-    正确做法是用乙的日行情反推：ST 股涨跌停是 5%，从日涨跌幅即可识别 ST 期间。
+    正确做法是用日行情反推：ST 股涨跌停是 5%，从日涨跌幅即可识别 ST 期间。
   · 「上市未满 6 个月」用上市日期加 183 天近似，不另查交易日历。
 """
 import glob
@@ -52,7 +52,7 @@ def main():
     print('原始评级记录 =', len(raw))
 
     # 丢掉「研报」列：它在原始数据里整列都是「查看」两个字，那是问财网页的按钮文字，
-    # 不是数据。原始文件 ratings_20XX.csv 保持原样，清洗后的表不带它。
+    # 不是数据。原始文件 raw_ratings_20XX.csv 保持原样，清洗后的表不带它。
     if '研报' in raw.columns:
         raw = raw.drop(columns=['研报'])
         print('已丢弃空壳列「研报」（整列都是网页按钮文字）')

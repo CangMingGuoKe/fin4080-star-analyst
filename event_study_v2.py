@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """FIN4080 Project 10 · 事件研究引擎 v2
 
-相对 v1（event_study.py）的改动，来源是乙 2026-10-07 的核查：
+相对 v1（event_study.py）的改动，来源是 2026-10-07 的脚本核查：
 
   1. 事件窗口按**市场交易日历**定位，不按个股表的行位置切片。v1 遇到停牌、缺失、
      节假日填充行时，行位置就不再等于交易日。
@@ -24,6 +24,7 @@
 输出：data/car_event_level.csv、data/car_summary.csv（与 v1 同名，便于下游沿用）
 """
 import bisect
+import glob
 import io
 import os
 import shutil
@@ -58,15 +59,25 @@ def read_any(path):
     raise last
 
 
+def panel_files(data_dir, stem):
+    """单个文件优先；否则读按年拆分的 stem*.csv 并在调用处合并。"""
+    one = os.path.join(data_dir, stem + '.csv')
+    if os.path.exists(one):
+        return [one]
+    return sorted(glob.glob(os.path.join(data_dir, stem + '*.csv')))
+
+
 def load(data_dir):
-    need = ['market_panel.csv', 'index_panel.csv', 'analysis_table.csv']
-    for f in need:
-        if not os.path.exists(os.path.join(data_dir, f)):
-            print('[X] 缺 %s' % f)
-            return None
-    mp = read_any(os.path.join(data_dir, 'market_panel.csv'))
-    ix = read_any(os.path.join(data_dir, 'index_panel.csv'))
-    ev = read_any(os.path.join(data_dir, 'analysis_table.csv'))
+    mp_files = panel_files(data_dir, 'market_panel')
+    ix_files = panel_files(data_dir, 'index_panel')
+    evp = os.path.join(data_dir, 'analysis_table.csv')
+    if not mp_files or not ix_files or not os.path.exists(evp):
+        print('[X] 缺 market_panel*.csv、index_panel*.csv 或 analysis_table.csv')
+        return None
+    print('读入行情 %d 个文件、指数 %d 个文件' % (len(mp_files), len(ix_files)))
+    mp = pd.concat([read_any(f) for f in mp_files], ignore_index=True)
+    ix = pd.concat([read_any(f) for f in ix_files], ignore_index=True)
+    ev = read_any(evp)
     for d in (mp, ev):
         d['股票代码'] = d['股票代码'].astype(str).str.strip()
     for d in (mp, ix, ev):

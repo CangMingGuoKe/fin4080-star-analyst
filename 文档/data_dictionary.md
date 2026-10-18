@@ -5,7 +5,7 @@ The analysis table. One row = one analyst recommendation revision.
 and 108 broker short names (107 distinct legal names).
 
 Built by `clean_event_table.py` → `build_star_variable.py` → `build_broker_tier.py`.
-Raw extracts are kept unchanged in `data/ratings_20XX.csv` so the funnel can be
+Raw extracts are kept unchanged in `data/raw_ratings_20XX.csv` so the funnel can be
 re-run step by step.
 
 ## Identifiers and event timing
@@ -28,7 +28,7 @@ re-run step by step.
 | `上次同花顺评级` | The analyst's previous standardised rating for the same stock. |
 | `上次研究机构原始评级` | The previous rating in the broker's own wording. |
 | `评级调整方向` | `调高` (upgrade), `调低` (downgrade) or `维持` (reiterated). Only the first two enter the sample. |
-| `研报目标价` | Target price stated in the report. Non-missing for only 25.3% of records, and the missingness reflects a broker convention rather than random attrition: 华泰证券 94.9%, 国泰君安 76.7%, 中信证券 51.9%, 天风证券 26.1%, against 国信证券 2.8%, 民生证券 1.7%, 中泰证券 0.6% and 兴业证券 0.0%. Any test using this variable therefore selects on broker identity, so it should not be used as a broad control. |
+| `研报目标价` | Target price stated in the report. Non-missing for 30.5% of the 20,980 events (25.3% of the 520,567 raw records), and the missingness reflects a broker convention rather than random attrition: at the event level 华泰证券 92.9%, 国泰君安 90.9%, 中信证券 71.1%, 天风证券 48.1%, against 国信证券 5.3%, 民生证券 4.2%, 兴业证券 0.4% and 中泰证券 0.1%. Any test using this variable therefore selects on broker identity, so it should not be used as a broad control. |
 | `研报标题` | The research report object, serialised as an `OrderedDict` string. Parse it to reach `URL` (a PDF snapshot link), `PublishTime` (epoch seconds, which converts to Beijing time equal to `报告日` on every row sampled) and `PageRawTitle`. **The name is misleading: the plain title is not in this column.** The naming comes from the iFinD response itself rather than from the cleaning step, so it is left unchanged for traceability to the raw extract. |
 | `研报标题链接` | **The report title as plain text.** Despite its name it contains no URL, and it matches `PageRawTitle` in the column above on all 3,000 rows sampled. Use this column when a title is needed. Note that URLs are not unique per row: a 3,000-row sample holds 2,715 distinct ones, because a single report can carry ratings for several stocks or by several analysts. Events are therefore clustered within reports, which is a reason to cluster standard errors. |
 Not a column of this table: the raw extract also carries `研报`, which repeats the same
@@ -57,7 +57,7 @@ web label on every row and is therefore dropped during cleaning.
 | `报告数` | Number of rating records under this analyst name across 2009-2024. **A rough size indicator only.** The largest values run into the thousands, which no one person files, so a single name collects several people and the count is not a per-person measure. |
 | `触到覆盖起点` | 1 when the first report by the analyst falls at the coverage floor (June 2009), so their tenure can only be bounded from below, not measured. 18.8% of analysts. |
 | `资历分位` | Percentile rank of `资历` among events in the same year, the rank form of the seniority measure. |
-| `券商层级` | Broker tier: 头部 / 中部 / 中小, cut on the cumulative share of rating records after broker names are canonicalised, giving 13 / 27 / 91 of the 131 distinct houses. The two cut points are 50% and 90% of all 520,567 rating records. |
+| `券商层级` | Broker tier: 头部 / 中部 / 中小, cut on the cumulative share of rating records after broker names are canonicalised, giving 13 / 27 / 91 of the 131 distinct houses in the full rating extract (the event sample contains 108 broker short names). The two cut points are 50% and 90% of all 520,567 rating records. |
 
 ## Sample-construction flags
 

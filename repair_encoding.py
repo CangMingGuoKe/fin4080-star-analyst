@@ -39,7 +39,7 @@ NEW2OLD = {
     'events_1_all_revisions.csv': 'events_all.csv',
     'events_2_clean_sample.csv': 'events_clean.csv',
     'events_3_initiations.csv': 'events_first_coverage.csv',
-    'handover_newfortune_missing_tenure.csv': 'newfortune_missing_tenure.csv',
+    'ref_newfortune_missing_tenure.csv': 'newfortune_missing_tenure.csv',
     'raw_pull_manifest.json': 'pull_manifest.json',
 }
 for _y in range(2018, 2025):

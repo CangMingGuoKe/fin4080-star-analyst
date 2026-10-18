@@ -4,7 +4,15 @@
 !/data/ref_newfortune_coverage.xlsx
 !/data/market_panel*.csv
 !/data/index_panel*.csv
-!/data/handover_*.csv
+!/data/ref_newfortune_missing_tenure.csv
+!/data/ref_newfortune_roster_2018_2024.csv
+!/data/ref_newfortune_list.csv
+!/data/ref_analyst_tenure.csv
+!/data/ref_listing_dates.csv
+!/data/raw_pull_manifest.json
+
+# Word/WPS 锁文件
+~$*
 
 # Python 缓存
 __pycache__/

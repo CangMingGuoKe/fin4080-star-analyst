@@ -1,11 +1,11 @@
-# FIN4080 Project 10: Data Pipeline README
+# FIN4080 Project 10: Data Pipeline and Data Sources
 
 **Topic (sign-up sheet Topic 15 / Project Bank Project 10):**
 Do Investors Follow Authority? Market Reactions to Star Analyst Recommendations
 
 **Group size:** 2. **Presentation:** 27 October 2026, 15 min + 5 min Q&A.
 
-This README documents the data pipeline used to build the event sample and the
+This document describes the data pipeline used to build the event sample and the
 authority variables. It is written for the group and for the TA's data audit.
 
 ---
@@ -25,7 +25,7 @@ interface (`THS_iwencai`, the "问财" endpoint of the `iFinDPy` package).
 ## 2. Environment
 
 ```
-pip install pandas requests lxml statsmodels seaborn
+pip install pandas numpy scipy requests lxml openpyxl python-docx
 ```
 
 `iFinDPy` must already be installed and the iFinD terminal must be open.
@@ -42,7 +42,7 @@ pip install pandas requests lxml statsmodels seaborn
 | 6 | `clean_event_table.py` | steps 2, 4, 5 | `data/events_1_all_revisions.csv`, `data/events_2_clean_sample.csv`, `data/events_3_initiations.csv` |
 | 7 | `build_star_variable.py` | steps 3, 6 | `data/analysis_table.csv` |
 | 8 | `build_broker_tier.py` | step 7 | updates `data/analysis_table.csv` (adds `券商层级`) |
-| 9 | `event_study.py` | step 8 + market data | `data/car_event_level.csv`, `data/car_summary.csv` |
+| 9 | `event_study_v2.py` (v1 kept as the reviewed record) | step 8 + market data | `data/car_event_level.csv`, `data/car_summary.csv` |
 
 Step 9 is **blocked**: it needs `data/market_panel.csv` and `data/index_panel.csv`
 from the teammate responsible for market data. The required format is specified in
@@ -116,10 +116,13 @@ for 2018-2024. Alternative timing conventions are kept as separate columns
 
 1. **The New Fortune list labelled 2018 is not a valid annual industry ranking.**
    The 2018 vote was suspended after a scandal, and the page labelled 2018 is a
-   compilation of anniversary special awards. Evidence: 36% of its names appear in
-   no other year (versus 8-23% for other years), its name overlap with 2019 is
-   Jaccard 0.10 (versus 0.40-0.52 for adjacent pairs), and it matches the rating
-   data at only 3.6% versus 10-17% for every other list-year. It is the weakest
+   compilation of anniversary special awards. Evidence: 34.7% of its names appear
+   in no other year, against 8.1-17.7% for 2019-2023 (the two boundary years run
+   higher for mechanical reasons: the oldest list loses more names to retirement,
+   the newest has the most first-timers); its name overlap with 2019 is Jaccard 0.10,
+   against 0.42-0.52 for other adjacent pairs; and under the same name-and-broker
+   match used for the star variable it reaches only 4.0% of that year's events,
+   against 12.1-14.0% for every other list-year. It is the weakest
    column in the whole event-year × list-year match matrix.
    It is therefore **excluded from the star definition**, and 2018 events inherit the
    **2017** list, which is the most recent list actually in force during 2018. This
@@ -192,7 +195,7 @@ for 2018-2024. Alternative timing conventions are kept as separate columns
    in some year but file no stock ratings in the iFinD rating detail, mostly strategy,
    macro and financial engineering directions, plus the CICC analysts, whose firm has no
    records there at all. The market side cross-checked the seniority table and returned
-   the list as `data/handover_newfortune_missing_tenure.csv`; it holds 630 names once the award
+   the list as `data/ref_newfortune_missing_tenure.csv`; it holds 630 names once the award
    categories are counted too. None of them appears in the event table, so the event
    sample is unaffected either way.
 
@@ -201,7 +204,7 @@ for 2018-2024. Alternative timing conventions are kept as separate columns
 - Extracted: 2026-10-05. iFinD query wording is brittle: a single space changes the
   parse. `2023年机构评级明细` returns nothing; `2023年 机构评级明细` returns 102,273
   rows. Each annual pull is therefore attempted with several wordings.
-- Raw extracts are kept unchanged as `data/ratings_20XX.csv`; all cleaning happens
+- Raw extracts are kept unchanged as `data/raw_ratings_20XX.csv`; all cleaning happens
   in step 6, so the funnel can be re-run and audited step by step.
 - Column names in the raw files carry a window suffix such as
   `最新报告日期[20180101-20181231]`; the cleaning step strips it.

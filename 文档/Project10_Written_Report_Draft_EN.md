@@ -57,7 +57,7 @@ The final sample contains 20,980 events for 2,683 stocks and 2,171 analysts, wit
 
 **Star.** `star` equals one if the analyst appears in the New Fortune Best Analyst list for the event year. The 2018 vote was suspended, and the page labelled 2018 is a compilation of anniversary awards rather than an annual industry ranking. It is excluded, and 2018 events inherit the 2017 list, which was the list in force during 2018. The evidence is that 34.7% of the 2018 page's names appear in no other year, against 8.1-17.7% for 2019-2023; its name overlap with 2019 is Jaccard 0.10, against 0.42-0.52 for other adjacent pairs; and it matches only 4.0% of that year's events under the name-and-broker rule, against 12.1-14.0% for other list years. The in-force rule restores 2018 to 13.4%. Across the sample, 2,774 events (13.2%) have `star = 1`.
 
-**Seniority.** Seniority is the number of years from the analyst's first report to the event date, divided by 365.25. The first-report date comes from a separate iFinD pull that reaches back to June 2009, the source floor. For analysts whose first report falls at that floor (18.8%), the value is a lower bound and a flag records the censoring. The variable is keyed on analyst name, so namesakes share a first-report date.
+**Seniority.** Seniority is the number of years from the analyst's first report to the report date, divided by 365.25. The first-report date comes from a separate iFinD pull that reaches back to June 2009, the source floor. For events whose report date is not a trading day, the event day is at most 10 calendar days later; an event-day variant is stored in `car_event_level.csv`. The two measures differ by at most 0.027 years and have a rank correlation of 0.9999999. For analysts whose first report falls at that floor (18.8%), the value is a lower bound and a flag records the censoring. The variable is keyed on analyst name, so namesakes share a first-report date.
 
 **Broker tier.** No official research-department tier list exists. The CSRC classification rates the securities firm as a whole, and the New Fortune list is already used for `star`, so neither is suitable. The tier is a proxy built from research output. Each rating record is assigned to a stable broker identity, with renames and mergers resolved into one entity named after the name in force at the start of the sample. For example, 国泰君安 remains the identity until the 2025 merger with 海通证券, after which the entity becomes 国泰海通; 安信证券 remains the identity until its 2024 rename to 国投证券. Event-level display uses the name in force in that year, so a 2018 国泰君安 report is never written as 国泰海通.
 
@@ -214,7 +214,7 @@ Star analyst recommendations have market impact, but the impact is not matched b
 | Variable | Definition |
 |---|---|
 | `star` | 1 if the analyst is in the New Fortune list of the event year, with 2018 inheriting the 2017 in-force list |
-| `资历` | Years from the analyst's first report to the event date, with a flag for the June 2009 floor |
+| `资历` | Years from the analyst's first report to the report date, with a flag for the June 2009 floor |
 | `券商层级` | 头部 / 中部 / 中小, cut on the cumulative share of rating records at 50% and 90%; 13 / 26 / 85 of 124 houses |
 | `CAR` | Sum of daily market-adjusted returns over the stated window, in percentage points |
 | `AV` | Log volume on the event day minus mean log volume over [-120,-11], requiring 60 valid positions |

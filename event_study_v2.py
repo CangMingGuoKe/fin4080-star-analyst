@@ -174,11 +174,15 @@ def run(data_dir, align='next'):
             continue
         ar_map, lv_map = market[code]
         pos = cal_pos[ed]
+        first = pd.to_datetime(e.get('首报日'), errors='coerce')
+        sen_event = ((pd.to_datetime(ed, format='%Y%m%d') - first).days / 365.25
+                     if pd.notna(first) else np.nan)
         rec = {'事件序号': int(idx), '股票代码': code, '报告日': e['最新报告日期'],
                '事件交易日': ed, '对齐方式': align,
                '研究员姓名': e.get('研究员姓名'), '研究机构简称': e.get('研究机构简称'),
                '评级调整方向': e.get('评级调整方向'), 'star': e.get('star'),
-               '资历': e.get('资历'), '资历分位': e.get('资历分位'),
+               '资历': e.get('资历'), '资历_事件日': sen_event,
+               '资历分位': e.get('资历分位'),
                '券商层级': e.get('券商层级'), '触到覆盖起点': e.get('触到覆盖起点')}
         av, nb = abnormal_volume(lv_map, cal, pos, ed)
         rec['AV'] = av

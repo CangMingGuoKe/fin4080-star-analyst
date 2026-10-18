@@ -106,7 +106,7 @@ Three proxies for analyst authority, all stored as columns on `analysis_table.cs
 | Variable | Definition | Source |
 |----------|-----------|--------|
 | `star` | 1 if the analyst appears in the New Fortune Best Analyst list for that year | external list |
-| `资历` | years from the first report by the analyst to the event date, back to the June 2009 source floor | own data |
+| `资历` | years from the first report by the analyst to the report date, back to the June 2009 source floor | own data |
 | `券商层级` | 头部 / 中部 / 中小: 13 / 26 / 85 houses, cut on the cumulative share of rating records | own data |
 
 `star` is defined for all 20,980 events; 2,774 of them (13.2%) are `star = 1`.

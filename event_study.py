@@ -49,7 +49,7 @@ def load():
     for f in need:
         p = os.path.join(DATA, f)
         if not os.path.exists(p):
-            print('[X] 缺 %s，等乙把数据放进 data/ 再跑' % f)
+            print('[X] 缺 %s，行情数据放进 data/ 后再跑' % f)
             return None
     mp = pd.read_csv(os.path.join(DATA, 'market_panel.csv'), dtype={'股票代码': str, '日期': str})
     ix = pd.read_csv(os.path.join(DATA, 'index_panel.csv'), dtype={'日期': str})

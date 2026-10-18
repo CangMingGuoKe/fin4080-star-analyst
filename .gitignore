@@ -17,6 +17,7 @@
 !/data/forecast_error_event.csv
 !/data/forecast_error_summary.csv
 !/data/forecast_pull_manifest.json
+!/data/heterogeneity_summary.csv
 
 # Word/WPS 锁文件
 ~$*

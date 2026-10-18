@@ -44,6 +44,13 @@ Read together, stars move prices and are modestly more profitable to follow at s
 horizons, but their earnings forecasts are not more accurate. The evidence is closer
 to the influence explanation, although it does not rule out an information component.
 
+5. **Asymmetry and broker tier.** Formal interaction models with stock-clustered
+   standard errors show that the star premium differs between upgrades and
+   downgrades at CAR[-1,+5] (p=0.023) and abnormal volume (p=0.041). The upgrade
+   premium is concentrated in top-tier brokers, but the top-versus-mid difference is
+   not statistically significant; the small-tier group has almost no star events
+   (4 upgrades, 0 downgrades), so it cannot be estimated.
+
 **The one-sentence story.** Stars move the market, but the evidence does not show that
 they are better forecasters; the pattern fits influence better than information.
 
@@ -115,6 +122,7 @@ scripts and the `data/` directory, is in the repository root.
 | `accuracy_test.py` | 3/6/12-month direction-adjusted returns and hit rates after each event |
 | `pull_forecast.py` | pulls analyst-level EPS forecasts and realised annual EPS from iFinD |
 | `forecast_error.py` | matches each event's own EPS forecast to realised EPS and tests star versus non-star |
+| `heterogeneity_test.py` | interaction models for direction and broker tier, with stock-clustered errors |
 | `ifind_probe.py` | one-off, checks that the iFinD account can reach the API |
 | `make_excel_workbook.py` | builds the seven-sheet workbook of the raw extracts |
 | `make_coverage_table.py` | builds the New Fortune coverage table, `data/ref_newfortune_coverage.xlsx` |
@@ -142,6 +150,7 @@ scripts and the `data/` directory, is in the repository root.
 | `ref_actual_eps.csv` | realised annual basic EPS, 2018-2024 | yes |
 | `forecast_error_event.csv`, `forecast_error_summary.csv` | earnings forecast error, event level and summary | yes |
 | `forecast_pull_manifest.json` | query wording and row counts for the forecast pull | yes |
+| `heterogeneity_summary.csv` | direction and tier interaction estimates | yes |
 
 **In the folder but deliberately not in the repository**: the instructor's handouts
 them all sit in `课程材料/` (`Topic details.pdf`, `FIN4080_CSMAR.pdf`, `FIN4080_TA_Data.pdf`,

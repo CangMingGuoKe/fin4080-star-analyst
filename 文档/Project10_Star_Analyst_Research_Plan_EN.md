@@ -89,10 +89,18 @@ Three proxies, all stored as columns on the analysis table:
 |---|---|---|
 | `star` | 1 if the analyst is in the New Fortune Best Analyst list of the event year, with 2018 inheriting the 2017 list | external list |
 | `资历` (seniority) | years from the first report by the analyst to the event date | iFinD, back to June 2009 |
-| `券商层级` (broker tier) | 头部 / 中部 / 中小, cut on the cumulative share of rating records after broker names are canonicalised | own data |
+| `券商层级` (broker tier) | 头部 / 中部 / 中小, cut on the cumulative share of rating records after broker names are canonicalised; 13 / 26 / 85 of 124 houses. Stable identities use the name in force at the start of the sample; later names are display-only | own data |
 
 `star = 1` for 2,774 of 20,980 events (13.2%), and the share is stable across years:
 13.4%, 14.5%, 13.5%, 13.6%, 13.6%, 11.9%, 11.7% for 2018-2024.
+
+**Broker identities over time.** Renames and mergers are resolved into one stable
+identity per research entity, named after the name in force at the start of the sample:
+国泰君安 (not 国泰海通 until 2025), 安信证券 (not 国投证券 until 2024), 国联证券 (not
+国联民生 until 2025), 华菁证券 (not 华兴证券 until 2021), 新时代证券 (not 诚通证券 until
+2022), 联讯证券 (not 粤开证券 until 2020), 财富证券 (not 财信证券 until 2020). Event-level
+display uses the in-year name, so a 2018 Guotai Junan report is never written as Guotai
+Haitong. The tier is built on the stable identities.
 
 **How the star variable handles the 2018 gap.** The New Fortune vote was suspended in
 2018, and the page labelled 2018 on the public source is a compilation of anniversary
@@ -151,6 +159,11 @@ main board versus ChiNext and STAR; excluding events that coincide with an earni
 announcement. Alternative timing conventions for the star variable are already stored
 as `star_same`, `star_month` and `star_lag1`.
 
+Already implemented: a suspension robustness check that drops events with a suspension
+day in the window, a backward-looking rolling tier, and stock-clustered errors in the
+interaction models. Still to do: limit-hit and ST filters, main-board/ChiNext splits,
+and earnings-announcement overlap.
+
 Standard errors should be clustered. The 2,715 distinct report URLs behind a 3,000-event
 sample show that one report can carry ratings for several stocks or for several analysts,
 so observations are not independent within a report. Clustering at the report level, and
@@ -172,31 +185,64 @@ index series. The required file format is specified in `行情数据交付说明
 
 ## 10. Timeline
 
-The presentation is on 27 October 2026 and roughly one effective week is available, so
-the work is split into a scatter phase and a sprint week.
+Status as of 18 October: the sample, authority variables, announcement results, drift,
+accuracy, forecast error, direction and tier interactions, suspension robustness and the
+rolling-tier robustness are done. The remaining work is clustered standard errors for the
+event-study and accuracy tables, limit-hit and ST robustness, the three main figures,
+slides and rehearsal.
 
-Before 19 October, four half-hour tasks that unblock everything else: confirm the iFinD
-interface, install the missing Python packages, start collecting the New Fortune list,
-confirm the written-report deadline with the TA.
+19-20 October: clustered errors, limit-hit and ST robustness.
+21-22 October: three main figures and the data appendix.
+23-24 October: slides, with one owner per half.
+25 October: first timed rehearsal.
+26 October: second rehearsal and freeze.
+27 October: presentation, 15 minutes plus 5 minutes of Q&A.
 
-Sprint week 20-26 October: pull and clean the data (20-21), main results (22-23),
-robustness and heterogeneity (24), slides (25), rehearsal with timing (26).
+Survival rules: slides freeze on 25 October; rehearse twice with a timer and cut content
+rather than speed up delivery.
 
-Survival rules: main results must exist by 23 October, or the sample is cut to 20 stocks
-until the pipeline runs end to end; slides freeze on 25 October; rehearse twice with a
-timer and cut content rather than speed up delivery.
+## 11. Presentation and written report
 
-## 11. Slide outline (maximum 15)
+### 11.1 Slide outline (maximum 15)
 
-Hook with a concrete case; institutional background on why China; the Milgram-to-market
-mechanism; the four research questions and the two competing hypotheses; **the mapping
-from each hypothesis to the data that can test it**; **the research pipeline as a flow
-chart**; data sources and sample construction rules; three results slides; heterogeneity;
-robustness; conclusion; extensions; appendix and Q&A backup.
+| Slide | Content | What it must show |
+|---|---|---|
+| 1 | Opening case | One concrete event; no self-introduction |
+| 2 | Research question and why China | Retail turnover, T+1, price limits, New Fortune |
+| 3 | Two hypotheses and three tests | Information vs influence; announcement, drift, accuracy |
+| 4 | Data and sample | iFinD; 20,980 revisions; cleaning funnel |
+| 5 | Authority variables | star, seniority, broker tier; sample-period identities and in-year names |
+| 6 | Empirical design | Windows, CAR, abnormal volume, drift, holding returns, 80% validity rule |
+| 7 | Q1: announcement | Star upgrades vs downgrades, CAR and volume |
+| 8 | Q2: drift | +2 to +250 path; downgrade underperformance then reversal |
+| 9 | Q3: accuracy | 6/12-month holding returns and EPS forecast error |
+| 10 | Q4: asymmetry and tier | Interaction models; top-tier upgrade premium |
+| 11 | Robustness | Suspension drop, clustering, alternative star definitions, rolling tier |
+| 12 | Interpretation | Short-run information, long-run following; career concerns |
+| 13 | Conclusion | Three claims and implications |
+| 14 | Backup | Variable definitions, data sources, extra tables |
 
-Two hard requirements from the instructor's feedback on earlier groups: **no limitations
-on the slides** (they belong in the written report), and **show the process and the logic
-chain, not only the final result**.
+Two hard requirements from the instructor's feedback: **no limitations on the slides**
+(they belong in the written report), and **show the process and the logic chain, not only
+the final result**. Slides 3, 4 and 6 carry the process; slides 7-10 each answer one
+assigned question; slide 11 is the robustness backup.
+
+### 11.2 Written report outline
+
+1. Abstract: question, data, three tests, one-sentence conclusion.
+2. Introduction: authority in markets, Milgram framing, contribution.
+3. Literature and hypotheses: information vs influence; star-analyst literature; H1-H4.
+4. Data: iFinD source, cleaning funnel, authority variables, market data, descriptives.
+5. Method: event study, drift, holding returns, forecast error, interaction models.
+6. Results: one subsection per assigned question, economic magnitudes first.
+7. Robustness: suspension, clustering, alternative star definitions, rolling tier, 2018.
+8. Discussion: short-run information vs long-run following; career concerns; why upgrades
+   and downgrades differ.
+9. Limitations: data source, ST, limit-hits, forecast-error coverage, tier proxy.
+10. Conclusion, references, appendix with variable definitions and the cleaning funnel.
+
+The report carries the limitations and the one-page data-provenance statement that the
+slides omit.
 
 ## 12. Anticipated questions
 

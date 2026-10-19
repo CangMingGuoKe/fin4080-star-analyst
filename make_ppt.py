@@ -357,37 +357,45 @@ def build():
 
     # ---------------------------------------------------------------- slide 7
     s = new_slide(prs)
-    header(s, 'FINDING 1 · DO STAR REVISIONS MOVE THE MARKET?',
-           'Star upgrades earn a larger premium.\nStar downgrades do not.',
+    header(s, 'FINDING 1 · Q1 · RETURNS AND VOLUME',
+           'Star upgrades move both price and volume.\nStar downgrades move neither.',
            7, 'FINDING 1')
-    pic = s.shapes.add_picture(os.path.join(FIG, 'fig1_car.png'),
-                               Inches(0.7), Inches(1.9), width=Inches(7.05),
-                               height=Inches(4.55))
-    pic._element.nvPicPr.cNvPr.set('descr',
-        'Bar chart of star minus non-star CAR for upgrades and downgrades')
-    cards = [
-        ('+0.37 pp', 'CAR[-1,+1] (t = 2.17)', RUST),
-        ('+0.99 pp', 'CAR[-5,+5] (t = 3.55)', RUST),
-        ('+0.053', 'AV, log points (t = 2.85)', RUST),
+    add_text(s, 2.0, 1.78, 4.8, 0.22, 'UPGRADES', size=10, bold=True, color=GRAY,
+             align=PP_ALIGN.CENTER, letter_spacing=0.8)
+    add_text(s, 7.0, 1.78, 4.8, 0.22, 'DOWNGRADES', size=10, bold=True, color=GRAY,
+             align=PP_ALIGN.CENTER, letter_spacing=0.8)
+    cells = [
+        (2.0, 2.1, 'UPGRADE · CAR[-1,+1]', '+0.37 pp',
+         'star minus non-star, t = 2.17', RUST),
+        (7.0, 2.1, 'UPGRADE · ABNORMAL VOLUME', '+0.053',
+         'log points, t = 2.85', RUST),
+        (2.0, 4.2, 'DOWNGRADE · CAR[-1,+1]', '+0.06',
+         't = 0.35, n.s.', NAVY),
+        (7.0, 4.2, 'DOWNGRADE · ABNORMAL VOLUME', '-0.011',
+         'log points, t = -0.53, n.s.', NAVY),
     ]
-    for i, (big, body, accent) in enumerate(cards):
-        y = 1.95 + i * 1.4
-        card(s, 7.9, y, 4.7, 1.35, 'STAR MINUS NON-STAR', big=big, body=body,
-             accent=accent, big_size=30, body_size=9.5)
-    add_text(s, 7.9, 6.28, 4.7, 0.55,
-             'Downgrades: +0.06 (t=0.35), -0.19 (t=-0.85), -0.21 (t=-0.74).\n'
-             'Same-stock-same-day collapse: +0.43 / +0.61 / +1.06; AV +0.059.',
-             size=9, color=GRAY, line_spacing=1.05)
-    source(s, 'Source: iFinD; authors\' calculations. Market-adjusted total returns. '
-              'Bars are star minus non-star; whiskers are 95% CI.')
-    notes(s, '明星上调三日多 0.37 个百分点，十一日多 0.99，异常成交量高 0.053 个对数点。'
-             '经济幅度不大，但估计精确。明星下调三个窗口都不显著。'
-             '同股同日先取均值，结果更大，说明不是同日重复事件堆出来的。')
+    for x, y, lab, big, body, accent in cells:
+        add_rect(s, x, y, 4.8, 1.8, fill=LIGHT)
+        add_rect(s, x, y, 4.8, 0.06, fill=accent)
+        add_text(s, x + 0.22, y + 0.16, 4.35, 0.22, lab, size=10, bold=True,
+                 color=GRAY, letter_spacing=0.5)
+        add_text(s, x + 0.22, y + 0.48, 4.35, 0.7, big, size=38, bold=True,
+                 color=accent, line_spacing=1.0)
+        add_text(s, x + 0.22, y + 1.25, 4.35, 0.4, body, size=10.5, color=NAVY,
+                 line_spacing=1.02)
+    add_text(s, 0.7, 6.3, 11.9, 0.4,
+             'Price and volume move together, and only for upgrades.',
+             size=14, bold=True, color=RUST)
+    source(s, 'Source: iFinD; authors\' calculations. All cells are star minus non-star.')
+    notes(s, 'Q1 有两半：收益和成交量；每一半又要分上调和下调。明星上调的 CAR 是 +0.37，'
+             't=2.17；异常成交量是 +0.053 个对数点，t=2.85，约等于成交量高 5%。'
+             '明星下调的 CAR 是 +0.06，t=0.35；成交量是 -0.011，t=-0.53，两个都不显著。'
+             '所以 Q1 的答案是四个格子里只有上调的两个格子动了。')
 
     # ---------------------------------------------------------------- slide 8
     s = new_slide(prs)
-    header(s, 'FINDING 1 · WHERE DOES THE PREMIUM COME FROM?',
-           'The short-window premium is concentrated in price-limit events.',
+    header(s, 'FINDING 1 · Q1 · WHERE DOES THE CAR PREMIUM COME FROM?',
+           'The CAR premium is concentrated in price-limit events.',
            8, 'FINDING 1')
     rows = [
         ('Window', 'Full sample', 'Excluding limit-hit events'),
@@ -400,8 +408,7 @@ def build():
     table = tbl_shape.table
     table.first_row = False
     table.horz_banding = False
-    widths = [2.1, 2.9, 3.15]
-    for i, w in enumerate(widths):
+    for i, w in enumerate([2.1, 2.9, 3.15]):
         table.columns[i].width = Inches(w)
     for r, row in enumerate(rows):
         table.rows[r].height = Inches(0.78 if r else 0.9)
@@ -419,9 +426,9 @@ def build():
                 cell.fill.fore_color.rgb = WHITE if r % 2 else LIGHT
             tf = cell.text_frame
             tf.word_wrap = True
-            p = tf.paragraphs[0]
-            p.alignment = PP_ALIGN.LEFT if c == 0 else PP_ALIGN.CENTER
-            run = p.add_run()
+            para = tf.paragraphs[0]
+            para.alignment = PP_ALIGN.LEFT if c == 0 else PP_ALIGN.CENTER
+            run = para.add_run()
             run.text = text
             run.font.name = FONT
             run.font.size = Pt((13 if r == 0 else 13.5) * BODY_SCALE)
@@ -430,51 +437,100 @@ def build():
     add_text(s, 9.2, 2.05, 3.4, 1.0,
              'Removes 8.7% to 16.0% of upgrade events.',
              size=13, color=NAVY, line_spacing=1.08)
-    add_text(s, 9.2, 3.2, 3.4, 0.9,
-             'The 3-day and 5-day premiums lose significance. '
-             'The 11-day premium remains.',
+    add_text(s, 9.2, 3.15, 3.4, 1.1,
+             'The 3-day and 5-day CAR premiums lose significance. '
+             'The 11-day CAR premium remains.',
              size=11.5, color=GRAY, line_spacing=1.08)
+    add_text(s, 9.2, 4.45, 3.4, 0.55,
+             'This check covers CAR, not abnormal volume.',
+             size=10, color=GRAY, italic=True)
     add_text(s, 0.7, 5.95, 11.9, 0.65,
-             'Only the 11-day window survives. We do not call the 3-day result robust to price limits.',
+             'Only the 11-day CAR window survives. We do not call the 3-day CAR result robust to price limits.',
              size=12, bold=True, color=RUST, line_spacing=1.05)
-    notes(s, '剔除窗口内出现涨跌停的事件：三日 0.37 降到 0.21，不显著；五日 0.54 降到 0.20，不显著；'
-             '十一日 0.99 还剩 0.65，仍显著。短窗口显著性不能说是稳健的。这是边界，不是藏起来的失败。')
+    source(s, 'Source: iFinD; authors\' calculations. Market-adjusted CAR.')
+    notes(s, '这一页只检验 CAR 的边界，不检验成交量。剔除窗口内出现涨跌停的事件：三日 0.37 降到 0.21，'
+             '不显著；五日 0.54 降到 0.20，不显著；十一日 0.99 还剩 0.65，仍显著。'
+             '短窗口 CAR 显著性不能说是稳健的。成交量没有做同样的剔除，页面上要讲清楚。')
 
     # ---------------------------------------------------------------- slide 9
     s = new_slide(prs)
-    header(s, 'FINDING 2 · DOES THE REACTION PERSIST?',
-           'Star downgrades keep falling for three months,\nthen partially reverse.',
+    header(s, 'FINDING 2 · Q2 · DRIFT OR REVERSAL?',
+           'Star downgrades drift down, then reverse.\nStar upgrades do not drift.',
            9, 'FINDING 2')
     pic = s.shapes.add_picture(os.path.join(FIG, 'fig2_drift.png'),
                                Inches(0.7), Inches(1.9), width=Inches(6.55),
                                height=Inches(4.25))
     pic._element.nvPicPr.cNvPr.set('descr',
         'Bar chart of post-announcement drift for upgrades and downgrades')
-    cards = [
-        ('-1.64 pp', 'CAR +2 to +60  (p = 0.002)'),
-        ('-0.76 pp', 'CAR +2 to +120  (p = 0.32)'),
-        ('+1.53 pp', 'CAR +2 to +250  (p = 0.18)'),
+    add_text(s, 7.5, 1.78, 5.1, 0.22, 'STAR MINUS NON-STAR CAR', size=9.5,
+             bold=True, color=GRAY, letter_spacing=0.6)
+    rows = [
+        ('Horizon', 'Downgrade', 'Upgrade'),
+        ('+2 to +60', '-1.64 (p=.002)', '-0.07 (p=.90)'),
+        ('+2 to +120', '-0.76 (p=.32)', '+0.98 (p=.16)'),
+        ('+2 to +250', '+1.53 (p=.18)', '+0.76 (p=.48)'),
     ]
-    for i, (big, body) in enumerate(cards):
-        y = 1.95 + i * 1.42
-        card(s, 7.5, y, 5.1, 1.35, 'STAR MINUS NON-STAR', big=big, body=body,
-             accent=RUST if i < 2 else NAVY, big_size=28, body_size=10)
-    add_text(s, 7.5, 6.25, 5.1, 0.3,
-             'Upgrades: -0.07 / +0.98 / +0.76, all insignificant.',
-             size=11, color=GRAY)
-    source(s, 'Source: iFinD; authors\' calculations. Market-adjusted CAR from +2. '
-              'Bars are star minus non-star; whiskers are 95% CI.')
-    notes(s, '漂移从 +2 开始算，不是公告日反应本身。明星下调前 60 个交易日继续跑输 1.64 个百分点，'
-             '统计显著；到 120 日缩小到 0.76，不显著；到 250 日变成 +1.53，也不显著。'
-             '这个形态更像延迟反应之后的部分反转。明星上调没有差异化漂移。')
+    tbl_shape = s.shapes.add_table(4, 3, Inches(7.5), Inches(2.05),
+                                   Inches(5.1), Inches(3.2))
+    table = tbl_shape.table
+    table.first_row = False
+    table.horz_banding = False
+    for i, w in enumerate([1.4, 1.85, 1.85]):
+        table.columns[i].width = Inches(w)
+    for r, row in enumerate(rows):
+        table.rows[r].height = Inches(0.8)
+        for c, text in enumerate(row):
+            cell = table.cell(r, c)
+            cell.margin_left = Inches(0.08)
+            cell.margin_right = Inches(0.06)
+            cell.margin_top = Inches(0.04)
+            cell.margin_bottom = Inches(0.04)
+            cell.vertical_anchor = MSO_ANCHOR.MIDDLE
+            cell.fill.solid()
+            if r == 0:
+                cell.fill.fore_color.rgb = NAVY
+            else:
+                cell.fill.fore_color.rgb = WHITE if r % 2 else LIGHT
+            tf = cell.text_frame
+            tf.word_wrap = True
+            para = tf.paragraphs[0]
+            para.alignment = PP_ALIGN.LEFT if c == 0 else PP_ALIGN.CENTER
+            run = para.add_run()
+            run.text = text
+            run.font.name = FONT
+            run.font.size = Pt((12.5 if r == 0 else 13.5) * BODY_SCALE)
+            run.font.bold = (r == 0 or c > 0)
+            if r == 0:
+                run.font.color.rgb = WHITE
+            elif c == 1:
+                run.font.color.rgb = RUST
+            else:
+                run.font.color.rgb = NAVY
+    add_text(s, 7.5, 5.4, 5.1, 0.62,
+             'Downgrades: -1.64 at +60, then +1.53 at +250.\n'
+             'Upgrades: no differential drift.',
+             size=11.5, bold=True, color=RUST, line_spacing=1.05)
+    add_text(s, 7.5, 6.08, 5.1, 0.6,
+             'Consistent with delayed following, not proof of over-following: '
+             'the downgrade announcement reaction itself is not larger.',
+             size=8.5, color=GRAY, italic=True, line_spacing=1.05)
+    source(s, 'Source: iFinD; authors\' calculations. Market-adjusted CAR from +2.')
+    notes(s, 'Q2 要同时回答上调和下调。下调在 +2 到 +60 继续跑输 1.64，p=0.002；'
+             '到 +120 缩小到 0.76，不显著；到 +250 变成 +1.53，也不显著。'
+             '上调三个窗口都不显著。这个形态更像延迟反应之后的部分反转，不能说是过度反应，'
+             '因为下调的公告日反应本身并不比非明星大。')
 
     # ---------------------------------------------------------------- slide 10
     s = new_slide(prs)
-    header(s, 'FINDING 3 · ARE STARS MORE ACCURATE?',
-           'Stars are not better forecasters.\nTheir absolute errors are larger in every cell.',
+    header(s, 'FINDING 3 · Q3 · MORE ACCURATE OR JUST INFLUENTIAL?',
+           'Stars show a short-lived return edge,\nnot better forecasts.',
            10, 'FINDING 3')
+    add_text(s, 0.7, 1.72, 6.2, 0.22, 'HOLDING RETURNS (STAR MINUS NON-STAR)',
+             size=9.5, bold=True, color=GRAY, letter_spacing=0.5)
+    add_text(s, 7.3, 1.72, 5.2, 0.22, 'FORECAST ERRORS (STAR MINUS NON-STAR)',
+             size=9.5, bold=True, color=GRAY, letter_spacing=0.5)
     pic = s.shapes.add_picture(os.path.join(FIG, 'fig3_accuracy.png'),
-                               Inches(0.7), Inches(1.9), width=Inches(6.35),
+                               Inches(0.7), Inches(1.95), width=Inches(6.35),
                                height=Inches(4.12))
     pic._element.nvPicPr.cNvPr.set('descr',
         'Bar chart of direction-adjusted holding returns for upgrades and downgrades')
@@ -487,25 +543,28 @@ def build():
     for x, y, lab, big, pval in grid:
         add_rect(s, x, y, 2.5, 1.4, fill=LIGHT)
         add_rect(s, x, y, 2.5, 0.05, fill=RUST)
-        add_text(s, x + 0.15, y + 0.14, 2.2, 0.2, lab, size=10.5, bold=True, color=GRAY,
-                 letter_spacing=0.5)
+        add_text(s, x + 0.15, y + 0.14, 2.2, 0.2, lab, size=10.5, bold=True,
+                 color=GRAY, letter_spacing=0.5)
         add_text(s, x + 0.15, y + 0.38, 2.2, 0.5, big, size=28, bold=True, color=RUST)
         add_text(s, x + 0.15, y + 1.0, 2.2, 0.25, pval, size=10.5, color=GRAY)
-    add_text(s, 7.3, 5.2, 5.2, 1.0,
-             'Holding returns: +1.51 at 6m for upgrades (p = 0.048); '
-             '+1.78 at 3m for downgrades (p = 0.001). No 12m persistence.',
-             size=10.5, color=NAVY, line_spacing=1.06)
-    source(s, 'Source: iFinD; authors\' calculations. Forecast error is the absolute error '
-              'as a percentage of the event-day price, winsorised at 1/99.')
-    notes(s, '持有收益只在短期站得住：上调 6 个月多 1.51，下调 3 个月多 1.78，12 个月都不显著。'
-             '预测误差方向相反，四个格子明星都更大，FY1 下调差 0.94，p 小于 0.001。'
-             '符号误差没有显著差异，所以不是更乐观，而是更分散。'
-             '明星可能覆盖更难的公司，这个选择效应控制不了，只当描述性证据。')
+    add_text(s, 7.3, 5.2, 5.2, 1.2,
+             'Holding returns: +1.51 at 6m (up, p=.048); +1.78 at 3m (down, p=.001); '
+             'no 12m persistence.\nForecast errors: larger in all four cells.',
+             size=9.5, color=NAVY, line_spacing=1.05)
+    add_text(s, 0.7, 6.3, 11.9, 0.35,
+             'A short-lived return edge, not a stable accuracy advantage.',
+             size=12, bold=True, color=RUST)
+    source(s, 'Source: iFinD; authors\' calculations. Holding returns market-adjusted; '
+              'forecast error winsorised at 1/99.')
+    notes(s, 'Q3 有两个准确度指标，必须同时回答。持有收益短期支持明星：上调 6 个月多 1.51，p=0.048；'
+             '下调 3 个月多 1.78，p=0.001；但 12 个月都不显著。预测误差方向相反，四个格子明星都更大，'
+             'FY1 下调差 0.94，p 小于 0.001。所以答案是短期有一点持有收益优势，但没有稳定的预测准确度优势。'
+             '符号误差没有显著差异，不是更乐观，而是更分散。')
 
     # ---------------------------------------------------------------- slide 11
     s = new_slide(prs)
-    header(s, 'FINDING 4 · IS AUTHORITY ONE PREMIUM OR MANY?',
-           'The premium is one-sided.\nTier is not a stable channel.',
+    header(s, 'FINDING 4 · Q4 · DOES THE PREMIUM VARY?',
+           'The premium is one-sided.\nTier differences are not stable.',
            11, 'FINDING 4')
     add_text(s, 0.7, 1.95, 6.0, 0.24, 'DIRECTION', size=10, bold=True, color=RUST,
              letter_spacing=0.8)
@@ -537,14 +596,17 @@ def build():
         if note:
             add_text(s, 7.0, yy + 0.42, 5.5, 0.25, note, size=10.5, color=NAVY)
         yy += 1.15
-    add_text(s, 0.7, 6.0, 11.9, 0.28,
-             'Regression estimates with controls; raw differences are in Finding 1.',
-             size=8.5, color=GRAY)
-    add_text(s, 0.7, 6.32, 11.9, 0.45,
+    add_text(s, 0.7, 5.9, 11.9, 0.55,
+             'Regression estimates with controls; raw differences are in Finding 1.\n'
+             'Small tier: 2 star upgrades, 0 star downgrades; excluded from interaction models.',
+             size=8.5, color=GRAY, line_spacing=1.1)
+    add_text(s, 0.7, 6.5, 11.9, 0.4,
              'Tier is descriptive, not causal. Star and tier are highly collinear.',
              size=13, bold=True, color=RUST)
-    notes(s, '方向不对称在五日窗口和成交量上最清楚。层级看起来有故事，但滚动层级 23.1% 的事件换层后，'
-             '头部上调还在，中部下调掉到 0.33，不显著。层级只能当描述，不能当因果渠道。')
+    notes(s, 'Q4 有两半：方向和券商层级。方向是不对称的，五日窗口上调 +0.58，'
+             '和下调的交互 -0.70，成交量交互 -0.057，都显著。层级看起来有故事，但滚动层级 23.1% 的事件换层后，'
+             '头部上调还在，中部下调掉到 0.33，不显著。小层级只有 2 条明星上调、0 条下调，无法估计。'
+             '所以层级只能当描述，不能当因果渠道。')
 
     # ---------------------------------------------------------------- slide 12
     s = new_slide(prs)
@@ -664,7 +726,8 @@ def build():
         add_rich(s, x, 2.35, 3.7, 3.7, paras)
     add_line(s, 0.7, 6.15, 12.63, 6.15, color=MID, width=0.75)
     add_text(s, 0.7, 6.35, 11.9, 0.5,
-             'Q&A map: data source, event definition, endogeneity, alternatives, multiple testing.',
+             'Q&A map: Q1 7-8; Q2 9; Q3 10; Q4 11. Data source, event definition, '
+             'endogeneity, alternatives, multiple testing.',
              size=9.5, color=GRAY)
     notes(s, '答辩备份，不主动讲。被问到数据来源、变量定义、多重检验时翻到这一页。')
 

@@ -113,6 +113,7 @@ scripts and the `data/` directory, is in the repository root.
 | `文档/Project10_Written_Report_Draft_EN.md` and its `.docx` | the written report draft: four questions, three figures and the data-provenance appendix |
 | `文档/Project10_陈述幻灯片设计稿_20261018.md` and its `.docx` | the slide-by-slide plan: sample-based structure, English slide copy, timing, speaker split and Q&A preparation |
 | `文档/Project10_Star_Analyst_Deck_20261027.pptx` and its `.pdf` | the editable 15-slide deck and its PDF export, built from the design document |
+| `文档/Project10_四个Findings的逻辑底稿_20261019.md` and its `.docx` | the Chinese logic and speaking backup for the four findings: sub-parts, interpretation, caveats and Q&A defence |
 | `文档/figures/` | the three original figures used in the report and slides |
 | `文档/cluster_robustness_note.md` | method, clustered results and caveats for the inference check |
 | `文档/replication_note.md` | independent replication: method, differences and the first-run audit trail |

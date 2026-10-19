@@ -215,7 +215,7 @@ def build():
 
     # ---------------------------------------------------------------- slide 3
     s = new_slide(prs)
-    header(s, 'MECHANISM AND HYPOTHESES',
+    header(s, 'ONE QUESTION, FOUR TESTS',
            'Two channels, same announcement reaction,\ndifferent long-run paths.',
            3, 'MECHANISM')
     chains = [
@@ -253,6 +253,9 @@ def build():
         yy += 0.72
     add_text(s, 7.0, 5.15, 5.65, 0.5, 'H1 cannot separate the channels.\nH2 and H3 do the work.',
              size=15, bold=True, color=RUST, line_spacing=1.05)
+    add_text(s, 0.7, 5.75, 11.9, 0.3,
+             'Q1 to Q4 are four tests of this contrast, not four separate questions.',
+             size=9.5, color=GRAY, italic=True)
     source(s, 'Milgram (1963); Bonner, Hugon and Walther (2007); Loh and Stulz (2011); '
               'Fang and Yasuda (2009, 2014).', y=6.55)
     notes(s, '两种解释都预测明星上调有更大的公告日反应，所以只做事件窗口不够。'
@@ -522,7 +525,7 @@ def build():
 
     # ---------------------------------------------------------------- slide 10
     s = new_slide(prs)
-    header(s, 'FINDING 3 · Q3 · MORE ACCURATE OR JUST INFLUENTIAL?',
+    header(s, 'FINDING 3 · Q3 · ARE STARS MORE ACCURATE EX POST?',
            'Stars show a short-lived return edge,\nnot better forecasts.',
            10, 'FINDING 3')
     add_text(s, 0.7, 1.72, 6.2, 0.22, 'HOLDING RETURNS (STAR MINUS NON-STAR)',

@@ -38,6 +38,18 @@ Q1 公告日收益与成交量
 
 Q1 不能单独区分信息与影响力，因为两种解释都预测更大的公告日反应。Q2 和 Q3 才是区分检验。Q4 不是第五个机制，它回答的是“这个溢价在哪里成立”。
 
+### 2.1 三个层次
+
+PDF 的四个 presentation questions 不是四个研究问题，而是同一个研究问题的四个检验。
+
+| 层次 | 问题 | 出现位置 |
+|---|---|---|
+| 总研究问题 | 投资者为什么追随明星？信息还是影响力 | 第 1、3、13 页 |
+| 四个检验 | Q1 现象、Q2 持续性、Q3 准确度、Q4 边界 | 第 7 至 11 页 |
+| 页面问题 | 每个 finding 只问可测量的那一半 | eyebrow |
+
+所以 Q3 不是总研究问题的重复，它是总问题的第三个检验。PPT 的 Q3 eyebrow 只问 "Are stars more accurate ex post?"，不把 "or just influencing" 放进问题；那句话留给第 13 页的解释。
+
 ## 3. Q1：公告日收益与成交量
 
 ### 3.1 问题原文
@@ -152,13 +164,15 @@ Q2 有两个方向，每个方向有三个时间窗口：
 - 不能说“反转显著”。+250 的 p 值是 0.18。
 - 不能只说下调。上调三个窗口也要报，否则 Q2 只回答了一半。
 
-## 5. Q3：更准，还是只是影响市场
+## 5. Q3：明星是否更准
 
 ### 5.1 问题原文
 
 Are star analysts' recommendations more accurate ex post, or are they just influencing markets?
 
 ### 5.2 问题真正问什么
+
+PDF 原问题包含 "or are they just influencing markets?"。这句话是研究问题的解释层，不是 Q3 的测量问题。PPT 的 Q3 只问 "Are stars more accurate ex post?"，把 "or just influencing" 留给第 13 页。
 
 Q3 有两个准确度指标，必须同时回答：
 
